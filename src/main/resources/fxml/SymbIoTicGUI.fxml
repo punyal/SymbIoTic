@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1400.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.punyal.symbiotic.controllers.SymbIoTicGUIController">
+    <stylesheets>
+        <URL value="@/styles/symbioticgui.css" />
+    </stylesheets>
+   <children>
+      <Label fx:id="windowTitle" alignment="CENTER" layoutX="500.0" prefHeight="20.0" prefWidth="400.0" text="SymbIoTic" />
+      <VBox layoutX="347.0" layoutY="20.0" prefHeight="780.0" prefWidth="1400.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="20.0">
+         <children>
+            <MenuBar fx:id="menuBar">
+              <menus>
+                <Menu fx:id="menuTitle" mnemonicParsing="false" text="SymbIoTic">
+                  <items>
+                    <MenuItem fx:id="menuAbout" mnemonicParsing="false" text="About" />
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                        <MenuItem fx:id="menuPreferences" mnemonicParsing="false" text="Preferences" />
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                    <MenuItem fx:id="menuClose" mnemonicParsing="false" onAction="#handleMenuClose" text="Close" />
+                  </items>
+                </Menu>
+              </menus>
+            </MenuBar>
+            <HBox prefHeight="760.0" prefWidth="1400.0">
+               <children>
+                  <VBox prefHeight="736.0" prefWidth="300.0">
+                     <children>
+                        <TabPane fx:id="panelClient" prefHeight="730.0" prefWidth="300.0" styleClass="floating" tabClosingPolicy="UNAVAILABLE">
+                          <tabs>
+                            <Tab text="Leshan Client">
+                              <content>
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                              </content>
+                            </Tab>
+                            <Tab text="Custom Client">
+                              <content>
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                              </content>
+                            </Tab>
+                          </tabs>
+                        </TabPane>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+         </children></VBox>
+   </children>
+</AnchorPane>
