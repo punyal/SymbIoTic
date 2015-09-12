@@ -30,12 +30,21 @@ import java.util.ResourceBundle;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Side;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TabPane;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 /**
  * FXML Controller class
@@ -69,7 +78,7 @@ public class SymbIoTicGUIController implements Initializable {
     /*                        Main Window Controllers                         */
     /*------------------------------------------------------------------------*/
     @FXML
-    private Label windowTitle;
+    private Label windowTitle, buildNumber;
     @FXML
     private MenuBar menuBar;
     @FXML
@@ -79,7 +88,7 @@ public class SymbIoTicGUIController implements Initializable {
     
     /* Client Part */
     @FXML
-    private TabPane panelClient;
+    private ToggleButton toggleButtonClient;
     
     
     @FXML
@@ -87,13 +96,45 @@ public class SymbIoTicGUIController implements Initializable {
         Platform.exit();
     }
     
+    private Stage clientStage;
+    
+    @FXML
+    private void handleButtonClient(ActionEvent e) throws IOException {
+        if (toggleButtonClient.selectedProperty().getValue()) {
+            // Display Client Window
+            core.getConfiguration().getClientStage().show();
+            
+        } else {
+            // Close Client Window
+            core.getConfiguration().getClientStage().hide();
+        }
+    }
+    
+    
+    
     private void initMainWindow() {
         windowTitle.setText(core.getConfiguration().getApp().getName() +
-                " v" + core.getConfiguration().getApp().getVersion()+
-                " - release " + core.getConfiguration().getApp().getBuildNumber());
+                " v" + core.getConfiguration().getApp().getVersion());
+        buildNumber.setText("r" + core.getConfiguration().getApp().getBuildNumber());
         menuTitle.setText(core.getConfiguration().getApp().getName());
         menuAbout.setText("About "+core.getConfiguration().getApp().getName());
         menuClose.setText("Close "+core.getConfiguration().getApp().getName());
+        
+        //Setting buttons
+        toggleButtonClient.setContentDisplay(ContentDisplay.CENTER);
+        toggleButtonClient.setText("");
+        
+        //Setting Tab
+        tabPaneFeatures.setSide(Side.TOP);
     }
     
+    
+    /*------------------------------------------------------------------------*/
+    /*                        Features Tabs Controllers                       */
+    /*------------------------------------------------------------------------*/
+    
+    @FXML
+    private TabPane tabPaneFeatures;
+    @FXML
+    private AnchorPane anchorPaneFeature1, anchorPaneFeature2;
 }

@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.chart.*?>
+<?import javafx.geometry.*?>
 <?import java.lang.*?>
 <?import java.net.*?>
 <?import java.util.*?>
@@ -7,15 +9,15 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1400.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.punyal.symbiotic.controllers.SymbIoTicGUIController">
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="740.0" prefWidth="1200.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.punyal.symbiotic.controllers.SymbIoTicGUIController">
     <stylesheets>
         <URL value="@/styles/symbioticgui.css" />
     </stylesheets>
    <children>
-      <Label fx:id="windowTitle" alignment="CENTER" layoutX="500.0" prefHeight="20.0" prefWidth="400.0" text="SymbIoTic" />
-      <VBox layoutX="347.0" layoutY="20.0" prefHeight="780.0" prefWidth="1400.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="20.0">
+      <Label fx:id="windowTitle" alignment="CENTER" layoutX="400.0" prefHeight="20.0" prefWidth="400.0" text="SymbIoTic" />
+      <VBox layoutX="347.0" layoutY="20.0" prefHeight="720.0" prefWidth="1200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="20.0">
          <children>
-            <MenuBar fx:id="menuBar">
+            <MenuBar fx:id="menuBar" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="26.0">
               <menus>
                 <Menu fx:id="menuTitle" mnemonicParsing="false" text="SymbIoTic">
                   <items>
@@ -28,28 +30,41 @@
                 </Menu>
               </menus>
             </MenuBar>
-            <HBox prefHeight="760.0" prefWidth="1400.0">
+            <Pane maxHeight="-Infinity" minHeight="-Infinity" prefHeight="675.0" prefWidth="1200.0">
                <children>
-                  <VBox prefHeight="736.0" prefWidth="300.0">
-                     <children>
-                        <TabPane fx:id="panelClient" prefHeight="730.0" prefWidth="300.0" styleClass="floating" tabClosingPolicy="UNAVAILABLE">
-                          <tabs>
-                            <Tab text="Leshan Client">
-                              <content>
-                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-                              </content>
-                            </Tab>
-                            <Tab text="Custom Client">
-                              <content>
-                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-                              </content>
-                            </Tab>
-                          </tabs>
-                        </TabPane>
-                     </children>
-                  </VBox>
+                  <TabPane fx:id="tabPaneFeatures" layoutX="10.0" nodeOrientation="RIGHT_TO_LEFT" prefHeight="678.0" prefWidth="1180.0" styleClass="floating" tabClosingPolicy="UNAVAILABLE">
+                    <tabs>
+                      <Tab text="IPSO Challenge">
+                        <content>
+                          <AnchorPane fx:id="anchorPaneFeature1" minHeight="-Infinity" minWidth="-Infinity" prefHeight="180.0" prefWidth="200.0">
+                                 <children>
+                                    <LineChart fx:id="lineChartIPSO" prefHeight="500.0" prefWidth="1160.0">
+                                      <xAxis>
+                                        <CategoryAxis side="BOTTOM" />
+                                      </xAxis>
+                                      <yAxis>
+                                        <NumberAxis side="LEFT" />
+                                      </yAxis>
+                                    </LineChart>
+                                 </children>
+                              </AnchorPane>
+                        </content>
+                      </Tab>
+                      <Tab disable="true" text="Benchmark">
+                        <content>
+                          <AnchorPane fx:id="anchorPaneFeature2" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                        </content>
+                      </Tab>
+                    </tabs>
+                  </TabPane>
+                  <ToggleButton fx:id="toggleButtonClient" layoutX="4.0" layoutY="4.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleButtonClient" prefHeight="20.0" prefWidth="20.0" />
                </children>
-            </HBox>
+            </Pane>
+            <Label fx:id="buildNumber" prefHeight="16.0" prefWidth="97.0" text="release">
+               <VBox.margin>
+                  <Insets left="6.0" />
+               </VBox.margin>
+            </Label>
          </children></VBox>
    </children>
 </AnchorPane>

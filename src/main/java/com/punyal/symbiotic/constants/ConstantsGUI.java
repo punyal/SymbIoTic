@@ -21,45 +21,18 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.punyal.symbiotic.core;
-
-import com.punyal.symbiotic.core.security.AppCheck;
-import com.punyal.symbiotic.core.security.AppParameters;
-import javafx.application.Platform;
-import javafx.stage.Stage;
+package com.punyal.symbiotic.constants;
 
 /**
  *
  * @author Pablo Puñal Pereira <pablo.punal@ltu.se>
  */
-public class Configuration {
-    private final AppParameters app;
-    private Stage mainStage;
-    private Stage clientStage;
+public class ConstantsGUI {
+    public ConstantsGUI() {}
     
-    public Configuration(){
-        app = AppCheck.checkApp(this.getClass().getProtectionDomain().getCodeSource().getLocation().toString());
-    }
-    
-    public AppParameters getApp(){
-        return app;
-    }
-    
-    public void setMainStage(Stage stage) {
-        mainStage = stage;
-    }
-    
-    public Stage getMainStage() {
-        return mainStage;
-    }
-    
-    public void setClientStage(Stage stage) {
-        clientStage = stage;
-    }
-    
-    public Stage getClientStage() {
-        return clientStage;
-    }
+    //GUI offsets
+    public static final int CLIENT_X_OFFSET = 22;
+    public static final int CLIENT_Y_OFFSET = 64;
     
     
 }

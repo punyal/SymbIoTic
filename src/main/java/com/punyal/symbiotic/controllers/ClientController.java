@@ -21,45 +21,44 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.punyal.symbiotic.core;
+package com.punyal.symbiotic.controllers;
 
-import com.punyal.symbiotic.core.security.AppCheck;
-import com.punyal.symbiotic.core.security.AppParameters;
-import javafx.application.Platform;
-import javafx.stage.Stage;
+import com.punyal.symbiotic.core.Core;
+import java.net.URL;
+import java.util.ResourceBundle;
+import javafx.fxml.Initializable;
 
 /**
+ * FXML Controller class
  *
  * @author Pablo Puñal Pereira <pablo.punal@ltu.se>
  */
-public class Configuration {
-    private final AppParameters app;
-    private Stage mainStage;
-    private Stage clientStage;
+public class ClientController implements Initializable {
+    private Core core;
     
-    public Configuration(){
-        app = AppCheck.checkApp(this.getClass().getProtectionDomain().getCodeSource().getLocation().toString());
+    public void setCore(Core core) {
+        this.core = core;
     }
     
-    public AppParameters getApp(){
-        return app;
+    /**
+     * Initializes the controller before set other params.
+     */
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+    }
+    /**
+     * Correct initialization
+     */
+    public void init() {
     }
     
-    public void setMainStage(Stage stage) {
-        mainStage = stage;
-    }
+    /*------------------------------------------------------------------------*/
+    /*                        Client Window Controllers                         */
+    /*------------------------------------------------------------------------*/
     
-    public Stage getMainStage() {
-        return mainStage;
-    }
     
-    public void setClientStage(Stage stage) {
-        clientStage = stage;
+    private void initMainWindow() {
+
     }
-    
-    public Stage getClientStage() {
-        return clientStage;
-    }
-    
     
 }

@@ -23,19 +23,18 @@
  */
 package com.punyal.symbiotic;
 
+import com.punyal.symbiotic.Utils.UtilsGUI;
+import static com.punyal.symbiotic.constants.ConstantsGUI.*;
+import com.punyal.symbiotic.controllers.ClientController;
 import com.punyal.symbiotic.controllers.SymbIoTicGUIController;
 import com.punyal.symbiotic.core.Core;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
-import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -50,9 +49,37 @@ public class SymbIoTic extends Application {
     
     @Override
     public void start(final Stage stage) throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/SymbIoTicGUI.fxml"));
         
-        Parent root = loader.load();
+        /* ----------------------- Loading main window ---------------------- */
+        //Stage mainStage = new Stage();
+        FXMLLoader mainloader = new FXMLLoader(getClass().getResource("/fxml/SymbIoTicGUI.fxml"));
+        Parent root = mainloader.load();
+        UtilsGUI.configStage(stage, root, "symbiotic");
+        stage.show();
+        
+        SymbIoTicGUIController mainController = mainloader.<SymbIoTicGUIController>getController();
+        core = new Core(mainController);
+        mainController.setCore(core);
+        mainController.init();
+        
+        core.getConfiguration().setMainStage(stage);
+        /*--------------------------------------------------------------------*/
+        /* ----------------------- Loading client window ---------------------- */
+        Stage clientStage = new Stage();
+        FXMLLoader clientloader = new FXMLLoader(getClass().getResource("/fxml/ClientGUI.fxml"));
+ 
+        UtilsGUI.configStage(clientStage, (Parent) clientloader.load(), "client");
+        clientStage.initOwner(stage);
+        clientStage.setX(stage.getX()+CLIENT_X_OFFSET);
+        clientStage.setY(stage.getY()+CLIENT_Y_OFFSET);
+        
+        ClientController clientController = clientloader.<ClientController>getController();
+        clientController.setCore(core);
+        clientController.init();
+        
+        core.getConfiguration().setClientStage(clientStage);
+        /*--------------------------------------------------------------------*/
+        /* Functionality */
         root.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -65,23 +92,10 @@ public class SymbIoTic extends Application {
             public void handle(MouseEvent event) {
                 stage.setX(event.getScreenX() - xOffset);
                 stage.setY(event.getScreenY() - yOffset);
+                core.getConfiguration().getClientStage().setX(stage.getX()+CLIENT_X_OFFSET);
+                core.getConfiguration().getClientStage().setY(stage.getY()+CLIENT_Y_OFFSET);
             }
         });
-        
-        Scene scene = new Scene(root);
-        scene.getStylesheets().add("/styles/symbioticgui.css");
-        
-        SymbIoTicGUIController controller = loader.<SymbIoTicGUIController>getController();
-        core = new Core(controller);
-        controller.setCore(core);
-        controller.init();
-        
-        stage.initStyle(StageStyle.TRANSPARENT);
-        scene.setFill(null);
-        stage.setTitle("SimbIoTic");
-        stage.resizableProperty().setValue(false);
-        stage.setScene(scene);
-        stage.show();
     }
 
     /**

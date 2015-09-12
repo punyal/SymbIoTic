@@ -1,10 +1,10 @@
-/*
- * Empty Stylesheet file.
- */
-
+/* Main Window */
 .mainFxmlClass {
     -fx-background-color: rgba(200, 200, 200, 0.9);
     -fx-background-radius: 10;
+    -fx-border-color: rgba(100, 100, 100, 1);
+    -fx-border-width: 1;
+    -fx-border-radius: 10;
 }
 
 #windowTitle {
@@ -16,22 +16,79 @@
 }
 
 #menuBar {
-    -fx-font-size: 14px;
+    -fx-font-size: 12px;
     -fx-font-weight: bold;
     -fx-text-fill: #333333;
     -fx-font-family: "Courier New", Courier, monospace;
     -fx-effect: dropshadow( gaussian , rgba(255,255,255,0.5) , 0,0,0,1 );
 }
 
-#panelClient {
-    -fx-font-size: 14px;
+#menuBar .context-menu {
+    -fx-background-color: rgba(220,220,220,0.9);
+    -fx-background-insets: 0, 1, 2;
+    -fx-background-radius: 0 6 6 6, 0 5 5 5, 0 4 4 4;
+/*    -fx-padding: 0.666667em 0.083333em 0.666667em 0.083333em;  8 1 8 1 */
+    -fx-padding: 0.333333em 0.083333em 0.666667em 0.083333em; /* 4 1 8 1 */
+}
+
+#menuTitle:hover 
+{
+    -fx-background-color: rgba(100,100,100,1);
+    -fx-background-radius: 6;
+}
+
+#menuTitle:showing 
+{
+    -fx-background-color: rgba(100,100,100,1);
+    -fx-background-radius: 6;
+}
+
+
+#menuBar .menu-item:focused 
+{
+    -fx-background-color: rgba(100,100,100,1);
+    -fx-background-radius: 6;
+}
+
+
+#buildNumber {
+    -fx-font-size: 12px;
     -fx-font-weight: bold;
     -fx-text-fill: #333333;
     -fx-font-family: "Courier New", Courier, monospace;
-    -fx-effect: dropshadow( gaussian , rgba(255,255,255,0.5) , 0,0,0,1 );
-    
+    -fx-effect: dropshadow( gaussian , rgba(255,255,255,0.5) , 0,0,0,1 );    
 }
-#panelClient.headers-region {
-    -fx-effect: null;
-    
+
+#toggleButtonClient {
+    -fx-background-radius: 10em;
+    -fx-graphic: url("/images/gear.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
 }
+#toggleButtonClient:focused {
+    -fx-focus-color: rgba(100,100,100,1);
+    -fx-faint-focus-color: rgba(100,100,100,0.2);
+}
+
+/* Features */
+#tabPaneFeatures > .tab-header-area > .headers-region > .tab {
+    -fx-background-color: rgba(230, 230, 230, 0.6);
+    -fx-background-radius: 10 10 0 0;
+}
+
+#tabPaneFeatures:focused > .tab-header-area > .headers-region > .tab:selected .focus-indicator {
+    -fx-border-radius: 10 10 0 0;
+    -fx-focus-color: rgba(100,100,100,1);
+    -fx-faint-focus-color: rgba(100,100,100,0.2);
+}
+
+#tabPaneFeatures > .tab-content-area {
+    -fx-background-color: rgba(220, 220, 220, 0.6);
+    -fx-background-radius: 10;
+    -fx-border-color: rgba(100, 100, 100, 1);
+    -fx-border-width: 1;
+    -fx-border-radius: 10;
+}
+
+
+

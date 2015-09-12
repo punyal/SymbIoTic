@@ -1,0 +1,8 @@
+
+.mainFxmlClass {
+    -fx-background-color: rgba(230, 230, 230, 0.9);
+    -fx-background-radius: 10;
+    -fx-border-color: rgba(150, 150, 150, 1);
+    -fx-border-width: 1;
+    -fx-border-radius: 10;
+}

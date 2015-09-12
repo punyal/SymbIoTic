@@ -21,45 +21,28 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.punyal.symbiotic.core;
+package com.punyal.symbiotic.Utils;
 
-import com.punyal.symbiotic.core.security.AppCheck;
-import com.punyal.symbiotic.core.security.AppParameters;
-import javafx.application.Platform;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 /**
  *
  * @author Pablo Puñal Pereira <pablo.punal@ltu.se>
  */
-public class Configuration {
-    private final AppParameters app;
-    private Stage mainStage;
-    private Stage clientStage;
-    
-    public Configuration(){
-        app = AppCheck.checkApp(this.getClass().getProtectionDomain().getCodeSource().getLocation().toString());
+public class UtilsGUI {
+        
+    static public void configStage(Stage stage, Parent root, String name) {
+        Scene scene = new Scene(root);
+        scene.getStylesheets().add("/styles/"+name.toLowerCase()+"gui.css");
+        scene.setFill(null);
+        stage.initStyle(StageStyle.TRANSPARENT);
+        stage.setTitle("SymbIoTic");
+        stage.resizableProperty().setValue(false);
+        stage.setScene(scene);
     }
-    
-    public AppParameters getApp(){
-        return app;
-    }
-    
-    public void setMainStage(Stage stage) {
-        mainStage = stage;
-    }
-    
-    public Stage getMainStage() {
-        return mainStage;
-    }
-    
-    public void setClientStage(Stage stage) {
-        clientStage = stage;
-    }
-    
-    public Stage getClientStage() {
-        return clientStage;
-    }
-    
     
 }
