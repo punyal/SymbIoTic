@@ -132,9 +132,12 @@ public class SymbIoTicGUIController implements Initializable {
     /*                        Feature IPSO  Controllers                       */
     /*------------------------------------------------------------------------*/
     @FXML
-    private SimpleMetroArcGauge metroGaugeBattery;
+    private SimpleMetroArcGauge metroGaugeBattery, metroGaugeStrain;
 
     private void initFeatureIPSO() {
+        /* Battery Gauge */
+        metroGaugeBattery.setMinValue(0);
+        metroGaugeBattery.setMaxValue(100);
         metroGaugeBattery.setValue(0);
         // Battery Gauge Schema...
         metroGaugeBattery.getStyleClass().add("colorscheme-green-to-red-7");
@@ -143,7 +146,20 @@ public class SymbIoTicGUIController implements Initializable {
         metroGaugeBattery.segments().add(new PercentSegment(metroGaugeBattery, 30.0, 65.0, "test2"));
         metroGaugeBattery.segments().add(new PercentSegment(metroGaugeBattery, 20.0, 30.0, "test"));
         metroGaugeBattery.segments().add(new PercentSegment(metroGaugeBattery, 10.0, 20.0, "warningSegment"));
-        metroGaugeBattery.segments().add(new PercentSegment(metroGaugeBattery, 0.0, 10.0, "errorSegment"));    
+        metroGaugeBattery.segments().add(new PercentSegment(metroGaugeBattery, 0.0, 10.0, "errorSegment"));
+        
+        /* Strain Gauge */
+        metroGaugeStrain.setMinValue(0);
+        metroGaugeStrain.setMaxValue(100);
+        metroGaugeStrain.setValue(0);
+        // Battery Gauge Schema...
+        metroGaugeStrain.getStyleClass().add("colorscheme-green-to-red-7");
+        metroGaugeStrain.segments().add(new CompleteSegment(metroGaugeStrain));
+        metroGaugeStrain.segments().add(new PercentSegment(metroGaugeStrain, 0, 30, "strainSegment1"));
+        metroGaugeStrain.segments().add(new PercentSegment(metroGaugeStrain, 30, 70, "strainSegment2"));
+        metroGaugeStrain.segments().add(new PercentSegment(metroGaugeStrain, 70, 80, "strainSegment3"));
+        metroGaugeStrain.segments().add(new PercentSegment(metroGaugeStrain, 80, 90, "strainSegment4"));
+        metroGaugeStrain.segments().add(new PercentSegment(metroGaugeStrain, 90, 100, "strainSegment5"));
     }
 
 }
