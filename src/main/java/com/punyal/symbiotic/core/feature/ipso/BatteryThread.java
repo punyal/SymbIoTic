@@ -21,23 +21,50 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.punyal.symbiotic.constants;
+package com.punyal.symbiotic.core.feature.ipso;
+
+import com.punyal.symbiotic.core.Core;
 
 /**
  *
  * @author Pablo Puñal Pereira <pablo.punal@ltu.se>
  */
-public class ConstantsGUI {
-    public ConstantsGUI() {}
+public class BatteryThread extends Thread {
+    private final Core core;
     
-    // GUI Client window offsets
-    public static final int CLIENT_X_OFFSET = 22;
-    public static final int CLIENT_Y_OFFSET = 64;
+    public BatteryThread(Core core) {
+        this.core = core;
+        // Set as daemon to close with the program
+        this.setDaemon(true);
+    }
     
-    // ACC Chart
-    public static final int MAX_DATA_POINTS = 800;
-    public static final int CHART_MAX_VALUE = 3000;
-    public static final int CHART_MIN_VALUE = -3000;
+    public void startThread() {
+        this.start();
+    }
+    
+    @Override
+    public void run() {
+        try {
+            while (true) {
+                if (core.getStatus().getBatteryLevel() == 0)
+                    core.getStatus().setBatteryLevel(100);
+                else
+                    core.getStatus().setBatteryLevel(0);
+                
+                try {
+                    Thread.sleep(4000);
+                } catch (InterruptedException ex) {
+                    Thread.currentThread().interrupt(); // This should kill it propertly
+                }
+            }
+        }
+        finally{
+            System.out.println("Killing BatteryThread");
+        }
+    }
+    
+    
+    
     
     
 }

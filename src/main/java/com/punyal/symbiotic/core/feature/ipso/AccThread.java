@@ -21,35 +21,52 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.punyal.symbiotic.core;
+package com.punyal.symbiotic.core.feature.ipso;
+
+import com.punyal.symbiotic.core.Core;
 
 /**
  *
  * @author Pablo Puñal Pereira <pablo.punal@ltu.se>
  */
-public class Status {
-    private int batteryLevel;
-    private int strainLevel;
+public class AccThread extends Thread {
+    private final Core core;
     
-    public Status() {
-        batteryLevel = 0;
-        strainLevel = 0;
+    public AccThread(Core core) {
+        this.core = core;
+        // Set as daemon to close with the program
+        this.setDaemon(true);
     }
     
-    public int getBatteryLevel() {
-        return batteryLevel;
+    public void startThread() {
+        this.start();
     }
     
-    public void setBatteryLevel(int batteryLevel) {
-        this.batteryLevel = batteryLevel;
+    @Override
+    public void run() {
+        double value;
+        try {
+            while (true) {
+                
+                value = 1500*Math.sin(2*Math.PI*(core.getController().getLineChartIPSOindex()/25000)) +
+                        1000*Math.sin(2*Math.PI*(core.getController().getLineChartIPSOindex()/2500)) +
+                        500*Math.sin(2*Math.PI*(core.getController().getLineChartIPSOindex()/250));
+                
+                core.getController().getAccData().add(value);
+                try {
+                    Thread.sleep(2,500000); //2.5 ms
+                } catch (InterruptedException ex) {
+                    Thread.currentThread().interrupt(); // This should kill it propertly
+                }
+            }
+        }
+        finally{
+            System.out.println("Killing AccThread");
+        }
     }
     
-    public int getStrainLevel() {
-        return strainLevel;
-    }
     
-    public void setStrainLevel(int strainLevel) {
-        this.strainLevel = strainLevel;
-    }
+    
+    
     
 }

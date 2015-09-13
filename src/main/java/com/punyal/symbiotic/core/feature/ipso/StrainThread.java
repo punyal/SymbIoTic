@@ -21,23 +21,48 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.punyal.symbiotic.constants;
+package com.punyal.symbiotic.core.feature.ipso;
+
+import com.punyal.symbiotic.core.Core;
+import java.util.Random;
 
 /**
  *
  * @author Pablo Puñal Pereira <pablo.punal@ltu.se>
  */
-public class ConstantsGUI {
-    public ConstantsGUI() {}
+public class StrainThread extends Thread {
+    private final Core core;
     
-    // GUI Client window offsets
-    public static final int CLIENT_X_OFFSET = 22;
-    public static final int CLIENT_Y_OFFSET = 64;
+    public StrainThread(Core core) {
+        this.core = core;
+        // Set as daemon to close with the program
+        this.setDaemon(true);
+    }
     
-    // ACC Chart
-    public static final int MAX_DATA_POINTS = 800;
-    public static final int CHART_MAX_VALUE = 3000;
-    public static final int CHART_MIN_VALUE = -3000;
+    public void startThread() {
+        this.start();
+    }
+    
+    @Override
+    public void run() {
+        Random random = new Random();
+        try {
+            while (true) {
+                core.getStatus().setStrainLevel(random.nextInt((int) core.getController().getBatteryGauge().getMaxValue()));
+                try {
+                    Thread.sleep(1500);
+                } catch (InterruptedException ex) {
+                    Thread.currentThread().interrupt(); // This should kill it propertly
+                }
+            }
+        }
+        finally{
+            System.out.println("Killing StrainThread");
+        }
+    }
+    
+    
+    
     
     
 }

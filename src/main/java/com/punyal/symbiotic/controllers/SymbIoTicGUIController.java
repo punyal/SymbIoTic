@@ -23,15 +23,25 @@
  */
 package com.punyal.symbiotic.controllers;
 
+import static com.punyal.symbiotic.constants.ConstantsGUI.*;
 import com.punyal.symbiotic.core.Core;
+import com.punyal.symbiotic.core.feature.ipso.AccThread;
+import com.punyal.symbiotic.core.feature.ipso.BatteryThread;
+import com.punyal.symbiotic.core.feature.ipso.StrainThread;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Side;
+import javafx.scene.chart.AreaChart;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
@@ -131,8 +141,34 @@ public class SymbIoTicGUIController implements Initializable {
     /*------------------------------------------------------------------------*/
     /*                        Feature IPSO  Controllers                       */
     /*------------------------------------------------------------------------*/
+    @FXML // Battery Gauge
+    private SimpleMetroArcGauge metroGaugeBattery;
+    private BatteryThread batteryThread;
+    
+    @FXML // Strain Gauge
+    private SimpleMetroArcGauge metroGaugeStrain;
+    private StrainThread strainThread;
+    
+    
+    @FXML // ACC Chart
+    private LineChart lineChartIPSO;
     @FXML
-    private SimpleMetroArcGauge metroGaugeBattery, metroGaugeStrain;
+    private NumberAxis accXaxis, accYaxis;
+
+    private XYChart.Series accSeries;
+    private ConcurrentLinkedQueue<Number> accData = new ConcurrentLinkedQueue<>();
+    private double lineChartIPSOindex;
+    
+    private AccThread accThread;
+    
+    private final AnimationTimer animatorIPSO = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                animateBattery();
+                animateStrain();
+                animateACC();
+            }
+        };
 
     private void initFeatureIPSO() {
         /* Battery Gauge */
@@ -152,7 +188,7 @@ public class SymbIoTicGUIController implements Initializable {
         metroGaugeStrain.setMinValue(0);
         metroGaugeStrain.setMaxValue(100);
         metroGaugeStrain.setValue(0);
-        // Battery Gauge Schema...
+        // Strain Gauge Schema...
         metroGaugeStrain.getStyleClass().add("colorscheme-green-to-red-7");
         metroGaugeStrain.segments().add(new CompleteSegment(metroGaugeStrain));
         metroGaugeStrain.segments().add(new PercentSegment(metroGaugeStrain, 0, 30, "strainSegment1"));
@@ -160,6 +196,80 @@ public class SymbIoTicGUIController implements Initializable {
         metroGaugeStrain.segments().add(new PercentSegment(metroGaugeStrain, 70, 80, "strainSegment3"));
         metroGaugeStrain.segments().add(new PercentSegment(metroGaugeStrain, 80, 90, "strainSegment4"));
         metroGaugeStrain.segments().add(new PercentSegment(metroGaugeStrain, 90, 100, "strainSegment5"));
+        
+        /* ACC Chart */
+        accXaxis.setLowerBound(0);
+        accXaxis.setUpperBound(MAX_DATA_POINTS);
+        accXaxis.setTickUnit(MAX_DATA_POINTS/10);
+        accXaxis.setForceZeroInRange(false);
+        accXaxis.setAutoRanging(false);
+        accXaxis.setTickLabelsVisible(false);
+        accXaxis.setTickMarkVisible(false);
+        accXaxis.setMinorTickVisible(false);
+        
+        accYaxis.setAutoRanging(false);
+        accYaxis.setLowerBound(CHART_MIN_VALUE);
+        accYaxis.setUpperBound(CHART_MAX_VALUE);
+        accYaxis.setTickUnit(1000);
+        accYaxis.setTickLabelsVisible(true);
+        
+        lineChartIPSO.setAnimated(false);
+        lineChartIPSO.setCreateSymbols(false);
+        lineChartIPSO.setLegendVisible(false);
+        accSeries = new XYChart.Series<>();
+        lineChartIPSO.getData().addAll(accSeries);
+        lineChartIPSOindex = 0;
+               
+        /* ------------- Init IPSO Threads -------------- */
+        batteryThread = new BatteryThread(core);
+        batteryThread.start();
+        strainThread = new StrainThread((core));
+        strainThread.start();
+        accThread = new AccThread(core);
+        accThread.start();
+        
+        /* ------------- Start animations -------------- */
+        animatorIPSO.start();
     }
-
+    
+    
+    private void animateBattery() {
+        core.getController().getBatteryGauge().setValue(core.getStatus().getBatteryLevel());
+    }
+    
+    public SimpleMetroArcGauge getBatteryGauge() {
+        return metroGaugeBattery;
+    }
+    
+    
+    private void animateStrain() {
+        core.getController().getStrainGauge().setValue(core.getStatus().getStrainLevel());
+    }
+    
+    public SimpleMetroArcGauge getStrainGauge() {
+        return metroGaugeStrain;
+    }
+    
+    
+    private void animateACC() {
+        for (int i = 0; i<10; i++) { // Add 10 points per refresh
+            if (accData.isEmpty()) break;
+            accSeries.getData().add(new AreaChart.Data(lineChartIPSOindex++, accData.remove()));
+        }
+        // remove old points
+        if (accSeries.getData().size() > MAX_DATA_POINTS)
+            accSeries.getData().remove(0, accSeries.getData().size() - MAX_DATA_POINTS);
+        
+        // update range
+        accXaxis.setLowerBound(lineChartIPSOindex-MAX_DATA_POINTS);
+        accXaxis.setUpperBound(lineChartIPSOindex-1);
+    }
+    
+    public ConcurrentLinkedQueue<Number> getAccData() {
+        return accData;
+    }
+    
+    public double getLineChartIPSOindex() {
+        return lineChartIPSOindex;
+    }
 }

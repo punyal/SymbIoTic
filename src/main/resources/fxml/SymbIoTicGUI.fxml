@@ -41,10 +41,10 @@
                                  <children>
                                     <LineChart fx:id="lineChartIPSO" prefHeight="500.0" prefWidth="1160.0">
                                       <xAxis>
-                                        <CategoryAxis side="BOTTOM" />
+                                        <NumberAxis fx:id="accXaxis" side="BOTTOM" />
                                       </xAxis>
                                       <yAxis>
-                                        <NumberAxis side="LEFT" />
+                                        <NumberAxis fx:id="accYaxis" side="LEFT" />
                                       </yAxis>
                                     </LineChart>
                                     <HBox layoutX="80.0" layoutY="490.0" prefHeight="131.0" prefWidth="1000.0">
