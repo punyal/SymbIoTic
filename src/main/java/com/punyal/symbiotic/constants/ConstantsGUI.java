@@ -35,9 +35,10 @@ public class ConstantsGUI {
     public static final int CLIENT_Y_OFFSET = 64;
     
     // ACC Chart
-    public static final int MAX_DATA_POINTS = 800;
+    public static final int MAX_DATA_POINTS = 2000;
     public static final int CHART_MAX_VALUE = 3000;
     public static final int CHART_MIN_VALUE = -3000;
     
-    
+    // Default Values
+    public static final int DEFAULT_FREQUENCY = 400;
 }

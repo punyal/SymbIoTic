@@ -31,37 +31,52 @@ import com.punyal.symbiotic.core.Core;
  */
 public class AccThread extends Thread {
     private final Core core;
+    boolean running;
     
     public AccThread(Core core) {
         this.core = core;
         // Set as daemon to close with the program
         this.setDaemon(true);
+        running = true;
     }
     
     public void startThread() {
+        //System.out.println("Starting AccThread");
         this.start();
     }
+    
+    public void stopThread() {
+        running = false;
+    }
+    
     
     @Override
     public void run() {
         double value;
+        int iterations;
         try {
-            while (true) {
+            while (running) {
+                double actual = core.getController().getLineChartIPSOindex() + core.getController().getAccData().size();
                 
-                value = 1500*Math.sin(2*Math.PI*(core.getController().getLineChartIPSOindex()/25000)) +
-                        1000*Math.sin(2*Math.PI*(core.getController().getLineChartIPSOindex()/2500)) +
-                        500*Math.sin(2*Math.PI*(core.getController().getLineChartIPSOindex()/250));
+                iterations = 5*(int)core.getController().getFreq()/100;
                 
-                core.getController().getAccData().add(value);
+                for (int i=0; i<iterations ; i++) {
+                    value = 3000*Math.sin(2*Math.PI*((actual+i)/(250*core.getController().getFreq())))*
+                            Math.sin(2*Math.PI*((actual+i)/(25*core.getController().getFreq())))*
+                            Math.sin(2*Math.PI*((actual+i)/(2.5*core.getController().getFreq())))*Math.sin(2*Math.PI*((actual+i)/25));
+
+                    core.getController().getAccData().add(value);
+                    //System.out.println(value);
+                }
                 try {
-                    Thread.sleep(2,500000); //2.5 ms
+                    Thread.sleep(50); //50 ms
                 } catch (InterruptedException ex) {
                     Thread.currentThread().interrupt(); // This should kill it propertly
                 }
             }
         }
         finally{
-            System.out.println("Killing AccThread");
+            //System.out.println("Killing AccThread");
         }
     }
     

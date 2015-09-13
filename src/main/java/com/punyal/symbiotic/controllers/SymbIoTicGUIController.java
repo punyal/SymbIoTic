@@ -34,6 +34,8 @@ import java.util.ResourceBundle;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -47,7 +49,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.Slider;
 import javafx.scene.control.TabPane;
+import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -161,6 +165,15 @@ public class SymbIoTicGUIController implements Initializable {
     
     private AccThread accThread;
     
+    
+    @FXML // Controls
+    private Slider sliderFreq;
+    @FXML
+    private TextField textFreq;
+    @FXML
+    private ToggleButton toggleButtonIPSO;
+    
+    
     private final AnimationTimer animatorIPSO = new AnimationTimer() {
             @Override
             public void handle(long now) {
@@ -180,9 +193,9 @@ public class SymbIoTicGUIController implements Initializable {
         metroGaugeBattery.segments().add(new CompleteSegment(metroGaugeBattery));
         metroGaugeBattery.segments().add(new PercentSegment(metroGaugeBattery, 65.0, 100.0, "normalSegment"));
         metroGaugeBattery.segments().add(new PercentSegment(metroGaugeBattery, 30.0, 65.0, "test2"));
-        metroGaugeBattery.segments().add(new PercentSegment(metroGaugeBattery, 20.0, 30.0, "test"));
-        metroGaugeBattery.segments().add(new PercentSegment(metroGaugeBattery, 10.0, 20.0, "warningSegment"));
-        metroGaugeBattery.segments().add(new PercentSegment(metroGaugeBattery, 0.0, 10.0, "errorSegment"));
+        metroGaugeBattery.segments().add(new PercentSegment(metroGaugeBattery, 10.0, 30.0, "test"));
+        metroGaugeBattery.segments().add(new PercentSegment(metroGaugeBattery, 5.0, 10.0, "warningSegment"));
+        metroGaugeBattery.segments().add(new PercentSegment(metroGaugeBattery, 0.0, 5.0, "errorSegment"));
         
         /* Strain Gauge */
         metroGaugeStrain.setMinValue(0);
@@ -219,17 +232,37 @@ public class SymbIoTicGUIController implements Initializable {
         accSeries = new XYChart.Series<>();
         lineChartIPSO.getData().addAll(accSeries);
         lineChartIPSOindex = 0;
+        
+        toggleButtonIPSO.setText("START");
+        
+        /* Controls */
+        sliderFreq.setMin(100);
+        sliderFreq.setMax(400);
+        sliderFreq.setValue(DEFAULT_FREQUENCY);
+        textFreq.setText(""+(int)sliderFreq.getValue());
+        sliderFreq.setShowTickLabels(true);
+        sliderFreq.setShowTickMarks(true);
+        sliderFreq.setMajorTickUnit(100);
+        sliderFreq.setMinorTickCount(50);
+        sliderFreq.setBlockIncrement(100);
+        sliderFreq.setSnapToTicks(true);
+        sliderFreq.valueProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                int value = (int)Math.round((double)newValue/100)*100;
+                sliderFreq.setValue(value);
+                textFreq.setText(""+(int)sliderFreq.getValue());
+            }
+        });
                
         /* ------------- Init IPSO Threads -------------- */
         batteryThread = new BatteryThread(core);
         batteryThread.start();
         strainThread = new StrainThread((core));
         strainThread.start();
-        accThread = new AccThread(core);
-        accThread.start();
         
         /* ------------- Start animations -------------- */
-        animatorIPSO.start();
+        // animatorIPSO.start();
     }
     
     
@@ -252,7 +285,7 @@ public class SymbIoTicGUIController implements Initializable {
     
     
     private void animateACC() {
-        for (int i = 0; i<10; i++) { // Add 10 points per refresh
+        for (int i = 0; i<10; i++) { // Add 30 points per refresh
             if (accData.isEmpty()) break;
             accSeries.getData().add(new AreaChart.Data(lineChartIPSOindex++, accData.remove()));
         }
@@ -272,4 +305,25 @@ public class SymbIoTicGUIController implements Initializable {
     public double getLineChartIPSOindex() {
         return lineChartIPSOindex;
     }
+    
+    public double getFreq() {
+        return sliderFreq.getValue();
+    }
+    
+     @FXML
+    private void handleButtonIPSO(ActionEvent e) throws IOException {
+        if (toggleButtonIPSO.selectedProperty().getValue()) {
+            toggleButtonIPSO.setText("STOP");
+            sliderFreq.setDisable(true);
+            accThread = new AccThread(core);
+            accThread.startThread();
+            animatorIPSO.start();
+        } else {
+            toggleButtonIPSO.setText("START");
+            sliderFreq.setDisable(false);
+            accThread.stopThread();
+            animatorIPSO.stop();
+        }
+    }
+    
 }
