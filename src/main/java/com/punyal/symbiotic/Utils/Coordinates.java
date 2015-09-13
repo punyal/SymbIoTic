@@ -23,27 +23,42 @@
  */
 package com.punyal.symbiotic.Utils;
 
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-import jfxtras.labs.scene.control.gauge.linear.AbstractLinearGauge;
-
 /**
  *
  * @author Pablo Puñal Pereira <pablo.punal@ltu.se>
  */
-public class UtilsGUI {
-        
-    static public void configStage(Stage stage, Parent root, String name) {
-        Scene scene = new Scene(root);
-        scene.getStylesheets().add("/styles/"+name.toLowerCase()+"gui.css");
-        scene.getStylesheets().add(AbstractLinearGauge.segmentColorschemeCSSPath());
-        scene.setFill(null);
-        stage.initStyle(StageStyle.TRANSPARENT);
-        stage.setTitle("SymbIoTic");
-        stage.resizableProperty().setValue(false);
-        stage.setScene(scene);
+public class Coordinates {
+    private double x;
+    private double y;
+    
+    public Coordinates(double x, double y) {
+        this.x = x;
+        this.y = y;
     }
     
+    public Coordinates() {
+        this.x = 0;
+        this.y = 0;
+    }
+    
+    public void setX(double x) {
+        this.x = x;
+    }
+    
+    public double getX() {
+        return x;
+    }
+    
+    public void setY(double y) {
+        this.y = y;
+    }
+    
+    public double getY() {
+        return y;
+    }
+    
+    public void setXY(double x, double y) {
+        this.x = x;
+        this.y = y;
+    }
 }

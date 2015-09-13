@@ -74,10 +74,11 @@
 #tabPaneFeatures > .tab-header-area > .headers-region > .tab {
     -fx-background-color: rgba(230, 230, 230, 0.6);
     -fx-background-radius: 10 10 0 0;
+    -fx-margin: 100;
 }
 
 #tabPaneFeatures:focused > .tab-header-area > .headers-region > .tab:selected .focus-indicator {
-    -fx-border-radius: 10 10 0 0;
+    -fx-border-radius: 0 0 10 10;
     -fx-focus-color: rgba(100,100,100,1);
     -fx-faint-focus-color: rgba(100,100,100,0.2);
 }
@@ -90,5 +91,9 @@
     -fx-border-radius: 10;
 }
 
-
+#metroGaugeBattery {
+    -fxx-animated: YES;
+    -fxx-warning-indicator-visibility: visible;
+    -fxx-error-indicator-visibility: visible;
+}
 

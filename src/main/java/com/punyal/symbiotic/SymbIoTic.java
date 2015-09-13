@@ -33,18 +33,15 @@ import static javafx.application.Application.launch;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
 /**
  *
  * @author Pablo Puñal Pereira <pablo.punal@ltu.se>
  */
 public class SymbIoTic extends Application {
-    private double xOffset = 0;
-    private double yOffset = 0;
+    // App Core
     private Core core;
     
     @Override
@@ -64,7 +61,7 @@ public class SymbIoTic extends Application {
         
         core.getConfiguration().setMainStage(stage);
         /*--------------------------------------------------------------------*/
-        /* ----------------------- Loading client window ---------------------- */
+        /* ----------------------- Loading client window -------------------- */
         Stage clientStage = new Stage();
         FXMLLoader clientloader = new FXMLLoader(getClass().getResource("/fxml/ClientGUI.fxml"));
  
@@ -83,24 +80,25 @@ public class SymbIoTic extends Application {
         root.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                xOffset = event.getSceneX();
-                yOffset = event.getSceneY();
+                // Save actual window position
+                core.getConfiguration().getMainStageInfo().coordinates.setXY(event.getSceneX(), event.getSceneY());
             }
         });
         root.setOnMouseDragged(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                stage.setX(event.getScreenX() - xOffset);
-                stage.setY(event.getScreenY() - yOffset);
-                core.getConfiguration().getClientStage().setX(stage.getX()+CLIENT_X_OFFSET);
-                core.getConfiguration().getClientStage().setY(stage.getY()+CLIENT_Y_OFFSET);
+                // Move Main window
+                core.getConfiguration().getMainStageInfo().setStageXY(
+                        event.getScreenX() - core.getConfiguration().getMainStageInfo().coordinates.getX(),
+                        event.getScreenY() - core.getConfiguration().getMainStageInfo().coordinates.getY());
+                // Move Client window
+                core.getConfiguration().getClientStageInfo().setStageXY(
+                        core.getConfiguration().getMainStageInfo().getStage().getX() + CLIENT_X_OFFSET, 
+                        core.getConfiguration().getMainStageInfo().getStage().getY() + CLIENT_Y_OFFSET);
             }
         });
     }
 
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String[] args) {
         launch(args);
     }

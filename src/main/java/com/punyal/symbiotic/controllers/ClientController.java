@@ -40,12 +40,10 @@ public class ClientController implements Initializable {
         this.core = core;
     }
     
-    /**
-     * Initializes the controller before set other params.
-     */
+    
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
-    }
+    public void initialize(URL url, ResourceBundle rb) {}
+    
     /**
      * Correct initialization
      */
@@ -55,7 +53,6 @@ public class ClientController implements Initializable {
     /*------------------------------------------------------------------------*/
     /*                        Client Window Controllers                         */
     /*------------------------------------------------------------------------*/
-    
     
     private void initMainWindow() {
 

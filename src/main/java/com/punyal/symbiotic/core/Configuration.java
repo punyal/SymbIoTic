@@ -23,9 +23,10 @@
  */
 package com.punyal.symbiotic.core;
 
+import com.punyal.symbiotic.Utils.Coordinates;
+import com.punyal.symbiotic.Utils.StageInfo;
 import com.punyal.symbiotic.core.security.AppCheck;
 import com.punyal.symbiotic.core.security.AppParameters;
-import javafx.application.Platform;
 import javafx.stage.Stage;
 
 /**
@@ -34,8 +35,8 @@ import javafx.stage.Stage;
  */
 public class Configuration {
     private final AppParameters app;
-    private Stage mainStage;
-    private Stage clientStage;
+    private StageInfo mainStage;
+    private StageInfo clientStage;
     
     public Configuration(){
         app = AppCheck.checkApp(this.getClass().getProtectionDomain().getCodeSource().getLocation().toString());
@@ -46,18 +47,34 @@ public class Configuration {
     }
     
     public void setMainStage(Stage stage) {
-        mainStage = stage;
+        mainStage = new StageInfo(stage);
     }
     
-    public Stage getMainStage() {
+    public void setMainStage(Stage stage, Coordinates coordinates) {
+        mainStage = new StageInfo(stage, coordinates);
+    }
+    
+    public void setMainStage(Stage stage, double x, double y) {
+        mainStage = new StageInfo(stage, x, y);
+    }
+    
+    public StageInfo getMainStageInfo() {
         return mainStage;
     }
     
     public void setClientStage(Stage stage) {
-        clientStage = stage;
+        clientStage = new StageInfo(stage);
     }
     
-    public Stage getClientStage() {
+    public void setClientStage(Stage stage, Coordinates coordinates) {
+        clientStage = new StageInfo(stage, coordinates);
+    }
+    
+    public void setClientStage(Stage stage, double x, double y) {
+        clientStage = new StageInfo(stage, x, y);
+    }
+    
+    public StageInfo getClientStageInfo() {
         return clientStage;
     }
     

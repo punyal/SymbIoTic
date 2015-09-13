@@ -29,6 +29,7 @@ package com.punyal.symbiotic.core;
  */
 public class Status {
     
+    
     public Status() {
         
     }

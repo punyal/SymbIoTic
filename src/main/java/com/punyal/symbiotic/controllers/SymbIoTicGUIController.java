@@ -30,11 +30,8 @@ import java.util.ResourceBundle;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Side;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
@@ -44,7 +41,9 @@ import javafx.scene.control.TabPane;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
+import jfxtras.labs.scene.control.gauge.linear.SimpleMetroArcGauge;
+import jfxtras.labs.scene.control.gauge.linear.elements.CompleteSegment;
+import jfxtras.labs.scene.control.gauge.linear.elements.PercentSegment;
 
 /**
  * FXML Controller class
@@ -52,28 +51,24 @@ import javafx.stage.StageStyle;
  * @author Pablo Puñal Pereira <pablo.punal@ltu.se>
  */
 public class SymbIoTicGUIController implements Initializable {
+
     private Core core;
-    
+
     public void setCore(Core core) {
         this.core = core;
     }
-    
-    /**
-     * Initializes the controller before set other params.
-     */
+
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
-    }
+    public void initialize(URL url, ResourceBundle rb) { }
+
     /**
      * Correct initialization
      */
     public void init() {
         initMainWindow();
+        initFeatureIPSO();
     }
-    
-    
-    
-    
+
     /*------------------------------------------------------------------------*/
     /*                        Main Window Controllers                         */
     /*------------------------------------------------------------------------*/
@@ -85,56 +80,70 @@ public class SymbIoTicGUIController implements Initializable {
     private Menu menuTitle;
     @FXML
     private MenuItem menuAbout, menuPreferences, menuClose;
-    
+
     /* Client Part */
     @FXML
     private ToggleButton toggleButtonClient;
-    
-    
+
     @FXML
     private void handleMenuClose(ActionEvent e) throws IOException {
         Platform.exit();
     }
-    
+
     private Stage clientStage;
-    
+
     @FXML
     private void handleButtonClient(ActionEvent e) throws IOException {
         if (toggleButtonClient.selectedProperty().getValue()) {
             // Display Client Window
-            core.getConfiguration().getClientStage().show();
-            
+            core.getConfiguration().getClientStageInfo().getStage().show();
+
         } else {
             // Close Client Window
-            core.getConfiguration().getClientStage().hide();
+            core.getConfiguration().getClientStageInfo().getStage().hide();
         }
     }
-    
-    
-    
+
     private void initMainWindow() {
-        windowTitle.setText(core.getConfiguration().getApp().getName() +
-                " v" + core.getConfiguration().getApp().getVersion());
+        windowTitle.setText(core.getConfiguration().getApp().getName()
+                + " v" + core.getConfiguration().getApp().getVersion());
         buildNumber.setText("r" + core.getConfiguration().getApp().getBuildNumber());
         menuTitle.setText(core.getConfiguration().getApp().getName());
-        menuAbout.setText("About "+core.getConfiguration().getApp().getName());
-        menuClose.setText("Close "+core.getConfiguration().getApp().getName());
-        
+        menuAbout.setText("About " + core.getConfiguration().getApp().getName());
+        menuClose.setText("Close " + core.getConfiguration().getApp().getName());
+
         //Setting buttons
         toggleButtonClient.setContentDisplay(ContentDisplay.CENTER);
         toggleButtonClient.setText("");
-        
+
         //Setting Tab
-        tabPaneFeatures.setSide(Side.TOP);
+        tabPaneFeatures.setSide(Side.BOTTOM);
     }
-    
-    
+
     /*------------------------------------------------------------------------*/
     /*                        Features Tabs Controllers                       */
     /*------------------------------------------------------------------------*/
-    
     @FXML
     private TabPane tabPaneFeatures;
     @FXML
     private AnchorPane anchorPaneFeature1, anchorPaneFeature2;
+
+    /*------------------------------------------------------------------------*/
+    /*                        Feature IPSO  Controllers                       */
+    /*------------------------------------------------------------------------*/
+    @FXML
+    private SimpleMetroArcGauge metroGaugeBattery;
+
+    private void initFeatureIPSO() {
+        metroGaugeBattery.setValue(0);
+        // Battery Gauge Schema...
+        metroGaugeBattery.getStyleClass().add("colorscheme-green-to-red-7");
+        metroGaugeBattery.segments().add(new CompleteSegment(metroGaugeBattery));
+        metroGaugeBattery.segments().add(new PercentSegment(metroGaugeBattery, 65.0, 100.0, "normalSegment"));
+        metroGaugeBattery.segments().add(new PercentSegment(metroGaugeBattery, 30.0, 65.0, "test2"));
+        metroGaugeBattery.segments().add(new PercentSegment(metroGaugeBattery, 20.0, 30.0, "test"));
+        metroGaugeBattery.segments().add(new PercentSegment(metroGaugeBattery, 10.0, 20.0, "warningSegment"));
+        metroGaugeBattery.segments().add(new PercentSegment(metroGaugeBattery, 0.0, 10.0, "errorSegment"));    
+    }
+
 }

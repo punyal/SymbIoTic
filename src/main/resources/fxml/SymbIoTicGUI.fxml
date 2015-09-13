@@ -8,6 +8,7 @@
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import jfxtras.scene.control.*?>
 
 <AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="740.0" prefWidth="1200.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.punyal.symbiotic.controllers.SymbIoTicGUIController">
     <stylesheets>
@@ -32,7 +33,7 @@
             </MenuBar>
             <Pane maxHeight="-Infinity" minHeight="-Infinity" prefHeight="675.0" prefWidth="1200.0">
                <children>
-                  <TabPane fx:id="tabPaneFeatures" layoutX="10.0" nodeOrientation="RIGHT_TO_LEFT" prefHeight="678.0" prefWidth="1180.0" styleClass="floating" tabClosingPolicy="UNAVAILABLE">
+                  <TabPane fx:id="tabPaneFeatures" layoutX="20.0" layoutY="20.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="658.0" prefWidth="1160.0" styleClass="floating" tabClosingPolicy="UNAVAILABLE">
                     <tabs>
                       <Tab text="IPSO Challenge">
                         <content>
@@ -46,6 +47,16 @@
                                         <NumberAxis side="LEFT" />
                                       </yAxis>
                                     </LineChart>
+                                    <HBox layoutX="10.0" layoutY="482.0" prefHeight="131.0" prefWidth="1138.0">
+                                       <children>
+                                          <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0">
+                                             <children>
+                                                <jfxtras.labs.scene.control.gauge.linear.SimpleMetroArcGauge fx:id="metroGaugeBattery" prefHeight="100" prefWidth="100"/>
+                                                <Label alignment="CENTER" prefHeight="16.0" prefWidth="93.0" text="Battery" />
+                                             </children>
+                                          </VBox>
+                                       </children>
+                                    </HBox>
                                  </children>
                               </AnchorPane>
                         </content>
