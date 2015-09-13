@@ -110,3 +110,7 @@
 .default-color0.chart-line-symbol { -fx-background-color: #0000FF, white; }
 .default-color1.chart-line-symbol { -fx-background-color: #f0e68c, white; }
 .default-color2.chart-line-symbol { -fx-background-color: #dda0dd, white; }
+
+.chart-vertical-zero-line {
+    -fx-stroke: transparent;
+}
