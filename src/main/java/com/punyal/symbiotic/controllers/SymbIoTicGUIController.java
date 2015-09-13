@@ -28,6 +28,7 @@ import com.punyal.symbiotic.core.Core;
 import com.punyal.symbiotic.core.feature.ipso.AccThread;
 import com.punyal.symbiotic.core.feature.ipso.BatteryThread;
 import com.punyal.symbiotic.core.feature.ipso.StrainThread;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -36,10 +37,12 @@ import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Side;
+import javafx.scene.SnapshotParameters;
 import javafx.scene.chart.AreaChart;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
@@ -53,8 +56,11 @@ import javafx.scene.control.Slider;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
+import javafx.scene.image.WritableImage;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javax.imageio.ImageIO;
 import jfxtras.labs.scene.control.gauge.linear.SimpleMetroArcGauge;
 import jfxtras.labs.scene.control.gauge.linear.elements.CompleteSegment;
 import jfxtras.labs.scene.control.gauge.linear.elements.PercentSegment;
@@ -93,7 +99,7 @@ public class SymbIoTicGUIController implements Initializable {
     @FXML
     private Menu menuTitle;
     @FXML
-    private MenuItem menuAbout, menuPreferences, menuClose;
+    private MenuItem menuAbout, menuClose, menuExportPNG;
 
     /* Client Part */
     @FXML
@@ -324,6 +330,19 @@ public class SymbIoTicGUIController implements Initializable {
             accThread.stopThread();
             animatorIPSO.stop();
         }
+    }
+    
+    @FXML
+    private void handleButtonExportPNG(ActionEvent e) throws IOException {
+        WritableImage image = lineChartIPSO.snapshot(new SnapshotParameters(), null);
+        
+        //File file = new File("chart.png");
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save PNG");
+        File file = fileChooser.showSaveDialog(core.getConfiguration().getMainStageInfo().getStage());
+        System.out.println(file);
+        if (file != null) 
+            ImageIO.write(SwingFXUtils.fromFXImage(image, null), "png", file);
     }
     
 }

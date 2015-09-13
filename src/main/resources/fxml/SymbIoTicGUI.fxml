@@ -24,7 +24,11 @@
                   <items>
                     <MenuItem fx:id="menuAbout" mnemonicParsing="false" text="About" />
                         <SeparatorMenuItem mnemonicParsing="false" />
-                        <MenuItem fx:id="menuPreferences" mnemonicParsing="false" text="Preferences" />
+                        <Menu mnemonicParsing="false" text="Export">
+                          <items>
+                            <MenuItem fx:id="menuExportPNG" mnemonicParsing="false" onAction="#handleButtonExportPNG" text="as PNG" />
+                          </items>
+                        </Menu>
                         <SeparatorMenuItem mnemonicParsing="false" />
                     <MenuItem fx:id="menuClose" mnemonicParsing="false" onAction="#handleMenuClose" text="Close" />
                   </items>
