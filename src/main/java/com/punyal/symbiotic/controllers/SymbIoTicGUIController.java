@@ -316,7 +316,7 @@ public class SymbIoTicGUIController implements Initializable {
         return sliderFreq.getValue();
     }
     
-     @FXML
+    @FXML
     private void handleButtonIPSO(ActionEvent e) throws IOException {
         if (toggleButtonIPSO.selectedProperty().getValue()) {
             toggleButtonIPSO.setText("STOP");

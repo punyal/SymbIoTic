@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.shape.*?>
 <?import javafx.geometry.*?>
 <?import java.lang.*?>
 <?import java.net.*?>
@@ -17,20 +18,77 @@
          <children>
             <TabPane fx:id="tabPaneClient" prefHeight="100.0" prefWidth="200.0" styleClass="floating" tabClosingPolicy="UNAVAILABLE">
               <tabs>
-                <Tab text="Leshan Server">
+                <Tab fx:id="tabLWM2M" text="LWM2M Server">
                   <content>
-                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <VBox layoutX="98.0" layoutY="-68.0" prefHeight="63.0" prefWidth="296.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                 <children>
+                                    <HBox alignment="CENTER" prefHeight="30.0" prefWidth="200.0">
+                                       <children>
+                                          <TextField fx:id="textLWM2MIP" alignment="CENTER" prefWidth="200.0" promptText="LWM2M IP address">
+                                             <HBox.margin>
+                                                <Insets left="16.0" />
+                                             </HBox.margin>
+                                          </TextField>
+                                          <TextField fx:id="textLWM2MPort" alignment="CENTER" prefWidth="60.0" promptText="Port" />
+                                          <Pane prefHeight="20.0" prefWidth="14.0">
+                                             <children>
+                                                <ProgressIndicator fx:id="progressLWM2M" layoutY="7.0" prefHeight="14.0" prefWidth="14.0" />
+                                                <Circle fx:id="circleLWM2M" fill="DODGERBLUE" layoutX="7.0" layoutY="14.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+                                             </children>
+                                             <HBox.margin>
+                                                <Insets left="2.0" />
+                                             </HBox.margin>
+                                          </Pane>
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER" prefHeight="30.0" prefWidth="200.0">
+                                       <children>
+                                          <Button fx:id="buttonUpdateLWM2M" mnemonicParsing="false" onAction="#handleButtonUpdateLWM2M" text="Update &amp; Connect" />
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </AnchorPane>
                   </content>
                 </Tab>
-                <Tab text="Custom Client">
+                <Tab fx:id="tabClient" text="Custom Client">
                   <content>
-                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <VBox prefHeight="63.0" prefWidth="296.0">
+                                 <children>
+                                    <HBox alignment="CENTER" prefHeight="30.0" prefWidth="200.0">
+                                       <children>
+                                          <TextField fx:id="textClientIP" alignment="CENTER" prefWidth="200.0" promptText="Client IP address">
+                                             <HBox.margin>
+                                                <Insets />
+                                             </HBox.margin>
+                                          </TextField>
+                                          <TextField fx:id="textClientPort" alignment="CENTER" prefWidth="60.0" promptText="Port" />
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER" prefHeight="30.0" prefWidth="200.0">
+                                       <children>
+                                          <Button fx:id="buttonUpdateClient" mnemonicParsing="false" onAction="#handleButtonUpdateClient" text="Update &amp; Connect" />
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </AnchorPane>
                   </content>
                 </Tab>
               </tabs>
             </TabPane>
             <TreeView fx:id="treeViewClients" prefHeight="526.0" prefWidth="300.0" />
-            <Pane fx:id="paneBotton" prefHeight="30.0" />
+            <Pane fx:id="paneBotton" prefHeight="30.0">
+               <children>
+                  <Label fx:id="labelSelectedClient" alignment="CENTER" layoutX="50.0" layoutY="6.0" prefHeight="20.0" prefWidth="200.0" text="Selected Client Info" />
+               </children>
+            </Pane>
          </children>
       </VBox>
    </children>

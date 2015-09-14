@@ -55,11 +55,7 @@ public class SymbIoTic extends Application {
         stage.show();
         
         SymbIoTicGUIController mainController = mainloader.<SymbIoTicGUIController>getController();
-        core = new Core(mainController);
-        mainController.setCore(core);
-        mainController.init();
         
-        core.getConfiguration().setMainStage(stage);
         /*--------------------------------------------------------------------*/
         /* ----------------------- Loading client window -------------------- */
         Stage clientStage = new Stage();
@@ -71,6 +67,12 @@ public class SymbIoTic extends Application {
         clientStage.setY(stage.getY()+CLIENT_Y_OFFSET);
         
         ClientController clientController = clientloader.<ClientController>getController();
+        core = new Core(mainController, clientController);
+        mainController.setCore(core);
+        mainController.init();
+        
+        core.getConfiguration().setMainStage(stage);
+        
         clientController.setCore(core);
         clientController.init();
         

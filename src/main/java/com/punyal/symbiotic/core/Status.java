@@ -23,6 +23,9 @@
  */
 package com.punyal.symbiotic.core;
 
+import static com.punyal.symbiotic.constants.Constants.*;
+import com.punyal.symbiotic.core.net.IoTconnection;
+
 /**
  *
  * @author Pablo Puñal Pereira <pablo.punal@ltu.se>
@@ -30,10 +33,13 @@ package com.punyal.symbiotic.core;
 public class Status {
     private int batteryLevel;
     private int strainLevel;
+    private final IoTconnection lightWeightM2M, selectedThing;
     
     public Status() {
         batteryLevel = 0;
         strainLevel = 0;
+        lightWeightM2M = new IoTconnection();
+        selectedThing = new IoTconnection();
     }
     
     public int getBatteryLevel() {
@@ -51,5 +57,14 @@ public class Status {
     public void setStrainLevel(int strainLevel) {
         this.strainLevel = strainLevel;
     }
+    
+    public IoTconnection getLightWeightM2M() {
+        return lightWeightM2M;
+    }
+    
+    public IoTconnection getSelectedThing() {
+        return selectedThing;
+    }
+    
     
 }

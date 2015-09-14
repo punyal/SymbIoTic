@@ -16,8 +16,8 @@
 }
 
 #tabPaneClient > .tab-content-area {
-    -fx-background-color: rgba(220, 220, 220, 1);
-    -fx-background-radius: 10;
+    -fx-background-color: rgba(220, 220, 220, 0.8);
+    -fx-background-radius: 10 10 0 0;
     -fx-border-color: rgba(100, 100, 100, 1);
     -fx-border-width: 1;
     -fx-border-radius: 10 10 0 0;
@@ -32,5 +32,10 @@
 }
 
 #treeViewClients {
+    -fx-background-color: transparent;
     -fx-border-color: rgba(100, 100, 100, 1);
+}
+
+#treeViewClients .tree-cell {
+    -fx-background-color: rgba(250, 250, 250, 0.8);
 }

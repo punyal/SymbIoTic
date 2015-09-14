@@ -53,17 +53,17 @@
                                     </LineChart>
                                     <HBox alignment="CENTER" layoutX="80.0" layoutY="490.0" prefHeight="131.0" prefWidth="1000.0">
                                        <children>
-                                          <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="200.0">
+                                          <VBox alignment="CENTER" prefHeight="200.0" prefWidth="140.0">
                                              <children>
-                                                <jfxtras.labs.scene.control.gauge.linear.SimpleMetroArcGauge fx:id="metroGaugeBattery" prefHeight="140" prefWidth="140" />
+                                                <jfxtras.labs.scene.control.gauge.linear.SimpleMetroArcGauge fx:id="metroGaugeBattery" prefHeight="80" prefWidth="80" />
                                                 <Label alignment="CENTER" prefHeight="16.0" prefWidth="93.0" text="Battery" />
                                              </children>
                                           </VBox>
                                        </children>
                                        <children>
-                                          <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="200.0">
+                                          <VBox alignment="CENTER" prefHeight="200.0" prefWidth="140.0">
                                              <children>
-                                                <jfxtras.labs.scene.control.gauge.linear.SimpleMetroArcGauge fx:id="metroGaugeStrain" prefHeight="140" prefWidth="140" />
+                                                <jfxtras.labs.scene.control.gauge.linear.SimpleMetroArcGauge fx:id="metroGaugeStrain" prefHeight="80" prefWidth="80" />
                                                 <Label alignment="CENTER" prefHeight="16.0" prefWidth="93.0" text="Strain" />
                                              </children>
                                           </VBox>

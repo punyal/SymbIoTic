@@ -21,49 +21,15 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.punyal.symbiotic.core;
-
-import com.punyal.symbiotic.controllers.ClientController;
-import com.punyal.symbiotic.controllers.SymbIoTicGUIController;
+package com.punyal.symbiotic.constants;
 
 /**
  *
  * @author Pablo Puñal Pereira <pablo.punal@ltu.se>
  */
-public class Core {
-    private final Configuration configuration;
-    private final Status status;
-    private final SymbIoTicGUIController controller;
-    private final ClientController clientController;
-    private final Settings settings;
+public class ConstantsNet {
+    public ConstantsNet() {}
     
-    public Core(SymbIoTicGUIController controller, ClientController clientController) {
-        settings = new Settings(this);
-        configuration = new Configuration();
-        status = new Status();
-        this.controller = controller;
-        this.clientController = clientController;
-        settings.load(); // Load all previous saved data
-    }
-    
-    
-    public Settings getSettings() {
-        return settings;
-    }
-    
-    public Configuration getConfiguration() {
-        return configuration;
-    }
-    
-    public Status getStatus() {
-        return status;
-    }
-    
-    public SymbIoTicGUIController getController() {
-        return controller;
-    }
-    
-    public ClientController getClientController() {
-        return clientController;
-    }
+    // CoAP
+    public static final int DEFAULT_COAP_PORT = 5683;
 }
