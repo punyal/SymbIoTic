@@ -336,7 +336,6 @@ public class SymbIoTicGUIController implements Initializable {
     private void handleButtonExportPNG(ActionEvent e) throws IOException {
         WritableImage image = lineChartIPSO.snapshot(new SnapshotParameters(), null);
         
-        //File file = new File("chart.png");
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Save PNG");
         File file = fileChooser.showSaveDialog(core.getConfiguration().getMainStageInfo().getStage());

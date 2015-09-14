@@ -26,7 +26,11 @@ package com.punyal.symbiotic.controllers;
 import com.punyal.symbiotic.core.Core;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.TabPane;
+import javafx.scene.control.TreeView;
+import javafx.scene.layout.Pane;
 
 /**
  * FXML Controller class
@@ -48,14 +52,21 @@ public class ClientController implements Initializable {
      * Correct initialization
      */
     public void init() {
+        initClientWindow();
     }
     
     /*------------------------------------------------------------------------*/
     /*                        Client Window Controllers                         */
     /*------------------------------------------------------------------------*/
+    @FXML
+    private TabPane tabPaneClient;
+    @FXML
+    private TreeView treeViewClients;
+    @FXML
+    private Pane paneBotton;
     
-    private void initMainWindow() {
-
+    
+    private void initClientWindow() {
     }
     
 }

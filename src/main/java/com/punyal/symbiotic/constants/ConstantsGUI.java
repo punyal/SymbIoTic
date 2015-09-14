@@ -31,8 +31,8 @@ public class ConstantsGUI {
     public ConstantsGUI() {}
     
     // GUI Client window offsets
-    public static final int CLIENT_X_OFFSET = 22;
-    public static final int CLIENT_Y_OFFSET = 64;
+    public static final int CLIENT_X_OFFSET = 40;
+    public static final int CLIENT_Y_OFFSET = 48;
     
     // ACC Chart
     public static final int MAX_DATA_POINTS = 2000;
