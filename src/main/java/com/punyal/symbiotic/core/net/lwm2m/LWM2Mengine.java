@@ -24,8 +24,10 @@
 package com.punyal.symbiotic.core.net.lwm2m;
 
 import com.punyal.symbiotic.core.Core;
+import java.util.ArrayList;
 import org.eclipse.californium.core.CoapClient;
 import org.eclipse.californium.core.CoapResponse;
+import org.json.simple.JSONObject;
 
 /**
  *
@@ -63,36 +65,49 @@ public class LWM2Mengine extends Thread{
         System.out.println("Starting LWM2MEngine...");
         EngineState state = EngineState.STOP;
         int timeout = 1000;
+        String tmp = "";
         CoapResponse response = null;
+        ArrayList<JSONObject> listJSON;
         try {
             while (running) {
-                System.out.println(".");
-                
                 switch(state) {
                     case STOP:
                         timeout = 100;
                         core.getClientController().LWM2Mdisconnected();
                         state = EngineState.CONNECTING;
+                        core.getClientController().LWM2Mconnecting();
                         break;
                     case CONNECTING:
                         timeout = 1000;
-                        core.getClientController().LWM2Mconnecting();
                         coapClient.setTimeout(200);
                         coapClient.setURI(core.getStatus().getLightWeightM2M().getAddress()+":"+core.getStatus().getLightWeightM2M().getPort()+"/rd");
                         response = coapClient.get();
-                        if (response != null)
+                        if (response != null) {
                             state = EngineState.CONNECTED;
-                        else
+                            core.getClientController().LWM2Mconnected();
+                        } else {
                             state = EngineState.NOT_CONNECTED;
+                            core.getClientController().LWM2Mdisconnected();
+                        }
                         break;
                     case CONNECTED:
-                        timeout = 10000;
-                        core.getClientController().LWM2Mconnected();
-                        
+                        timeout = 1000;
+                        // Time to check if something change
                         response = coapClient.get();
                         
-                        if (response != null)
-                            System.out.println(response.getResponseText());
+                        if (response != null) {
+                            if (!tmp.equals(response.getResponseText())) { // Diferent Data, tree update needed
+                                tmp = response.getResponseText();
+                                // Send data to the parser.
+                                listJSON = LWM2Mutils.parseResponse2JSONArray(tmp);
+                                
+                                for (JSONObject json: listJSON) {
+                                    System.out.println("JSON: "+json.toJSONString());
+                                }
+                                
+                            }
+                        }
+                            
                         else
                             state = EngineState.NOT_CONNECTED;
                         

@@ -173,4 +173,8 @@ public class ClientController implements Initializable {
         circleLWM2M.setVisible(true);
         circleLWM2M.setStyle("-fx-fill:green;");
     }
+    
+    public TreeView getTree() {
+        return treeViewClients;
+    }
 }
