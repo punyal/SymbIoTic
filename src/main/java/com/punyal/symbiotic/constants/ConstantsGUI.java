@@ -41,4 +41,9 @@ public class ConstantsGUI {
     
     // Default Values
     public static final int DEFAULT_FREQUENCY = 400;
+    
+    
+    // Tree
+    public static final String TREE_ROOT = "Light Weight M2M Devices";
+    public static final String TREE_IP = "IP: ";
 }

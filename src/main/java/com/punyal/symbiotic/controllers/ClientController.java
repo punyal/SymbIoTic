@@ -23,13 +23,13 @@
  */
 package com.punyal.symbiotic.controllers;
 
-import static com.punyal.symbiotic.constants.ConstantsNet.DEFAULT_COAP_PORT;
+import static com.punyal.symbiotic.constants.ConstantsGUI.*;
+import static com.punyal.symbiotic.constants.ConstantsNet.*;
 import com.punyal.symbiotic.core.Core;
 import com.punyal.symbiotic.core.net.lwm2m.LWM2Mengine;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.beans.value.ChangeListener;
@@ -113,7 +113,7 @@ public class ClientController implements Initializable {
     private void initClientWindow() {
         
         // Tree setup
-        TreeItem<String> root = new TreeItem<>("LightWeightM2M Devices");
+        TreeItem<String> root = new TreeItem<>(TREE_ROOT);
         root.setExpanded(true);
         treeViewClients.setRoot(root);
         
@@ -123,6 +123,9 @@ public class ClientController implements Initializable {
                 public void changed(ObservableValue<? extends Tab> ov, Tab t, Tab t1) {
                     if (t1.getId().equals(tabClient.getId())) {
                         treeViewClients.setDisable(true);
+                        //reload values
+                        textClientIP.setText(core.getStatus().getSelectedThing().getAddress());
+                        textClientPort.setText(""+core.getStatus().getSelectedThing().getPort());
                     }
                     else {
                         treeViewClients.setDisable(false);
@@ -134,14 +137,26 @@ public class ClientController implements Initializable {
         // Loading values...
         textLWM2MIP.setText(core.getStatus().getLightWeightM2M().getAddress());
         textLWM2MPort.setText(""+core.getStatus().getLightWeightM2M().getPort());
-        textClientIP.setText(core.getStatus().getSelectedThing().getAddress());
-        textClientPort.setText(""+core.getStatus().getSelectedThing().getPort());
         LWM2Mdisconnected();
         
         treeViewClients.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<TreeItem<String>>() {
                 @Override
                 public void changed(ObservableValue<? extends TreeItem<String>> observable, TreeItem<String> oldValue, TreeItem<String> newValue) {
-                    System.out.println(oldValue+" "+newValue);
+                    TreeItem<String> temp = newValue;
+                    if (temp == null || temp.getParent() == null) return;
+                    while (!temp.getParent().getValue().equals(TREE_ROOT))
+                        temp = temp.getParent();
+                    
+                    for (TreeItem<String> item : temp.getChildren()) {
+                        if (item.getValue().substring(0, TREE_IP.length()).equals(TREE_IP)) {
+                            String ip = item.getValue().substring(TREE_IP.length(), item.getValue().indexOf("@"));
+                            int port = Integer.parseInt(item.getValue().substring(item.getValue().indexOf("@")+1));
+                            core.getStatus().getSelectedThing().setAddress(ip);
+                            core.getStatus().getSelectedThing().setPort(port);
+                            // update GUI
+                            labelSelectedClient.setText(ip+":"+port);
+                        }
+                    }
                 }
             }
         );
@@ -206,16 +221,16 @@ public class ClientController implements Initializable {
         treeViewClients.getRoot().getChildren().add(node);
     }
     
-    public void removeFromTree(String nodeName) {
+    public void removeFromTree(String nodeID) {
         List<TreeItem<String>> list = new ArrayList<>(treeViewClients.getRoot().getChildren());
-        System.out.println("trying to remove..."+nodeName);
         for (TreeItem<String> item : list) {
-            System.out.println(item.getValue());
-            if (item.getValue().equals(nodeName)) {
-                treeViewClients.getRoot().getChildren().remove(item);
-                return;
+            for (TreeItem<String> subItem : item.getChildren()) {
+                if (subItem.getValue().substring(4).equals(nodeID)) { // 4 because "ID: "
+                    treeViewClients.getRoot().getChildren().remove(item);
+                    return;
+                }
             }
-                
         }
     }
+    
 }

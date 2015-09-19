@@ -35,4 +35,10 @@ public class ConstantsJSON {
     public static final String JSON_OBJECTLINKS = "objectLinks";
     public static final String JSON_PORT = "port";
     public static final String JSON_REGISTRATIONID = "registrationId";
+    
+    // LWM2M
+    public static final String JSON_MANUFACTURER = "manufacturer";
+    public static final String JSON_MODEL_NUMBER = "modelNumber";
+    public static final String JSON_SERIAL_NUMBER = "serialNumber";
+    public static final String JSON_FIRMWARE_VERSION = "firmwareVersion";
 }

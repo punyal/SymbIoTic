@@ -32,4 +32,10 @@ public class ConstantsNet {
     
     // CoAP
     public static final int DEFAULT_COAP_PORT = 5683;
+    
+    // LightWeightM2M
+    public static final int LWM2M_CODE_MANUFACTURER = 0;
+    public static final int LWM2M_CODE_MODEL_NUMBER = 1;
+    public static final int LWM2M_CODE_SERIAL_NUMBER = 2;
+    public static final int LWM2M_CODE_FIRMWARE_VERSION = 3;
 }

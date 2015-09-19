@@ -34,7 +34,7 @@ import org.json.simple.JSONObject;
  *
  * @author Pablo Puñal Pereira <pablo.punal@ltu.se>
  */
-public class Thing implements Runnable{
+public class Thing {
     // LWM2M parameters - from server
     private final String registrationId;
     private final InetAddress address;
@@ -84,16 +84,27 @@ public class Thing implements Runnable{
         if (checked)
             return;
         checked = true;
-        manufacturer = "";
-        modelNumber = "";
-        serialNumber = "";
-        firmwareVersion = "";
+        manufacturer = json.get(JSON_MANUFACTURER).toString();
+        modelNumber = json.get(JSON_MODEL_NUMBER).toString();
+        serialNumber = json.get(JSON_SERIAL_NUMBER).toString();
+        firmwareVersion = json.get(JSON_FIRMWARE_VERSION).toString();
         
     }
-
-    @Override
-    public void run() {
-        System.out.println("Thing Thread Running...");
+    
+    public String getManufacturer() {
+        return manufacturer;
+    }
+    
+    public String getModelNumber() {
+        return modelNumber;
+    }
+    
+    public String getSerialNumber() {
+        return serialNumber;
+    }
+    
+    public String getFirmwareVersion() {
+        return firmwareVersion;
     }
     
     

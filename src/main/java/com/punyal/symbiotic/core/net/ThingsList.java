@@ -60,14 +60,18 @@ public class ThingsList {
     private void add(Thing thing) {
         list.add(thing);
         TreeItem<String> node, level1, level2;
-        node = new TreeItem<>(thing.getID());
-        node.setExpanded(true);
+        node = new TreeItem<>("Unknown");
+        node.setExpanded(false);
         
-        level1 = new TreeItem<>(thing.getAddress()+":"+thing.getPort());
+        level1 = new TreeItem<>("ID: "+thing.getID());
+        node.getChildren().add(level1);
+        
+        
+        level1 = new TreeItem<>("IP: "+thing.getAddress()+"@"+thing.getPort());
         node.getChildren().add(level1);
         
         level1 = new TreeItem<>("Resources");
-        level1.setExpanded(true);
+        level1.setExpanded(false);
         
         for (String link : thing.getObjectLinks()) {
             if(!link.equals("</>;rt=\"oma.lwm2m\"")) {
@@ -78,7 +82,10 @@ public class ThingsList {
         
         node.getChildren().add(level1);
         core.getClientController().add2Tree(node);
+        
         // Request directly the information to the Thing.
+        ThingThread thingThread = new ThingThread(core, thing);
+        thingThread.startThread();
         
     }
     
