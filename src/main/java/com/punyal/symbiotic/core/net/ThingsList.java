@@ -137,4 +137,8 @@ public class ThingsList {
         }
     }
     
+    
+    public void clearList() {
+        list.clear();
+    }
 }

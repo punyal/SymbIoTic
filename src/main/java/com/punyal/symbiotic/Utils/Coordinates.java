@@ -61,4 +61,8 @@ public class Coordinates {
         this.x = x;
         this.y = y;
     }
+    
+    public static short getInt(byte[] arr, int off) {
+        return (short)(arr[2*off]&0xFF | arr[2*off+1]<<8);
+    }
 }

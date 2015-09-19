@@ -84,10 +84,12 @@ public class Thing {
         if (checked)
             return;
         checked = true;
-        manufacturer = json.get(JSON_MANUFACTURER).toString();
-        modelNumber = json.get(JSON_MODEL_NUMBER).toString();
-        serialNumber = json.get(JSON_SERIAL_NUMBER).toString();
-        firmwareVersion = json.get(JSON_FIRMWARE_VERSION).toString();
+        try {
+            manufacturer = json.get(JSON_MANUFACTURER).toString();
+            modelNumber = json.get(JSON_MODEL_NUMBER).toString();
+            serialNumber = json.get(JSON_SERIAL_NUMBER).toString();
+            firmwareVersion = json.get(JSON_FIRMWARE_VERSION).toString();
+        } catch (NullPointerException ex) {}
         
     }
     

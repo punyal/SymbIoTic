@@ -24,6 +24,7 @@
 package com.punyal.symbiotic.core.feature.ipso;
 
 import com.punyal.symbiotic.core.Core;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  *
@@ -31,18 +32,25 @@ import com.punyal.symbiotic.core.Core;
  */
 public class AccThread extends Thread {
     private final Core core;
-    boolean running;
+    private final ConcurrentLinkedQueue<Number> incomingData = new ConcurrentLinkedQueue<>();
+    private boolean running;
+    short lastValue;
+    
     
     public AccThread(Core core) {
         this.core = core;
         // Set as daemon to close with the program
         this.setDaemon(true);
         running = true;
+        lastValue = 0;
     }
     
     public void startThread() {
         //System.out.println("Starting AccThread");
         this.start();
+        // Launch thread observe
+        AccRequestThread accReqThread = new AccRequestThread(incomingData);
+        accReqThread.startThread();
     }
     
     public void stopThread() {
@@ -52,22 +60,18 @@ public class AccThread extends Thread {
     
     @Override
     public void run() {
-        double value;
-        int iterations;
         try {
             while (running) {
-                double actual = core.getController().getLineChartIPSOindex() + core.getController().getAccData().size();
-                
-                iterations = 5*(int)core.getController().getFreq()/100;
-                
-                for (int i=0; i<iterations ; i++) {
-                    value = 3000*Math.sin(2*Math.PI*((actual+i)/(250*core.getController().getFreq())))*
-                            Math.sin(2*Math.PI*((actual+i)/(25*core.getController().getFreq())))*
-                            Math.sin(2*Math.PI*((actual+i)/(2.5*core.getController().getFreq())))*Math.sin(2*Math.PI*((actual+i)/25));
-
-                    core.getController().getAccData().add(value);
-                    //System.out.println(value);
+                System.out.println(incomingData.size());
+                for (int i=0; i<10; i++) {
+                    if (incomingData.isEmpty()) {
+                        core.getController().getAccData().add(lastValue);
+                    } else {
+                        lastValue = (short) incomingData.remove();
+                        core.getController().getAccData().add(lastValue);
+                    }
                 }
+            
                 try {
                     Thread.sleep(50); //50 ms
                 } catch (InterruptedException ex) {
@@ -76,7 +80,8 @@ public class AccThread extends Thread {
             }
         }
         finally{
-            //System.out.println("Killing AccThread");
+            System.out.println("Killing AccThread");
+            // Launch thread stop2measure
         }
     }
     

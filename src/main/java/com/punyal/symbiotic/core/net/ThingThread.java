@@ -61,8 +61,9 @@ public class ThingThread extends Thread{
         if (response != null) {
             //System.out.println(response.getResponseText());
             JSONObject json = LWM2Mutils.decodeM2MResponse(response.getResponseText());
-            thing.addDeviceInfo(json);
-            
+            synchronized (this){
+                thing.addDeviceInfo(json);
+            }
             // Update tree...
             core.getClientController().removeFromTree(thing.getID());
             

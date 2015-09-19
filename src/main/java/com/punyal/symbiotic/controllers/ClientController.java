@@ -165,6 +165,10 @@ public class ClientController implements Initializable {
     
     @FXML
     private void handleButtonUpdateLWM2M(ActionEvent e) throws IOException {
+        TreeItem<String> root = new TreeItem<>(TREE_ROOT);
+        core.getStatus().getThingsList().clearList();
+        root.setExpanded(true);
+        treeViewClients.setRoot(root);
         if(textLWM2MIP.getText().isEmpty())
             textLWM2MIP.setText("localhost");
         core.getStatus().getLightWeightM2M().setAddress(textLWM2MIP.getText());
