@@ -40,7 +40,7 @@ public class Core {
     public Core(SymbIoTicGUIController controller, ClientController clientController) {
         settings = new Settings(this);
         configuration = new Configuration();
-        status = new Status();
+        status = new Status(this);
         this.controller = controller;
         this.clientController = clientController;
         settings.load(); // Load all previous saved data

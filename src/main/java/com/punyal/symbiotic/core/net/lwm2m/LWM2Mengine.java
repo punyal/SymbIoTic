@@ -92,6 +92,7 @@ public class LWM2Mengine extends Thread{
                         break;
                     case CONNECTED:
                         timeout = 1000;
+                        core.getClientController().LWM2Mloading(true);
                         // Time to check if something change
                         response = coapClient.get();
                         
@@ -100,24 +101,21 @@ public class LWM2Mengine extends Thread{
                                 tmp = response.getResponseText();
                                 // Send data to the parser.
                                 listJSON = LWM2Mutils.parseResponse2JSONArray(tmp);
-                                
-                                for (JSONObject json: listJSON) {
-                                    System.out.println("JSON: "+json.toJSONString());
-                                }
-                                
+                                                               
+                                core.getStatus().getThingsList().checkNewListJSON(listJSON);
                             }
                         }
                             
                         else
                             state = EngineState.NOT_CONNECTED;
                         
-                                                
-                        
+                        core.getClientController().LWM2Mloading(false);
                         
                         break;
                     case NOT_CONNECTED:
                         core.getClientController().LWM2Mdisconnected();
-                        stopEngine(); // Kill if it's not connected
+                        state = EngineState.STOP;
+                        //stopEngine(); // Kill if it's not connected
                         break;
                     default: // Not supported
                         stopEngine();

@@ -23,23 +23,27 @@
  */
 package com.punyal.symbiotic.core;
 
-import static com.punyal.symbiotic.constants.Constants.*;
 import com.punyal.symbiotic.core.net.IoTconnection;
+import com.punyal.symbiotic.core.net.ThingsList;
 
 /**
  *
  * @author Pablo Puñal Pereira <pablo.punal@ltu.se>
  */
 public class Status {
+    private final Core core;
     private int batteryLevel;
     private int strainLevel;
     private final IoTconnection lightWeightM2M, selectedThing;
+    private final ThingsList thingsList;
     
-    public Status() {
+    public Status(Core core) {
+        this.core = core;
         batteryLevel = 0;
         strainLevel = 0;
         lightWeightM2M = new IoTconnection();
         selectedThing = new IoTconnection();
+        thingsList = new ThingsList(core);
     }
     
     public int getBatteryLevel() {
@@ -64,6 +68,10 @@ public class Status {
     
     public IoTconnection getSelectedThing() {
         return selectedThing;
+    }
+    
+    public ThingsList getThingsList() {
+        return thingsList;
     }
     
     

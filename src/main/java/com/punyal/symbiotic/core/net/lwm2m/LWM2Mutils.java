@@ -24,6 +24,7 @@
 package com.punyal.symbiotic.core.net.lwm2m;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
@@ -43,6 +44,15 @@ public class LWM2Mutils {
             }
         } catch (StringIndexOutOfBoundsException e) {}
         return array;
+    }
+    
+    public static ArrayList<String> parseRAWobjectLinks(String objectLinks) {
+        objectLinks = objectLinks.substring(objectLinks.indexOf("[")+1, objectLinks.lastIndexOf("]"));
+        ArrayList<String> dirtyList = new ArrayList<>(Arrays.asList(objectLinks.split(",")));
+        ArrayList<String> cleanList = new ArrayList<>();
+        for (String dirty : dirtyList)
+            cleanList.add(dirty.substring(dirty.indexOf("<")));
+        return cleanList;
     }
     
 }

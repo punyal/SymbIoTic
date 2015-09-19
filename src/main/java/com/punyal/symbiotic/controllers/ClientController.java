@@ -28,6 +28,9 @@ import com.punyal.symbiotic.core.Core;
 import com.punyal.symbiotic.core.net.lwm2m.LWM2Mengine;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.ResourceBundle;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -40,6 +43,7 @@ import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
@@ -107,6 +111,12 @@ public class ClientController implements Initializable {
     private LWM2Mengine lwm2mEngine;
     
     private void initClientWindow() {
+        
+        // Tree setup
+        TreeItem<String> root = new TreeItem<>("LightWeightM2M Devices");
+        root.setExpanded(true);
+        treeViewClients.setRoot(root);
+        
         tabPaneClient.getSelectionModel().selectedItemProperty().addListener(
             new ChangeListener<Tab>() {
                 @Override
@@ -127,6 +137,15 @@ public class ClientController implements Initializable {
         textClientIP.setText(core.getStatus().getSelectedThing().getAddress());
         textClientPort.setText(""+core.getStatus().getSelectedThing().getPort());
         LWM2Mdisconnected();
+        
+        treeViewClients.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<TreeItem<String>>() {
+                @Override
+                public void changed(ObservableValue<? extends TreeItem<String>> observable, TreeItem<String> oldValue, TreeItem<String> newValue) {
+                    System.out.println(oldValue+" "+newValue);
+                }
+            }
+        );
+        
     }
     
     @FXML
@@ -157,24 +176,46 @@ public class ClientController implements Initializable {
         core.getSettings().save();
     }
     
+    public void LWM2Mloading(boolean status) {
+        progressLWM2M.setVisible(status);
+    }
+    
     public void LWM2Mconnecting() {
-        progressLWM2M.setVisible(true);
+        LWM2Mloading(true);
         circleLWM2M.setVisible(false);
     }
     
     public void LWM2Mdisconnected() {
-        progressLWM2M.setVisible(false);
+        LWM2Mloading(false);
         circleLWM2M.setVisible(true);
         circleLWM2M.setStyle("-fx-fill:red;");
     }
     
     public void LWM2Mconnected() {
-        progressLWM2M.setVisible(false);
+        LWM2Mloading(true);
         circleLWM2M.setVisible(true);
         circleLWM2M.setStyle("-fx-fill:green;");
     }
     
+    
     public TreeView getTree() {
         return treeViewClients;
+    }
+    
+    public void add2Tree(TreeItem<String> node) {
+        treeViewClients.getRoot().getChildren().add(node);
+    }
+    
+    public void removeFromTree(String nodeName) {
+        List<TreeItem<String>> list = new ArrayList<>(treeViewClients.getRoot().getChildren());
+        System.out.println("trying to remove..."+nodeName);
+        for (TreeItem<String> item : list) {
+            System.out.println(item.getValue());
+            if (item.getValue().equals(nodeName)) {
+                treeViewClients.getRoot().getChildren().remove(item);
+                return;
+            }
+                
+        }
     }
 }

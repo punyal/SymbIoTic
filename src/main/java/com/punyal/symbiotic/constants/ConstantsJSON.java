@@ -31,7 +31,7 @@ public class ConstantsJSON {
     public ConstantsJSON() {}
     
     // Keys
-    public static final String JSON_ADRESS = "address";
+    public static final String JSON_ADDRESS = "address";
     public static final String JSON_OBJECTLINKS = "objectLinks";
     public static final String JSON_PORT = "port";
     public static final String JSON_REGISTRATIONID = "registrationId";

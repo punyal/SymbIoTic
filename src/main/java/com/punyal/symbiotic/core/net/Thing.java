@@ -24,6 +24,7 @@
 package com.punyal.symbiotic.core.net;
 
 import static com.punyal.symbiotic.constants.ConstantsJSON.*;
+import com.punyal.symbiotic.core.net.lwm2m.LWM2Mutils;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
@@ -33,12 +34,12 @@ import org.json.simple.JSONObject;
  *
  * @author Pablo Puñal Pereira <pablo.punal@ltu.se>
  */
-public class Thing {
+public class Thing implements Runnable{
     // LWM2M parameters - from server
     private final String registrationId;
     private final InetAddress address;
     private final int port;
-    private final ArrayList<String> objectLinks;
+    private ArrayList<String> objectLinks;
     // LWM2M parameters - from device
     private boolean checked;
     private String manufacturer;
@@ -49,9 +50,9 @@ public class Thing {
     
     public Thing(JSONObject json) throws UnknownHostException {
         registrationId = json.get(JSON_REGISTRATIONID).toString();
-        address = InetAddress.getByName(json.get(JSON_ADRESS).toString());
-        port = Integer.parseInt(json.get(JSON_REGISTRATIONID).toString());
-        objectLinks = null;//json.get(JSON_OBJECTLINKS);
+        address = InetAddress.getByName(json.get(JSON_ADDRESS).toString().substring(1));
+        port = Integer.parseInt(json.get(JSON_PORT).toString());
+        objectLinks = LWM2Mutils.parseRAWobjectLinks(json.get(JSON_OBJECTLINKS).toString());
         checked = false;
     }
     
@@ -75,17 +76,24 @@ public class Thing {
         return objectLinks;
     }
     
+    public void setObjectLins(ArrayList<String> objectLinks) {
+        this.objectLinks = objectLinks;
+    }
+    
     public void addDeviceInfo(JSONObject json) {
         if (checked)
             return;
         checked = true;
-        
         manufacturer = "";
         modelNumber = "";
         serialNumber = "";
         firmwareVersion = "";
         
-        
+    }
+
+    @Override
+    public void run() {
+        System.out.println("Thing Thread Running...");
     }
     
     
