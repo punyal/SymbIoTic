@@ -73,6 +73,7 @@ public class IoTconnection {
     }
     
     public void setAddress(String address) {
+        System.out.println("Address: "+address);
         try {
             this.address = InetAddress.getByName(address);
         } catch (UnknownHostException ex) {

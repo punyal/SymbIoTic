@@ -80,7 +80,8 @@ public class LWM2Mengine extends Thread{
                     case CONNECTING:
                         timeout = 1000;
                         coapClient.setTimeout(200);
-                        coapClient.setURI(core.getStatus().getLightWeightM2M().getAddress()+":"+core.getStatus().getLightWeightM2M().getPort()+"/rd");
+                        coapClient.setURI("coap://["+core.getStatus().getLightWeightM2M().getAddress()+"]:"+core.getStatus().getLightWeightM2M().getPort()+"/rd");
+                        System.out.println("coap://["+core.getStatus().getLightWeightM2M().getAddress()+"]:"+core.getStatus().getLightWeightM2M().getPort()+"/rd");
                         response = coapClient.get();
                         if (response != null) {
                             state = EngineState.CONNECTED;
