@@ -63,7 +63,7 @@ public class AccThread extends Thread {
         try {
             while (running) {
                 System.out.println(incomingData.size());
-                for (int i=0; i<10; i++) {
+                for (int i=0; i<20; i++) {
                     if (incomingData.isEmpty()) {
                         core.getController().getAccData().add(lastValue);
                     } else {

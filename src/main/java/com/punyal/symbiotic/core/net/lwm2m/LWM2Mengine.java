@@ -24,6 +24,7 @@
 package com.punyal.symbiotic.core.net.lwm2m;
 
 import com.punyal.symbiotic.core.Core;
+import java.net.Inet6Address;
 import java.util.ArrayList;
 import org.eclipse.californium.core.CoapClient;
 import org.eclipse.californium.core.CoapResponse;
@@ -66,6 +67,7 @@ public class LWM2Mengine extends Thread{
         EngineState state = EngineState.STOP;
         int timeout = 1000;
         String tmp = "";
+        String uri;
         CoapResponse response = null;
         ArrayList<JSONObject> listJSON;
         try {
@@ -80,8 +82,12 @@ public class LWM2Mengine extends Thread{
                     case CONNECTING:
                         timeout = 1000;
                         coapClient.setTimeout(200);
-                        coapClient.setURI("coap://["+core.getStatus().getLightWeightM2M().getAddress()+"]:"+core.getStatus().getLightWeightM2M().getPort()+"/rd");
-                        System.out.println("coap://["+core.getStatus().getLightWeightM2M().getAddress()+"]:"+core.getStatus().getLightWeightM2M().getPort()+"/rd");
+                        if (core.getStatus().getLightWeightM2M().getInetAddress() instanceof Inet6Address)
+                            uri = "coap://["+core.getStatus().getLightWeightM2M().getAddress()+"]:"+core.getStatus().getLightWeightM2M().getPort()+"/rd";
+                        else
+                            uri = "coap://"+core.getStatus().getLightWeightM2M().getAddress()+":"+core.getStatus().getLightWeightM2M().getPort()+"/rd";
+                        System.out.println(uri);
+                        coapClient.setURI(uri);
                         response = coapClient.get();
                         if (response != null) {
                             state = EngineState.CONNECTED;

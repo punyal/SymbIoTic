@@ -23,14 +23,22 @@
  */
 package com.punyal.symbiotic.controllers;
 
+import co.nstant.in.cbor.CborBuilder;
+import co.nstant.in.cbor.CborDecoder;
+import co.nstant.in.cbor.CborEncoder;
+import co.nstant.in.cbor.model.DataItem;
 import static com.punyal.symbiotic.constants.ConstantsGUI.*;
 import com.punyal.symbiotic.core.Core;
 import com.punyal.symbiotic.core.feature.ipso.AccThread;
 import com.punyal.symbiotic.core.feature.ipso.BatteryThread;
 import com.punyal.symbiotic.core.feature.ipso.StrainThread;
+import com.punyal.symbiotic.core.net.lwm2m.LWM2Mutils;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import javafx.animation.AnimationTimer;
@@ -47,6 +55,7 @@ import javafx.scene.chart.AreaChart;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
+import javafx.scene.control.Button;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
@@ -177,7 +186,9 @@ public class SymbIoTicGUIController implements Initializable {
     @FXML
     private TextField textFreq;
     @FXML
-    private ToggleButton toggleButtonIPSO;
+    private ToggleButton toggleButtonIPSO, toggleButtonRecordData;
+    @FXML
+    private Button buttonSave2PNG;
     
     
     private final AnimationTimer animatorIPSO = new AnimationTimer() {
@@ -291,7 +302,7 @@ public class SymbIoTicGUIController implements Initializable {
     
     
     private void animateACC() {
-        for (int i = 0; i<10; i++) { // Add 30 points per refresh
+        for (int i = 0; i<30; i++) { // Add 30 points per refresh
             if (accData.isEmpty()) break;
             accSeries.getData().add(new AreaChart.Data(lineChartIPSOindex++, accData.remove()));
         }
@@ -337,11 +348,77 @@ public class SymbIoTicGUIController implements Initializable {
         WritableImage image = lineChartIPSO.snapshot(new SnapshotParameters(), null);
         
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Save PNG");
+        fileChooser.setTitle("Save as PNG");
         File file = fileChooser.showSaveDialog(core.getConfiguration().getMainStageInfo().getStage());
         System.out.println(file);
         if (file != null) 
             ImageIO.write(SwingFXUtils.fromFXImage(image, null), "png", file);
+    }
+    
+    
+    private File recordFile;
+    private boolean recording;
+    
+    public File getRecordFile() {
+        return recordFile;
+    }
+    
+    public boolean isRecording() {
+        return recording;
+    }
+    
+    @FXML
+    private void handleButtonRecordData(ActionEvent e) throws IOException {
+        if (toggleButtonRecordData.selectedProperty().getValue()) {
+            toggleButtonRecordData.setText(IPSO_RECORDING);
+            // Set outputfile
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Save as XML");
+            fileChooser.setInitialFileName("IPSO_data.xml");
+            recordFile = fileChooser.showSaveDialog(core.getConfiguration().getMainStageInfo().getStage());
+            System.out.println(recordFile);
+            recording = true;
+            
+            /* Testing XML save File, remove it later */
+            try {
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                new CborEncoder(baos).encode(new CborBuilder()
+                    .add("text")                // add string
+                    .add(1234)                  // add integer
+                    .add(new byte[] { 0x10 })   // add byte array
+                    .addArray()                 // add array
+                        .add(1)
+                        .add("text")
+                        .end()
+                    .build());
+                byte[] encodedBytes = baos.toByteArray();
+                
+                System.out.println(LWM2Mutils.ByteArray2Hex(encodedBytes));
+                System.out.println(LWM2Mutils.ByteArray2String(encodedBytes));
+                
+                
+                ByteArrayInputStream bais = new ByteArrayInputStream(encodedBytes);
+                List<DataItem> dataItems = new CborDecoder(bais).decode();
+                for(DataItem dataItem : dataItems) {
+                    // process data item
+                    System.out.println(dataItem.toString());
+                }
+                
+                
+                
+                
+                
+                
+                
+                
+            } catch (Exception ex) {
+                System.out.println("Error "+ex);
+            }
+            
+        } else {
+            toggleButtonRecordData.setText(IPSO_RECORD_DATA);
+            recording = false;
+        }
     }
     
 }

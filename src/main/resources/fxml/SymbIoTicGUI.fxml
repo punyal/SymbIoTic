@@ -83,6 +83,16 @@
                                                 <ToggleButton fx:id="toggleButtonIPSO" mnemonicParsing="false" onAction="#handleButtonIPSO" prefHeight="60.0" prefWidth="100.0" text="Start" />
                                              </children>
                                           </VBox>
+                                          <VBox alignment="CENTER" prefHeight="200.0" prefWidth="200.0">
+                                             <children>
+                                                <Button fx:id="buttonSave2PNG" mnemonicParsing="false" prefHeight="40.0" prefWidth="100.0" text="save to PNG" />
+                                                <ToggleButton fx:id="toggleButtonRecordData" mnemonicParsing="false" onAction="#handleButtonRecordData" prefHeight="40.0" prefWidth="100.0" text="record Data">
+                                                   <VBox.margin>
+                                                      <Insets top="10.0" />
+                                                   </VBox.margin>
+                                                </ToggleButton>
+                                             </children>
+                                          </VBox>
                                        </children>
                                     </HBox>
                                  </children>

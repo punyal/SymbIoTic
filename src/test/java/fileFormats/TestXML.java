@@ -21,33 +21,20 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.punyal.symbiotic.constants;
+package fileFormats;
 
 /**
  *
  * @author Pablo Puñal Pereira <pablo.punal@ltu.se>
  */
-public class ConstantsGUI {
-    public ConstantsGUI() {}
+public class TestXML {
     
-    // GUI Client window offsets
-    public static final int CLIENT_X_OFFSET = 40;
-    public static final int CLIENT_Y_OFFSET = 48;
+    public TestXML() {
+        System.out.println("Starting Test...");
+        System.out.println("Ending§ Test...");
+    }
     
-    // ACC Chart
-    public static final int MAX_DATA_POINTS = 2000;
-    public static final int CHART_MAX_VALUE = 20000;
-    public static final int CHART_MIN_VALUE = -20000;
-    
-    // Default Values
-    public static final int DEFAULT_FREQUENCY = 200;
-    
-    
-    // Tree
-    public static final String TREE_ROOT = "Light Weight M2M Devices";
-    public static final String TREE_IP = "IP: ";
-    
-    // IPSO
-    public static final String IPSO_RECORD_DATA = "Record Data";
-    public static final String IPSO_RECORDING = "Recording...";
+    public static void main(String args[]) {
+        TestXML testXML = new TestXML();
+    }
 }
