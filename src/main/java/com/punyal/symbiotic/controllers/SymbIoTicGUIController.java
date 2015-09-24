@@ -27,12 +27,12 @@ import co.nstant.in.cbor.CborBuilder;
 import co.nstant.in.cbor.CborDecoder;
 import co.nstant.in.cbor.CborEncoder;
 import co.nstant.in.cbor.model.DataItem;
+import com.punyal.symbiotic.Utils.Parsers;
 import static com.punyal.symbiotic.constants.ConstantsGUI.*;
 import com.punyal.symbiotic.core.Core;
 import com.punyal.symbiotic.core.feature.ipso.AccThread;
 import com.punyal.symbiotic.core.feature.ipso.BatteryThread;
 import com.punyal.symbiotic.core.feature.ipso.StrainThread;
-import com.punyal.symbiotic.core.net.lwm2m.LWM2Mutils;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -117,6 +117,7 @@ public class SymbIoTicGUIController implements Initializable {
     @FXML
     private void handleMenuClose(ActionEvent e) throws IOException {
         Platform.exit();
+        System.exit(0);
     }
 
     private Stage clientStage;
@@ -134,6 +135,9 @@ public class SymbIoTicGUIController implements Initializable {
     }
 
     private void initMainWindow() {
+        menuBar.useSystemMenuBarProperty().set(true);
+        menuBar.setVisible(false);
+        
         windowTitle.setText(core.getConfiguration().getApp().getName()
                 + " v" + core.getConfiguration().getApp().getVersion());
         buildNumber.setText("r" + core.getConfiguration().getApp().getBuildNumber());
@@ -393,8 +397,8 @@ public class SymbIoTicGUIController implements Initializable {
                     .build());
                 byte[] encodedBytes = baos.toByteArray();
                 
-                System.out.println(LWM2Mutils.ByteArray2Hex(encodedBytes));
-                System.out.println(LWM2Mutils.ByteArray2String(encodedBytes));
+                System.out.println(Parsers.ByteArray2Hex(encodedBytes));
+                System.out.println(Parsers.ByteArray2String(encodedBytes));
                 
                 
                 ByteArrayInputStream bais = new ByteArrayInputStream(encodedBytes);
@@ -404,13 +408,6 @@ public class SymbIoTicGUIController implements Initializable {
                     System.out.println(dataItem.toString());
                 }
                 
-                
-                
-                
-                
-                
-                
-                
             } catch (Exception ex) {
                 System.out.println("Error "+ex);
             }
@@ -419,6 +416,11 @@ public class SymbIoTicGUIController implements Initializable {
             toggleButtonRecordData.setText(IPSO_RECORD_DATA);
             recording = false;
         }
+    }
+    
+    @FXML
+    private void handleButtonSave2PNG(ActionEvent e) throws IOException {
+
     }
     
 }

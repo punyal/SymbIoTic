@@ -46,12 +46,11 @@ public class SymbIoTic extends Application {
     
     @Override
     public void start(final Stage stage) throws Exception {
-        
         /* ----------------------- Loading main window ---------------------- */
         //Stage mainStage = new Stage();
         FXMLLoader mainloader = new FXMLLoader(getClass().getResource("/fxml/SymbIoTicGUI.fxml"));
         Parent root = mainloader.load();
-        UtilsGUI.configStage(stage, root, "symbiotic");
+        UtilsGUI.configStage(stage, root, WINDOW_SYMBIOTIC);
         stage.show();
         
         SymbIoTicGUIController mainController = mainloader.<SymbIoTicGUIController>getController();
@@ -61,7 +60,7 @@ public class SymbIoTic extends Application {
         Stage clientStage = new Stage();
         FXMLLoader clientloader = new FXMLLoader(getClass().getResource("/fxml/ClientGUI.fxml"));
  
-        UtilsGUI.configStage(clientStage, (Parent) clientloader.load(), "client");
+        UtilsGUI.configStage(clientStage, (Parent) clientloader.load(), WINDOW_CLIENT);
         clientStage.initOwner(stage);
         clientStage.setX(stage.getX()+CLIENT_X_OFFSET);
         clientStage.setY(stage.getY()+CLIENT_Y_OFFSET);

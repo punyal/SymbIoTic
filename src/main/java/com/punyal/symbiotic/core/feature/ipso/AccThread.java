@@ -23,8 +23,12 @@
  */
 package com.punyal.symbiotic.core.feature.ipso;
 
+import com.punyal.symbiotic.Utils.Parsers;
+import static com.punyal.symbiotic.constants.ConstantsNet.*;
 import com.punyal.symbiotic.core.Core;
+import com.punyal.symbiotic.core.net.CoapObserver;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import org.eclipse.californium.core.CoapResponse;
 
 /**
  *
@@ -34,6 +38,7 @@ public class AccThread extends Thread {
     private final Core core;
     private final ConcurrentLinkedQueue<Number> incomingData = new ConcurrentLinkedQueue<>();
     private boolean running;
+    private final CoapObserver observer;
     short lastValue;
     
     
@@ -43,18 +48,35 @@ public class AccThread extends Thread {
         this.setDaemon(true);
         running = true;
         lastValue = 0;
+        observer = new CoapObserver(core, RESOURCE_ACCELEROMETER) {
+            
+            @Override
+            public void incomingData(CoapResponse response) {
+                System.out.println("Size: "+response.getPayload().length);
+                byte[] bytes = response.getPayload();
+                for (int i=0; i<bytes.length/2; i++)
+                    incomingData.add(Parsers.getInt(bytes, i));
+            }
+            
+            @Override
+            public void error() {
+                // Resource not observable acction
+                System.out.println("Resource not able to observe");
+            }
+        };
     }
     
     public void startThread() {
         //System.out.println("Starting AccThread");
         this.start();
-        // Launch thread observe
-        AccRequestThread accReqThread = new AccRequestThread(incomingData);
-        accReqThread.startThread();
+        // Launch observe
+        observer.startObserve();
+        
     }
     
     public void stopThread() {
         running = false;
+        observer.stopObserve();
     }
     
     
@@ -62,7 +84,7 @@ public class AccThread extends Thread {
     public void run() {
         try {
             while (running) {
-                System.out.println(incomingData.size());
+                //System.out.println(incomingData.size());
                 for (int i=0; i<20; i++) {
                     if (incomingData.isEmpty()) {
                         core.getController().getAccData().add(lastValue);

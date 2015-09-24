@@ -18,7 +18,7 @@
       <Label fx:id="windowTitle" alignment="CENTER" layoutX="400.0" prefHeight="20.0" prefWidth="400.0" text="SymbIoTic" />
       <VBox layoutX="347.0" layoutY="20.0" prefHeight="720.0" prefWidth="1200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="20.0">
          <children>
-            <MenuBar fx:id="menuBar" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="26.0">
+            <MenuBar fx:id="menuBar" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="0.0">
               <menus>
                 <Menu fx:id="menuTitle" mnemonicParsing="false" text="SymbIoTic">
                   <items>
@@ -35,7 +35,7 @@
                 </Menu>
               </menus>
             </MenuBar>
-            <Pane maxHeight="-Infinity" minHeight="-Infinity" prefHeight="675.0" prefWidth="1200.0">
+            <Pane maxHeight="-Infinity" minHeight="-Infinity" prefHeight="704.0" prefWidth="1200.0">
                <children>
                   <TabPane fx:id="tabPaneFeatures" layoutX="20.0" layoutY="20.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="658.0" prefWidth="1160.0" styleClass="floating" tabClosingPolicy="UNAVAILABLE">
                     <tabs>
@@ -85,7 +85,7 @@
                                           </VBox>
                                           <VBox alignment="CENTER" prefHeight="200.0" prefWidth="200.0">
                                              <children>
-                                                <Button fx:id="buttonSave2PNG" mnemonicParsing="false" prefHeight="40.0" prefWidth="100.0" text="save to PNG" />
+                                                <Button fx:id="buttonSave2PNG" mnemonicParsing="false" onAction="#handleButtonSave2PNG" prefHeight="40.0" prefWidth="100.0" text="save to PNG" />
                                                 <ToggleButton fx:id="toggleButtonRecordData" mnemonicParsing="false" onAction="#handleButtonRecordData" prefHeight="40.0" prefWidth="100.0" text="record Data">
                                                    <VBox.margin>
                                                       <Insets top="10.0" />
@@ -106,7 +106,6 @@
                       </Tab>
                     </tabs>
                   </TabPane>
-                  <ToggleButton fx:id="toggleButtonClient" layoutX="4.0" layoutY="4.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleButtonClient" prefHeight="20.0" prefWidth="20.0" />
                </children>
             </Pane>
             <Label fx:id="buildNumber" prefHeight="16.0" prefWidth="97.0" text="release">
@@ -115,5 +114,6 @@
                </VBox.margin>
             </Label>
          </children></VBox>
+      <ToggleButton fx:id="toggleButtonClient" layoutX="5.0" layoutY="3.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleButtonClient" prefHeight="20.0" prefWidth="20.0" />
    </children>
 </AnchorPane>

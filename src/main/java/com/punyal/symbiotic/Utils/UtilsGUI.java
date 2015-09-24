@@ -23,6 +23,7 @@
  */
 package com.punyal.symbiotic.Utils;
 
+import static com.punyal.symbiotic.constants.ConstantsGUI.*;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;

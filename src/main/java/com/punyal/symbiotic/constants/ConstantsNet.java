@@ -38,4 +38,8 @@ public class ConstantsNet {
     public static final int LWM2M_CODE_MODEL_NUMBER = 1;
     public static final int LWM2M_CODE_SERIAL_NUMBER = 2;
     public static final int LWM2M_CODE_FIRMWARE_VERSION = 3;
+    
+    // Resources names
+    public static final String RESOURCE_ACCELEROMETER = "acc";
+    public static final String RESOURCE_ACCELEROMETER_CONTROL = "acc_ctrl";
 }

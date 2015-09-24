@@ -34,6 +34,10 @@ public class ConstantsGUI {
     public static final int CLIENT_X_OFFSET = 40;
     public static final int CLIENT_Y_OFFSET = 48;
     
+    // GUI window names
+    public static final String WINDOW_SYMBIOTIC = "symbiotic";
+    public static final String WINDOW_CLIENT = "client";
+    
     // ACC Chart
     public static final int MAX_DATA_POINTS = 2000;
     public static final int CHART_MAX_VALUE = 20000;
