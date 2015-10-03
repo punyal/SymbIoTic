@@ -48,7 +48,7 @@ public class AccThread extends Thread {
         this.setDaemon(true);
         running = true;
         lastValue = 0;
-        observer = new CoapObserver(core, RESOURCE_ACCELEROMETER) {
+        observer = new CoapObserver(core, RESOURCE_ACCELEROMETER_FILTER) {
             
             @Override
             public void incomingData(CoapResponse response) {

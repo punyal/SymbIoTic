@@ -186,10 +186,6 @@ public class SymbIoTicGUIController implements Initializable {
     
     
     @FXML // Controls
-    private Slider sliderFreq;
-    @FXML
-    private TextField textFreq;
-    @FXML
     private ToggleButton toggleButtonIPSO, toggleButtonRecordData;
     @FXML
     private Button buttonSave2PNG;
@@ -257,28 +253,10 @@ public class SymbIoTicGUIController implements Initializable {
         toggleButtonIPSO.setText("START");
         
         /* Controls */
-        sliderFreq.setMin(100);
-        sliderFreq.setMax(400);
-        sliderFreq.setValue(DEFAULT_FREQUENCY);
-        textFreq.setText(""+(int)sliderFreq.getValue());
-        sliderFreq.setShowTickLabels(true);
-        sliderFreq.setShowTickMarks(true);
-        sliderFreq.setMajorTickUnit(100);
-        sliderFreq.setMinorTickCount(50);
-        sliderFreq.setBlockIncrement(100);
-        sliderFreq.setSnapToTicks(true);
-        sliderFreq.valueProperty().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                int value = (int)Math.round((double)newValue/100)*100;
-                sliderFreq.setValue(value);
-                textFreq.setText(""+(int)sliderFreq.getValue());
-            }
-        });
                
         /* ------------- Init IPSO Threads -------------- */
-        batteryThread = new BatteryThread(core);
-        batteryThread.start();
+        //batteryThread = new BatteryThread(core);
+        //batteryThread.start();
         strainThread = new StrainThread((core));
         strainThread.start();
         
@@ -326,25 +304,26 @@ public class SymbIoTicGUIController implements Initializable {
     public double getLineChartIPSOindex() {
         return lineChartIPSOindex;
     }
+
     
-    public double getFreq() {
-        return sliderFreq.getValue();
-    }
     
     @FXML
     private void handleButtonIPSO(ActionEvent e) throws IOException {
         if (toggleButtonIPSO.selectedProperty().getValue()) {
             toggleButtonIPSO.setText("STOP");
-            sliderFreq.setDisable(true);
             accThread = new AccThread(core);
             accThread.startThread();
+            batteryThread = new BatteryThread(core);
+            batteryThread.startThread();
             animatorIPSO.start();
         } else {
             toggleButtonIPSO.setText("START");
-            sliderFreq.setDisable(false);
             accThread.stopThread();
+            batteryThread.stopThread();
             animatorIPSO.stop();
         }
+        // reset gauges
+        core.getStatus().setBatteryLevel(0);
     }
     
     @FXML

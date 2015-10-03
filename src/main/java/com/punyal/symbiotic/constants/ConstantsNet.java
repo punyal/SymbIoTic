@@ -40,6 +40,7 @@ public class ConstantsNet {
     public static final int LWM2M_CODE_FIRMWARE_VERSION = 3;
     
     // Resources names
-    public static final String RESOURCE_ACCELEROMETER = "acc";
+    public static final String RESOURCE_ACCELEROMETER_FILTER = "acc_filter";
     public static final String RESOURCE_ACCELEROMETER_CONTROL = "acc_ctrl";
+    public static final String RESOURCE_BATTERY = "power";
 }

@@ -68,15 +68,7 @@
                                              </children>
                                           </VBox>
                                           <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="200.0">
-                                             <children>
-                                                <TextField fx:id="textFreq" alignment="CENTER" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="50.0">
-                                                   <VBox.margin>
-                                                      <Insets top="20.0" />
-                                                   </VBox.margin>
-                                                </TextField>
-                                                <Slider fx:id="sliderFreq" />
-                                                <Label alignment="CENTER" prefHeight="16.0" prefWidth="92.0" text="Frequency (Hz)" />
-                                             </children>
+                                             
                                           </VBox>
                                           <VBox alignment="CENTER" prefHeight="200.0" prefWidth="200.0">
                                              <children>

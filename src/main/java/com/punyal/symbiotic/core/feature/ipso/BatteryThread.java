@@ -23,7 +23,14 @@
  */
 package com.punyal.symbiotic.core.feature.ipso;
 
+import com.punyal.symbiotic.Utils.Parsers;
+import static com.punyal.symbiotic.constants.ConstantsNet.RESOURCE_BATTERY;
 import com.punyal.symbiotic.core.Core;
+import java.net.Inet6Address;
+import org.eclipse.californium.core.CoapClient;
+import org.eclipse.californium.core.CoapResponse;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
 
 /**
  *
@@ -31,40 +38,72 @@ import com.punyal.symbiotic.core.Core;
  */
 public class BatteryThread extends Thread {
     private final Core core;
+    private boolean running;
+    private final CoapClient coapClient;
     
     public BatteryThread(Core core) {
         this.core = core;
-        // Set as daemon to close with the program
         this.setDaemon(true);
+        coapClient = new CoapClient();
+        running = true;
     }
     
     public void startThread() {
+        //System.out.println("Starting BatThread");
         this.start();
     }
     
-    @Override
+    public void stopThread() {
+        running = false;
+    }
+    
     public void run() {
         try {
-            while (true) {
-                if (core.getStatus().getBatteryLevel() == 0)
-                    core.getStatus().setBatteryLevel(100);
-                else
-                    core.getStatus().setBatteryLevel(0);
+            int counter = 0, battery = 0;
+            String uri;
+            CoapResponse response;
+            JSONObject json;
+            while (running) {
+                if (counter == 0) {
+                    counter = 60; // pull the resource each minute
+                    
+                    // Check if it's an IPv4 or IPv6
+                    if (core.getStatus().getSelectedThing().getInetAddress() instanceof Inet6Address)
+                        uri = "coap://["+core.getStatus().getSelectedThing().getAddress()+"]:"+core.getStatus().getSelectedThing().getPort()+"/"+RESOURCE_BATTERY;
+                    else
+                        uri = "coap://"+core.getStatus().getSelectedThing().getAddress()+":"+core.getStatus().getSelectedThing().getPort()+"/"+RESOURCE_BATTERY;
+                    
+                    //core.getStatus().setBatteryLevel(100);
+                    coapClient.setURI(uri);
+                    System.out.println(uri);
+                    response = coapClient.get();
+                    
+                    if (response != null) {
+                        //System.out.println(response.getResponseText());
+                        
+                        json = Parsers.parseBatteryData(response.getResponseText());
+                        //System.out.println(json);
+                        
+                        battery = Integer.parseInt(json.get("Vbat").toString());
+                        // adjust to percent (5000 mV)
+                        battery /= 50;
+                        System.out.println(battery);
+                        core.getStatus().setBatteryLevel(battery);
+                    }
+                }
+                
+                counter--;
                 
                 try {
-                    Thread.sleep(4000);
+                    Thread.sleep(1000); // Sleep 1s
                 } catch (InterruptedException ex) {
                     Thread.currentThread().interrupt(); // This should kill it propertly
                 }
             }
         }
-        finally{
-            System.out.println("Killing BatteryThread");
+        finally {
+            System.out.println("Killing BatThread");
         }
     }
-    
-    
-    
-    
     
 }

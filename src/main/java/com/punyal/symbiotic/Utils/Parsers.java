@@ -25,6 +25,12 @@ package com.punyal.symbiotic.Utils;
 
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
 
 /**
  *
@@ -77,5 +83,27 @@ public class Parsers {
     
     public static String hexToString(String s) {
         return ByteArray2String(hexStringToByteArray(s));
+    }
+    
+    public static JSONObject parseBatteryData (String s) {
+        JSONObject json, tmp;
+        String data;
+        
+        json = new JSONObject();
+        tmp = (JSONObject) JSONValue.parse(s);
+        
+        // Save base time
+        json.put("time", tmp.get("bt"));
+        
+        JSONArray slideContent = (JSONArray)tmp.get("e");
+        Iterator i = slideContent.iterator();
+        
+        while (i.hasNext()) {
+            JSONObject slide = (JSONObject) i.next();
+            json.put(slide.get("n"), slide.get("v"));
+        }
+        
+        
+        return json;
     }
 }

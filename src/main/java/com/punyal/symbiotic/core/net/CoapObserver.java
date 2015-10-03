@@ -25,6 +25,8 @@ package com.punyal.symbiotic.core.net;
 
 import com.punyal.symbiotic.core.Core;
 import java.net.Inet6Address;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.eclipse.californium.core.CoapClient;
 import org.eclipse.californium.core.CoapHandler;
 import org.eclipse.californium.core.CoapObserveRelation;
@@ -48,7 +50,9 @@ public abstract class CoapObserver {
             uri = "coap://["+core.getStatus().getSelectedThing().getAddress()+"]:"+core.getStatus().getSelectedThing().getPort()+"/"+path;
         else
             uri = "coap://"+core.getStatus().getSelectedThing().getAddress()+":"+core.getStatus().getSelectedThing().getPort()+"/"+path;
+        
         coapClient = new CoapClient(uri);
+        coapClient.setTimeout(60000);
         coapHandler = new CoapHandler() {
             @Override
             public void onLoad(CoapResponse cr) {
