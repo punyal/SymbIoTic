@@ -81,7 +81,7 @@ public class BatteryThread extends Thread {
                     if (response != null) {
                         //System.out.println(response.getResponseText());
                         
-                        json = Parsers.parseBatteryData(response.getResponseText());
+                        json = Parsers.parseMulleJSONData(response.getResponseText());
                         //System.out.println(json);
                         
                         battery = Integer.parseInt(json.get("Vbat").toString());

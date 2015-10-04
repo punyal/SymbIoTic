@@ -40,8 +40,8 @@ public class ConstantsGUI {
     
     // ACC Chart
     public static final int MAX_DATA_POINTS = 2000;
-    public static final int CHART_MAX_VALUE = 20000;
-    public static final int CHART_MIN_VALUE = -20000;
+    public static final int CHART_MAX_VALUE = 2;
+    public static final int CHART_MIN_VALUE = -2;
     
     // Default Values
     public static final int DEFAULT_FREQUENCY = 200;

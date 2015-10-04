@@ -32,7 +32,7 @@ import static com.punyal.symbiotic.constants.ConstantsGUI.*;
 import com.punyal.symbiotic.core.Core;
 import com.punyal.symbiotic.core.feature.ipso.AccThread;
 import com.punyal.symbiotic.core.feature.ipso.BatteryThread;
-import com.punyal.symbiotic.core.feature.ipso.StrainThread;
+import com.punyal.symbiotic.core.feature.ipso.Strain;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -43,8 +43,6 @@ import java.util.ResourceBundle;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -61,9 +59,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.Slider;
 import javafx.scene.control.TabPane;
-import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.image.WritableImage;
 import javafx.scene.layout.AnchorPane;
@@ -170,7 +166,9 @@ public class SymbIoTicGUIController implements Initializable {
     
     @FXML // Strain Gauge
     private SimpleMetroArcGauge metroGaugeStrain;
-    private StrainThread strainThread;
+    @FXML
+    Label labelStrain;
+    private Strain strain;
     
     
     @FXML // ACC Chart
@@ -196,10 +194,17 @@ public class SymbIoTicGUIController implements Initializable {
             public void handle(long now) {
                 animateBattery();
                 animateStrain();
-                animateACC();
+                if (animationActive) animateACC();
             }
         };
-
+    
+    private boolean animationActive;
+    
+     
+    public boolean isAnimated () {
+        return animationActive;
+    }
+    
     private void initFeatureIPSO() {
         /* Battery Gauge */
         metroGaugeBattery.setMinValue(0);
@@ -240,7 +245,7 @@ public class SymbIoTicGUIController implements Initializable {
         accYaxis.setAutoRanging(false);
         accYaxis.setLowerBound(CHART_MIN_VALUE);
         accYaxis.setUpperBound(CHART_MAX_VALUE);
-        accYaxis.setTickUnit(1000);
+        accYaxis.setTickUnit(0.5);
         accYaxis.setTickLabelsVisible(true);
         
         lineChartIPSO.setAnimated(false);
@@ -254,14 +259,15 @@ public class SymbIoTicGUIController implements Initializable {
         
         /* Controls */
                
-        /* ------------- Init IPSO Threads -------------- */
+        /* ------------- Init IPSO Clients -------------- */
+        strain = new Strain(core);
         //batteryThread = new BatteryThread(core);
         //batteryThread.start();
-        strainThread = new StrainThread((core));
-        strainThread.start();
+        //strainThread = new StrainThread((core));
+        //strainThread.start();
         
         /* ------------- Start animations -------------- */
-        // animatorIPSO.start();
+        animatorIPSO.start();
     }
     
     
@@ -276,6 +282,7 @@ public class SymbIoTicGUIController implements Initializable {
     
     private void animateStrain() {
         core.getController().getStrainGauge().setValue(core.getStatus().getStrainLevel());
+        
     }
     
     public SimpleMetroArcGauge getStrainGauge() {
@@ -315,15 +322,21 @@ public class SymbIoTicGUIController implements Initializable {
             accThread.startThread();
             batteryThread = new BatteryThread(core);
             batteryThread.startThread();
-            animatorIPSO.start();
+            strain.startObserve();
+            //animatorIPSO.start();
+            animationActive = true;
+            
         } else {
             toggleButtonIPSO.setText("START");
             accThread.stopThread();
             batteryThread.stopThread();
-            animatorIPSO.stop();
+            strain.stopObserver();
+            //animatorIPSO.stop();
+            animationActive = false;
         }
         // reset gauges
         core.getStatus().setBatteryLevel(0);
+        core.getStatus().setStrainLevel(0, false);
     }
     
     @FXML

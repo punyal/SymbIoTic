@@ -39,10 +39,10 @@ public class AccThread extends Thread {
     private final ConcurrentLinkedQueue<Number> incomingData = new ConcurrentLinkedQueue<>();
     private boolean running;
     private final CoapObserver observer;
-    short lastValue;
+    float lastValue;
     
     
-    public AccThread(Core core) {
+    public AccThread (Core core) {
         this.core = core;
         // Set as daemon to close with the program
         this.setDaemon(true);
@@ -87,9 +87,10 @@ public class AccThread extends Thread {
                 //System.out.println(incomingData.size());
                 for (int i=0; i<20; i++) {
                     if (incomingData.isEmpty()) {
-                        core.getController().getAccData().add(lastValue);
+                        //core.getController().getAccData().add(lastValue);
+                        core.getController().getAccData().add(0);
                     } else {
-                        lastValue = (short) incomingData.remove();
+                        lastValue = (incomingData.remove().floatValue()/16000); // conversion to gforce
                         core.getController().getAccData().add(lastValue);
                     }
                 }

@@ -34,6 +34,7 @@ public class Status {
     private final Core core;
     private int batteryLevel;
     private int strainLevel;
+    private boolean strainAlarm;
     private final IoTconnection lightWeightM2M, selectedThing;
     private final ThingsList thingsList;
     
@@ -41,6 +42,7 @@ public class Status {
         this.core = core;
         batteryLevel = 0;
         strainLevel = 0;
+        strainAlarm = false;
         lightWeightM2M = new IoTconnection();
         selectedThing = new IoTconnection();
         thingsList = new ThingsList(core);
@@ -58,8 +60,13 @@ public class Status {
         return strainLevel;
     }
     
-    public void setStrainLevel(int strainLevel) {
+    public void setStrainLevel(int strainLevel, boolean strainAlarm) {
         this.strainLevel = strainLevel;
+        this.strainAlarm = strainAlarm;
+    }
+    
+    public boolean strainAlert() {
+        return strainAlarm;
     }
     
     public IoTconnection getLightWeightM2M() {

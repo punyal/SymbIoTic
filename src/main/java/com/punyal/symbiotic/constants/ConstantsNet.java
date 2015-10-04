@@ -43,4 +43,5 @@ public class ConstantsNet {
     public static final String RESOURCE_ACCELEROMETER_FILTER = "acc_filter";
     public static final String RESOURCE_ACCELEROMETER_CONTROL = "acc_ctrl";
     public static final String RESOURCE_BATTERY = "power";
+    public static final String RESOURCE_STRAIN = "strain";
 }

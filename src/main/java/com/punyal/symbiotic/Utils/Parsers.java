@@ -25,9 +25,7 @@ package com.punyal.symbiotic.Utils;
 
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
-import java.util.Arrays;
 import java.util.Iterator;
-import java.util.List;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
@@ -85,7 +83,7 @@ public class Parsers {
         return ByteArray2String(hexStringToByteArray(s));
     }
     
-    public static JSONObject parseBatteryData (String s) {
+    public static JSONObject parseMulleJSONData (String s) {
         JSONObject json, tmp;
         String data;
         
@@ -102,7 +100,6 @@ public class Parsers {
             JSONObject slide = (JSONObject) i.next();
             json.put(slide.get("n"), slide.get("v"));
         }
-        
         
         return json;
     }
