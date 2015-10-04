@@ -23,6 +23,7 @@
  */
 package com.punyal.symbiotic.core;
 
+import com.punyal.symbiotic.core.export.ExportData;
 import com.punyal.symbiotic.core.net.IoTconnection;
 import com.punyal.symbiotic.core.net.ThingsList;
 
@@ -37,6 +38,7 @@ public class Status {
     private boolean strainAlarm;
     private final IoTconnection lightWeightM2M, selectedThing;
     private final ThingsList thingsList;
+    private final ExportData exportData;
     
     public Status(Core core) {
         this.core = core;
@@ -46,6 +48,7 @@ public class Status {
         lightWeightM2M = new IoTconnection();
         selectedThing = new IoTconnection();
         thingsList = new ThingsList(core);
+        exportData = new ExportData(core);
     }
     
     public int getBatteryLevel() {
@@ -79,6 +82,10 @@ public class Status {
     
     public ThingsList getThingsList() {
         return thingsList;
+    }
+    
+    public ExportData getExportData() {
+        return exportData;
     }
     
     

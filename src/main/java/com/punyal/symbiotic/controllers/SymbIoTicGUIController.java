@@ -352,67 +352,22 @@ public class SymbIoTicGUIController implements Initializable {
     }
     
     
-    private File recordFile;
-    private boolean recording;
     
-    public File getRecordFile() {
-        return recordFile;
-    }
-    
-    public boolean isRecording() {
-        return recording;
-    }
     
     @FXML
     private void handleButtonRecordData(ActionEvent e) throws IOException {
         if (toggleButtonRecordData.selectedProperty().getValue()) {
+            core.getStatus().getExportData().startNew();
             toggleButtonRecordData.setText(IPSO_RECORDING);
-            // Set outputfile
-            FileChooser fileChooser = new FileChooser();
-            fileChooser.setTitle("Save as XML");
-            fileChooser.setInitialFileName("IPSO_data.xml");
-            recordFile = fileChooser.showSaveDialog(core.getConfiguration().getMainStageInfo().getStage());
-            System.out.println(recordFile);
-            recording = true;
-            
-            /* Testing XML save File, remove it later */
-            try {
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                new CborEncoder(baos).encode(new CborBuilder()
-                    .add("text")                // add string
-                    .add(1234)                  // add integer
-                    .add(new byte[] { 0x10 })   // add byte array
-                    .addArray()                 // add array
-                        .add(1)
-                        .add("text")
-                        .end()
-                    .build());
-                byte[] encodedBytes = baos.toByteArray();
-                
-                System.out.println(Parsers.ByteArray2Hex(encodedBytes));
-                System.out.println(Parsers.ByteArray2String(encodedBytes));
-                
-                
-                ByteArrayInputStream bais = new ByteArrayInputStream(encodedBytes);
-                List<DataItem> dataItems = new CborDecoder(bais).decode();
-                for(DataItem dataItem : dataItems) {
-                    // process data item
-                    System.out.println(dataItem.toString());
-                }
-                
-            } catch (Exception ex) {
-                System.out.println("Error "+ex);
-            }
-            
         } else {
             toggleButtonRecordData.setText(IPSO_RECORD_DATA);
-            recording = false;
+            core.getStatus().getExportData().stop();
         }
     }
     
     @FXML
     private void handleButtonSave2PNG(ActionEvent e) throws IOException {
-
+        
     }
     
 }

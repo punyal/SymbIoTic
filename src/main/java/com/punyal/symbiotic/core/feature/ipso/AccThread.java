@@ -23,10 +23,15 @@
  */
 package com.punyal.symbiotic.core.feature.ipso;
 
+import co.nstant.in.cbor.CborBuilder;
+import co.nstant.in.cbor.CborEncoder;
+import co.nstant.in.cbor.CborException;
+import co.nstant.in.cbor.builder.ArrayBuilder;
 import com.punyal.symbiotic.Utils.Parsers;
 import static com.punyal.symbiotic.constants.ConstantsNet.*;
 import com.punyal.symbiotic.core.Core;
 import com.punyal.symbiotic.core.net.CoapObserver;
+import java.io.ByteArrayOutputStream;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import org.eclipse.californium.core.CoapResponse;
 
@@ -42,7 +47,7 @@ public class AccThread extends Thread {
     float lastValue;
     
     
-    public AccThread (Core core) {
+    public AccThread (final Core core) {
         this.core = core;
         // Set as daemon to close with the program
         this.setDaemon(true);
@@ -54,8 +59,36 @@ public class AccThread extends Thread {
             public void incomingData(CoapResponse response) {
                 System.out.println("Size: "+response.getPayload().length);
                 byte[] bytes = response.getPayload();
-                for (int i=0; i<bytes.length/2; i++)
-                    incomingData.add(Parsers.getInt(bytes, i));
+                
+                // Saving data...
+                // Save data to file
+                try {
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    CborBuilder cborBuilder = new CborBuilder();
+
+                    cborBuilder.add("Accelerometer");
+                    cborBuilder.add(System.currentTimeMillis());
+                    cborBuilder.add(response.getPayload().length);
+                    
+                           
+                    
+                    for (int i=0; i<bytes.length/2; i++) { 
+                        incomingData.add(Parsers.getInt(bytes, i));
+                        cborBuilder.add(Parsers.getInt(bytes, i));
+                    }
+                    
+                    
+                    new CborEncoder(baos).encode(cborBuilder.build());
+
+                    core.getStatus().getExportData().save2File(baos.toByteArray());
+
+                } catch (NumberFormatException | CborException ex) {
+                    System.out.println("Error "+ex);
+                }
+                
+                
+                
+                
             }
             
             @Override

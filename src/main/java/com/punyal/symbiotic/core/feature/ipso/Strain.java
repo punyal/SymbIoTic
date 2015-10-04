@@ -24,10 +24,14 @@
 package com.punyal.symbiotic.core.feature.ipso;
 
 
+import co.nstant.in.cbor.CborBuilder;
+import co.nstant.in.cbor.CborEncoder;
+import co.nstant.in.cbor.CborException;
 import com.punyal.symbiotic.Utils.Parsers;
 import static com.punyal.symbiotic.constants.ConstantsNet.RESOURCE_STRAIN;
 import com.punyal.symbiotic.core.Core;
 import com.punyal.symbiotic.core.net.CoapObserver;
+import java.io.ByteArrayOutputStream;
 import javafx.scene.paint.Color;
 import org.eclipse.californium.core.CoapResponse;
 import org.json.simple.JSONObject;
@@ -63,7 +67,25 @@ public class Strain {
                     core.getStatus().setStrainLevel(strain, alarm);
                     
                 }
-                    
+                
+                // Save data to file
+                try {
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    CborBuilder cborBuilder = new CborBuilder();
+
+                    cborBuilder.add("Strain");
+                    cborBuilder.add(Integer.parseInt(json.get("time").toString()));
+                    cborBuilder.add(Integer.parseInt(json.get("strain").toString()));
+                    cborBuilder.add(Integer.parseInt(json.get("alarm").toString()));
+
+                    new CborEncoder(baos).encode(cborBuilder.build());
+
+                    core.getStatus().getExportData().save2File(baos.toByteArray());
+
+                } catch (NumberFormatException | CborException ex) {
+                    System.out.println("Error "+ex);
+                }
+                
             }
             
             @Override

@@ -23,9 +23,13 @@
  */
 package com.punyal.symbiotic.core.feature.ipso;
 
+import co.nstant.in.cbor.CborBuilder;
+import co.nstant.in.cbor.CborEncoder;
+import co.nstant.in.cbor.CborException;
 import com.punyal.symbiotic.Utils.Parsers;
 import static com.punyal.symbiotic.constants.ConstantsNet.RESOURCE_BATTERY;
 import com.punyal.symbiotic.core.Core;
+import java.io.ByteArrayOutputStream;
 import java.net.Inet6Address;
 import org.eclipse.californium.core.CoapClient;
 import org.eclipse.californium.core.CoapResponse;
@@ -89,6 +93,24 @@ public class BatteryThread extends Thread {
                         battery /= 50;
                         System.out.println(battery);
                         core.getStatus().setBatteryLevel(battery);
+                        
+                        // Save data to file
+                        try {
+                            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                            CborBuilder cborBuilder = new CborBuilder();
+                            
+                            cborBuilder.add("Battery");
+                            cborBuilder.add(Integer.parseInt(json.get("time").toString()));
+                            cborBuilder.add(Integer.parseInt(json.get("Vbat").toString()));
+                            cborBuilder.add(Integer.parseInt(json.get("Vchar").toString()));
+
+                            new CborEncoder(baos).encode(cborBuilder.build());
+                            
+                            core.getStatus().getExportData().save2File(baos.toByteArray());
+                            
+                        } catch (NumberFormatException | CborException ex) {
+                            System.out.println("Error "+ex);
+                        }
                     }
                 }
                 
