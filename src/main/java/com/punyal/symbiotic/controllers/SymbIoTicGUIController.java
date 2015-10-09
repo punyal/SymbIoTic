@@ -35,19 +35,19 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import javafx.animation.AnimationTimer;
-import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Side;
+import javafx.scene.AmbientLight;
 import javafx.scene.DepthTest;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.PerspectiveCamera;
-import javafx.scene.Scene;
 import javafx.scene.SceneAntialiasing;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.SubScene;
@@ -71,7 +71,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
 import javafx.scene.shape.Cylinder;
+import javafx.scene.shape.MeshView;
 import javafx.scene.shape.Sphere;
+import javafx.scene.shape.TriangleMesh;
 import javafx.scene.transform.Rotate;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -210,7 +212,8 @@ public class SymbIoTicGUIController implements Initializable {
                 
                 // wheel-loader
                 
-                moleculeGroup.setRotateY(angle);
+                //moleculeGroup.setRotateY(angle);
+                wheelGroup.setRotateY(angle);
                 angle += 1;
                 //System.out.println(angle);
             }
@@ -411,10 +414,14 @@ public class SymbIoTicGUIController implements Initializable {
     final Xform axisGroup = new Xform();
     // Molecule
     final Xform moleculeGroup = new Xform();
+    // Wheel
+    final Xform wheelGroup = new Xform();
+    // Wheel
+    final Xform baseGroup = new Xform();
     
-    private static final double CAMERA_INITIAL_DISTANCE = -450;
-    private static final double CAMERA_INITIAL_X_ANGLE = 70.0;
-    private static final double CAMERA_INITIAL_Y_ANGLE = 320.0;
+    private static final double CAMERA_INITIAL_DISTANCE = -500;
+    private static final double CAMERA_INITIAL_X_ANGLE = 90.0;
+    private static final double CAMERA_INITIAL_Y_ANGLE = -90.0;
     private static final double CAMERA_NEAR_CLIP = 0.1;
     private static final double CAMERA_FAR_CLIP = 10000.0;
     private static final double AXIS_LENGTH = 250.0;
@@ -442,11 +449,13 @@ public class SymbIoTicGUIController implements Initializable {
         anchoPaneTest.getChildren().add(subSceneWheelLoader);
         //subSceneWheelLoader = new SubScene
         subSceneWheelLoader.setRoot(root);
-        subSceneWheelLoader.setFill(Color.GREY);
+        subSceneWheelLoader.setFill(Color.TRANSPARENT);
         buildCamera();
         subSceneWheelLoader.setCamera(camera);
-        buildAxes();
-        buildMolecule();
+        //buildAxes();
+        //buildMolecule();
+        buildWheel();
+        buildBase();
         handleKeyboard(subSceneWheelLoader, root);
         handleMouse(subSceneWheelLoader, root);
     }
@@ -486,6 +495,9 @@ public class SymbIoTicGUIController implements Initializable {
         xAxis.setMaterial(redMaterial);
         yAxis.setMaterial(greenMaterial);
         zAxis.setMaterial(blueMaterial);
+        
+        //AmbientLight ambient = new AmbientLight(Color.WHITE);
+        //axisGroup.getChildren().add(ambient);
  
         axisGroup.getChildren().addAll(xAxis, yAxis, zAxis);
         axisGroup.setVisible(true);
@@ -635,5 +647,146 @@ public class SymbIoTicGUIController implements Initializable {
       moleculeGroup.getChildren().add(moleculeXform);
 
       world.getChildren().addAll(moleculeGroup);
-}
+    }
+    
+    private void buildWheel() {
+        // Materials
+        final PhongMaterial greyMaterial = new PhongMaterial();
+        greyMaterial.setDiffuseColor(Color.DARKGREY);
+        greyMaterial.setSpecularColor(Color.GREY);
+        
+        final PhongMaterial darkGreyMaterial = new PhongMaterial();
+        darkGreyMaterial.setDiffuseColor(Color.DARKGREY);
+        darkGreyMaterial.setSpecularColor(Color.DARKGREY);
+        
+        final PhongMaterial blackMaterial = new PhongMaterial();
+        blackMaterial.setDiffuseColor(Color.BLACK);
+        blackMaterial.setSpecularColor(Color.BLACK);
+        
+        final PhongMaterial redMaterial = new PhongMaterial();
+        redMaterial.setDiffuseColor(Color.DARKRED);
+        redMaterial.setSpecularColor(Color.RED);
+        
+        
+        Xform wheelModel = new Xform();
+        Xform axisModel = new Xform();
+        
+        
+        Cylinder axis = new Cylinder(2.5, 15);
+        axis.setMaterial(blackMaterial);
+        axis.setTranslateX(0.0);
+        axis.setRotationAxis(Rotate.Z_AXIS);
+        axis.setRotate(0.0);
+        axisModel.getChildren().add(axis);
+        
+        Cylinder axis2 = new Cylinder(5, 10);
+        axis2.setMaterial(greyMaterial);
+        axis2.setTranslateX(0.0);
+        axis2.setRotationAxis(Rotate.Z_AXIS);
+        axis2.setRotate(0.0);
+        axisModel.getChildren().add(axis2);
+        
+        wheelModel.getChildren().add(axisModel);
+        
+        // radius generation
+        
+        wheelModel.getChildren().add(newRadius(greyMaterial, 0.0));
+        for (int i=1; i<18; i++)
+            wheelModel.getChildren().add(newRadius(greyMaterial, i*20.0));
+        
+        wheelModel.getChildren().add(newRim(greyMaterial, 0.0));
+        for (int i=1; i<360; i++)
+            wheelModel.getChildren().add(newRim(greyMaterial, i*1.0));
+        
+        
+        wheelGroup.getChildren().add(wheelModel);
+        world.getChildren().addAll(wheelGroup);
+    }
+    
+    private Xform newRim(final PhongMaterial material, double angle) {
+        Box rimSection = new Box(1, 5, 5);
+        rimSection.setMaterial(material);
+        rimSection.setTranslateX(100);
+        
+        Box rimSectionBorder1 = new Box(2, 1, 5);
+        rimSectionBorder1.setMaterial(material);
+        rimSectionBorder1.setTranslateX(100.8);
+        rimSectionBorder1.setTranslateY(2.5);
+        
+        Box rimSectionBorder2 = new Box(2, 1, 5);
+        rimSectionBorder2.setMaterial(material);
+        rimSectionBorder2.setTranslateX(100.8);
+        rimSectionBorder2.setTranslateY(-2.5);
+        
+        Xform rim = new Xform();
+        rim.getChildren().add(rimSection);
+        rim.getChildren().add(rimSectionBorder1);
+        rim.getChildren().add(rimSectionBorder2);
+        rim.setRotateY(angle);
+        return rim;
+    }
+    
+    private Xform newRadius(final PhongMaterial material, double angle) {
+        Cylinder radius = new Cylinder(0.5, 100);
+        radius.setMaterial(material);
+        radius.setTranslateX(50.0);
+        radius.setRotationAxis(Rotate.Z_AXIS);
+        radius.setRotate(90);
+        Xform radiusForm = new Xform();
+        radiusForm.getChildren().add(radius);
+        radiusForm.setRotateZ(-3);
+        radiusForm.setTranslateZ(5);
+        radiusForm.setRotateY(8);
+        radius.setTranslateY(5);
+        
+        Cylinder radius2 = new Cylinder(0.5, 100);
+        radius2.setMaterial(material);
+        radius2.setTranslateX(50.0);
+        radius2.setRotationAxis(Rotate.Z_AXIS);
+        radius2.setRotate(90);
+        Xform radiusForm2 = new Xform();
+        radiusForm2.getChildren().add(radius2);
+        radiusForm2.setRotateZ(3);
+        radiusForm2.setTranslateZ(-5);
+        radiusForm2.setRotateY(-8);
+        radius2.setTranslateY(-5);
+        
+        Xform rad = new Xform();
+        rad.getChildren().add(radiusForm);
+        rad.getChildren().add(radiusForm2);
+        rad.setRotateY(angle);
+        return rad;
+    }
+    
+    
+    private void buildBase() {
+        // Materials
+        final PhongMaterial greyMaterial = new PhongMaterial();
+        greyMaterial.setDiffuseColor(Color.DARKGREY);
+        greyMaterial.setSpecularColor(Color.GREY);
+        
+                
+        baseGroup.getChildren().add(newBase(greyMaterial));
+        world.getChildren().addAll(baseGroup);
+    }
+    
+    private Xform newBase(final PhongMaterial material) {
+        Box base1 = new Box(120, 3, 40);
+        base1.setMaterial(material);
+        base1.setTranslateX(50);
+        base1.setTranslateY(-8);
+        
+        Box base2 = new Box(3, 30, 120);
+        base2.setMaterial(material);
+        base2.setTranslateX(110);
+        base2.setTranslateY(-4);
+        
+        Xform rim = new Xform();
+        rim.getChildren().add(base1);
+        rim.getChildren().add(base2);
+        return rim;
+    }
+    
+    
+    
 }

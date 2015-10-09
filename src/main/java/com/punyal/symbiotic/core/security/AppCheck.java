@@ -45,7 +45,11 @@ public class AppCheck {
             System.err.println("JAR MODIFIED!!");
             Platform.exit();
         }
-        return new AppParameters(s[0], s[1], s[2], Integer.parseInt(s[3].substring(1, s[3].lastIndexOf("."))));
+        
+        String tmp = s[3].substring(1, s[3].lastIndexOf("."));
+        tmp = tmp.replace(",", "");
+        int compilation = Integer.parseInt(tmp);
+        return new AppParameters(s[0], s[1], s[2], compilation);
     }
     
 }
