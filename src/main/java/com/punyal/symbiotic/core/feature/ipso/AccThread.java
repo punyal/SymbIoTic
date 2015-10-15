@@ -26,7 +26,6 @@ package com.punyal.symbiotic.core.feature.ipso;
 import co.nstant.in.cbor.CborBuilder;
 import co.nstant.in.cbor.CborEncoder;
 import co.nstant.in.cbor.CborException;
-import co.nstant.in.cbor.builder.ArrayBuilder;
 import com.punyal.symbiotic.Utils.Parsers;
 import static com.punyal.symbiotic.constants.ConstantsNet.*;
 import com.punyal.symbiotic.core.Core;

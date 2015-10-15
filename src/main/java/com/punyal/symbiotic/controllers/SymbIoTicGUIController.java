@@ -25,9 +25,12 @@ package com.punyal.symbiotic.controllers;
 
 import static com.punyal.symbiotic.constants.ConstantsGUI.*;
 import com.punyal.symbiotic.core.Core;
+import com.punyal.symbiotic.core.feature.filesystem.FileEntry;
+import com.punyal.symbiotic.core.feature.filesystem.FileSystem;
 import com.punyal.symbiotic.core.feature.ipso.AccThread;
 import com.punyal.symbiotic.core.feature.ipso.BatteryThread;
 import com.punyal.symbiotic.core.feature.ipso.Strain;
+import com.punyal.symbiotic.core.feature.wheelloader.AngleThread;
 import com.punyal.symbiotic.core.feature.wheelloader.Xform;
 import java.io.File;
 import java.io.IOException;
@@ -36,6 +39,10 @@ import java.util.ResourceBundle;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
+import javafx.beans.property.ReadOnlyStringWrapper;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableArray;
+import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -62,7 +69,14 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TabPane;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableColumn.CellDataFeatures;
+import javafx.scene.control.TableView;
 import javafx.scene.control.ToggleButton;
+import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeTableColumn;
+import javafx.scene.control.TreeTableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -105,6 +119,7 @@ public class SymbIoTicGUIController implements Initializable {
         initMainWindow();
         initFeatureIPSO();
         initFeatureWheelLoader();
+        initFeatureFileSystem();
     }
 
     /*------------------------------------------------------------------------*/
@@ -203,7 +218,6 @@ public class SymbIoTicGUIController implements Initializable {
     
     
     private final AnimationTimer animatorIPSO = new AnimationTimer() {
-        private double angle = 0;
             @Override
             public void handle(long now) {
                 animateBattery();
@@ -213,8 +227,7 @@ public class SymbIoTicGUIController implements Initializable {
                 // wheel-loader
                 
                 //moleculeGroup.setRotateY(angle);
-                wheelGroup.setRotateY(angle);
-                angle += 1;
+                wheelGroup.setRotateY(core.getStatus().getWheelLoaderAngle());
                 //System.out.println(angle);
             }
         };
@@ -459,6 +472,8 @@ public class SymbIoTicGUIController implements Initializable {
         buildBase();
         handleKeyboard(subSceneWheelLoader, root);
         handleMouse(subSceneWheelLoader, root);
+        
+        core.getStatus().setWheelLoaderAngle(0);
     }
   
     private void buildCamera() {
@@ -801,6 +816,54 @@ public class SymbIoTicGUIController implements Initializable {
         return rim;
     }
     
+    @FXML
+    ToggleButton toggleButtonWheelLoader;
     
+    private AngleThread angleThread;
+    
+    @FXML
+    private void handleButtonWheelLoader(ActionEvent e) throws IOException {
+        if (toggleButtonWheelLoader.selectedProperty().getValue()) {
+            toggleButtonWheelLoader.setText("STOP");
+            angleThread = new AngleThread(core);
+            angleThread.startThread();
+        } else {
+            toggleButtonWheelLoader.setText("START");
+            angleThread.stopThread();
+        }
+        
+    }
+    
+    
+    
+    
+    /*------------------------------------------------------------------------*/
+    /*                           Feature File System                          */
+    /*------------------------------------------------------------------------*/
+    
+    
+    @FXML
+    private TableView tableViewFS;
+    @FXML
+    private ToggleButton toggleButtonConnect;
+    
+    
+    private FileSystem fileSystem;
+    
+    private void initFeatureFileSystem() {
+        fileSystem = new FileSystem(tableViewFS);
+    }
+    
+    @FXML void handleToggleButtonConnect(ActionEvent e) {
+        if (toggleButtonConnect.selectedProperty().getValue()) {
+            toggleButtonConnect.setText("Disconnect");
+            
+        } else {
+            toggleButtonConnect.setText("connect");
+            
+        }
+        fileSystem.init();
+    }
+  
     
 }

@@ -39,6 +39,7 @@ public class Status {
     private final IoTconnection lightWeightM2M, selectedThing;
     private final ThingsList thingsList;
     private final ExportData exportData;
+    private double wheelLoaderAngle;
     
     public Status(Core core) {
         this.core = core;
@@ -86,6 +87,14 @@ public class Status {
     
     public ExportData getExportData() {
         return exportData;
+    }
+    
+    public double getWheelLoaderAngle() {
+        return wheelLoaderAngle;
+    }
+    
+    public void setWheelLoaderAngle(double angle) {
+        wheelLoaderAngle = angle;
     }
     
     
