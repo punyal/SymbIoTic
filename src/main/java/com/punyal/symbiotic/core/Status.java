@@ -24,6 +24,7 @@
 package com.punyal.symbiotic.core;
 
 import com.punyal.symbiotic.core.export.ExportData;
+import com.punyal.symbiotic.core.feature.filesystem.FileSystem;
 import com.punyal.symbiotic.core.net.IoTconnection;
 import com.punyal.symbiotic.core.net.ThingsList;
 
@@ -40,6 +41,7 @@ public class Status {
     private final ThingsList thingsList;
     private final ExportData exportData;
     private double wheelLoaderAngle;
+    private FileSystem fileSystem;
     
     public Status(Core core) {
         this.core = core;
@@ -97,5 +99,12 @@ public class Status {
         wheelLoaderAngle = angle;
     }
     
+    public FileSystem getFileSystem() {
+        return fileSystem;
+    }
+    
+    public void setFileSystem(FileSystem fileSystem) {
+        this.fileSystem = fileSystem;
+    }
     
 }

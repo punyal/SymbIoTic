@@ -25,6 +25,7 @@ package com.punyal.symbiotic.controllers;
 
 import static com.punyal.symbiotic.constants.ConstantsGUI.*;
 import com.punyal.symbiotic.core.Core;
+import com.punyal.symbiotic.core.feature.filesystem.FSthread;
 import com.punyal.symbiotic.core.feature.filesystem.FileEntry;
 import com.punyal.symbiotic.core.feature.filesystem.FileSystem;
 import com.punyal.symbiotic.core.feature.ipso.AccThread;
@@ -846,23 +847,39 @@ public class SymbIoTicGUIController implements Initializable {
     private TableView tableViewFS;
     @FXML
     private ToggleButton toggleButtonConnect;
+    @FXML
+    private Button buttonFSget;
     
-    
-    private FileSystem fileSystem;
+    private FSthread fsThread;
     
     private void initFeatureFileSystem() {
-        fileSystem = new FileSystem(tableViewFS);
+        core.getStatus().setFileSystem(new FileSystem(tableViewFS));
     }
     
     @FXML void handleToggleButtonConnect(ActionEvent e) {
         if (toggleButtonConnect.selectedProperty().getValue()) {
             toggleButtonConnect.setText("Disconnect");
-            
+            fsThread = new FSthread(core);
+            fsThread.startThread();
+            buttonFSget.setDisable(false);
         } else {
             toggleButtonConnect.setText("connect");
-            
+            fsThread.stopThread();
+            buttonFSget.setDisable(true);
         }
-        fileSystem.init();
+        core.getStatus().getFileSystem().init();
+    }
+    
+    public boolean isFSconnected() {
+        return toggleButtonConnect.selectedProperty().getValue();
+    }
+    
+    @FXML void handleButtonFSget(ActionEvent e) {
+        FileEntry selected = (FileEntry)tableViewFS.getSelectionModel().getSelectedItem();
+        if (selected == null) return;
+        
+        System.out.println(selected.getName());
+        
     }
   
     

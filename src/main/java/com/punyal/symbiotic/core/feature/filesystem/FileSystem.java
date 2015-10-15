@@ -49,8 +49,8 @@ public class FileSystem {
         colStatus.prefWidthProperty().bind(table.widthProperty().divide(4));
         
         colName.setCellValueFactory(new PropertyValueFactory<FileEntry,String>("name"));
-        colSize.setCellValueFactory(new PropertyValueFactory<FileEntry,Integer>(""));
-        colStatus.setCellValueFactory(new PropertyValueFactory<FileEntry,Integer>(""));
+        colSize.setCellValueFactory(new PropertyValueFactory<FileEntry,Integer>("size"));
+        colStatus.setCellValueFactory(new PropertyValueFactory<FileEntry,Integer>("status"));
         
         table.getColumns().addAll(colName, colSize, colStatus);
         

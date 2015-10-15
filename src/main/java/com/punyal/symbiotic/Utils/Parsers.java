@@ -83,7 +83,7 @@ public class Parsers {
         return ByteArray2String(hexStringToByteArray(s));
     }
     
-    public static JSONObject parseMulleJSONData (String s) {
+    public static JSONObject parseMulleJSONData(String s) {
         JSONObject json, tmp;
         String data;
         

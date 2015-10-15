@@ -45,4 +45,5 @@ public class ConstantsNet {
     public static final String RESOURCE_BATTERY = "power";
     public static final String RESOURCE_STRAIN = "strain";
     public static final String RESOURCE_ANGLE = "angle";
+    public static final String RESOURCE_FILE_SYSTEM = "FileSystemPro";
 }
