@@ -50,42 +50,45 @@ public class Strain {
             
             @Override
             public void incomingData(CoapResponse response) {
-                //System.out.println(response.getResponseText());
-                JSONObject json = Parsers.parseMulleJSONData(response.getResponseText());
-                //System.out.println(json);
-                int strain = Integer.parseInt(json.get("strain").toString());
-                boolean alarm = Integer.parseInt(json.get("alarm").toString()) == 1;
-                        
-                // to percent max 10000
+                System.out.println("StrainResponse: "+response.getResponseText());
                 
-                strain /= 100;
+                if (!response.getResponseText().isEmpty()) {
                 
-                if (core.getController().isAnimated()) {                  
-                    if (alarm) {
-                        // DO SOMETHING....
+                    JSONObject json = Parsers.parseMulleJSONData(response.getResponseText());
+                    //System.out.println(json);
+                    int strain = Integer.parseInt(json.get("strain").toString());
+                    boolean alarm = Integer.parseInt(json.get("alarm").toString()) == 1;
+
+                    // to percent max 10000
+
+                    strain /= 100;
+
+                    if (core.getController().isAnimated()) {                  
+                        if (alarm) {
+                            // DO SOMETHING....
+                        }
+                        core.getStatus().setStrainLevel(strain, alarm);
+
                     }
-                    core.getStatus().setStrainLevel(strain, alarm);
-                    
+
+                    // Save data to file
+                    try {
+                        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                        CborBuilder cborBuilder = new CborBuilder();
+
+                        cborBuilder.add("Strain");
+                        cborBuilder.add(Integer.parseInt(json.get("time").toString()));
+                        cborBuilder.add(Integer.parseInt(json.get("strain").toString()));
+                        cborBuilder.add(Integer.parseInt(json.get("alarm").toString()));
+
+                        new CborEncoder(baos).encode(cborBuilder.build());
+
+                        core.getStatus().getExportData().save2File(baos.toByteArray());
+
+                    } catch (NumberFormatException | CborException ex) {
+                        System.out.println("Error "+ex);
+                    }
                 }
-                
-                // Save data to file
-                try {
-                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                    CborBuilder cborBuilder = new CborBuilder();
-
-                    cborBuilder.add("Strain");
-                    cborBuilder.add(Integer.parseInt(json.get("time").toString()));
-                    cborBuilder.add(Integer.parseInt(json.get("strain").toString()));
-                    cborBuilder.add(Integer.parseInt(json.get("alarm").toString()));
-
-                    new CborEncoder(baos).encode(cborBuilder.build());
-
-                    core.getStatus().getExportData().save2File(baos.toByteArray());
-
-                } catch (NumberFormatException | CborException ex) {
-                    System.out.println("Error "+ex);
-                }
-                
             }
             
             @Override

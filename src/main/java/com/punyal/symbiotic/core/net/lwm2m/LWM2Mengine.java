@@ -63,7 +63,7 @@ public class LWM2Mengine extends Thread{
     
     @Override
     public void run() {
-        System.out.println("Starting LWM2MEngine...");
+        System.out.println("Starting LwM2MEngine...");
         EngineState state = EngineState.STOP;
         int timeout = 1000;
         String tmp = "";
@@ -111,6 +111,8 @@ public class LWM2Mengine extends Thread{
                                                                
                                 core.getStatus().getThingsList().checkNewListJSON(listJSON);
                             }
+                            
+                            this.stopEngine(); // No continuous refresh
                         }
                             
                         else
@@ -122,7 +124,7 @@ public class LWM2Mengine extends Thread{
                     case NOT_CONNECTED:
                         core.getClientController().LWM2Mdisconnected();
                         state = EngineState.STOP;
-                        //stopEngine(); // Kill if it's not connected
+                        stopEngine(); // Kill if it's not connected
                         break;
                     default: // Not supported
                         stopEngine();
@@ -138,7 +140,7 @@ public class LWM2Mengine extends Thread{
                 }
             }
         } finally {
-            System.out.println("Killing LWM2MEngine...");
+            System.out.println("Killing LwM2MEngine...");
         }
         
         

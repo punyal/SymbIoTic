@@ -23,7 +23,6 @@
  */
 package com.punyal.symbiotic.core.net;
 
-import static com.punyal.symbiotic.constants.ConstantsJSON.*;
 import com.punyal.symbiotic.core.Core;
 import com.punyal.symbiotic.core.net.lwm2m.LWM2Mutils;
 import javafx.scene.control.TreeItem;
@@ -51,15 +50,28 @@ public class ThingThread extends Thread{
         this.start();
     }
     
+    
+    /**
+     * Loading LWM2M params from Mulle
+     * 
+     * /3/0/0 - Manufacturer
+     * /3/0/1 - Model Number
+     * /3/0/2 - Serial Number
+     * /3/0/3 - Firmware Version
+     * 
+     * 
+     */
+    
+    
     @Override
-    public void run() {
+    public void run() { // Load LWM2M params from mulle
         CoapResponse response;
-        String uri = "coap://"+thing.getAddress()+":"+thing.getPort()+"/3";
-        //System.out.println(uri);
+        String uri = "coap://"+thing.getAddress()+":"+thing.getPort()+"/3"; // <- TODO: Fix this
+        System.out.println(uri);
         coapClient.setURI(uri);
         response = coapClient.get();
         if (response != null) {
-            //System.out.println(response.getResponseText());
+            System.out.println(response.getResponseText());
             JSONObject json = LWM2Mutils.decodeM2MResponse(response.getResponseText());
             synchronized (this){
                 thing.addDeviceInfo(json);

@@ -37,6 +37,7 @@ import org.json.simple.JSONObject;
 public class Thing {
     // LWM2M parameters - from server
     private final String registrationId;
+    private final String endPoint;
     private final InetAddress address;
     private final int port;
     private ArrayList<String> objectLinks;
@@ -49,11 +50,16 @@ public class Thing {
     
     
     public Thing(JSONObject json) throws UnknownHostException {
+        endPoint = json.get(JSON_ENDPOINT).toString();
         registrationId = json.get(JSON_REGISTRATIONID).toString();
         address = InetAddress.getByName(json.get(JSON_ADDRESS).toString().substring(1));
         port = Integer.parseInt(json.get(JSON_PORT).toString());
         objectLinks = LWM2Mutils.parseRAWobjectLinks(json.get(JSON_OBJECTLINKS).toString());
         checked = false;
+    }
+    
+    public String getEndPoint() {
+        return endPoint;
     }
     
     public String getID() {

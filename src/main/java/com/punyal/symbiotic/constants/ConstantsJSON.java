@@ -35,6 +35,7 @@ public class ConstantsJSON {
     public static final String JSON_OBJECTLINKS = "objectLinks";
     public static final String JSON_PORT = "port";
     public static final String JSON_REGISTRATIONID = "registrationId";
+    public static final String JSON_ENDPOINT = "endPoint";
     
     // LWM2M
     public static final String JSON_MANUFACTURER = "manufacturer";

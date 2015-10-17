@@ -107,7 +107,7 @@
                             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                  <children>
                                     <TableView fx:id="tableViewFS" layoutX="40.0" layoutY="48.0" prefHeight="346.0" prefWidth="372.0" />
-                                    <ToggleButton fx:id="toggleButtonConnect" layoutX="40.0" layoutY="408.0" maxWidth="100.0" minWidth="100.0" mnemonicParsing="false" onAction="#handleToggleButtonConnect" prefWidth="100.0" text="ToggleButton" />
+                                    <ToggleButton fx:id="toggleButtonConnect" layoutX="40.0" layoutY="408.0" maxWidth="100.0" minWidth="100.0" mnemonicParsing="false" onAction="#handleToggleButtonConnect" prefWidth="100.0" text="Connect" />
                                     <Button fx:id="buttonFSget" layoutX="151.0" layoutY="408.0" mnemonicParsing="false" onAction="#handleButtonFSget" text="Get File" />
                                  </children>
                               </AnchorPane>

@@ -83,33 +83,34 @@ public class BatteryThread extends Thread {
                     response = coapClient.get();
                     
                     if (response != null) {
-                        //System.out.println(response.getResponseText());
-                        
-                        json = Parsers.parseMulleJSONData(response.getResponseText());
-                        //System.out.println(json);
-                        
-                        battery = Integer.parseInt(json.get("Vbat").toString());
-                        // adjust to percent (5000 mV)
-                        battery /= 50;
-                        System.out.println(battery);
-                        core.getStatus().setBatteryLevel(battery);
-                        
-                        // Save data to file
-                        try {
-                            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                            CborBuilder cborBuilder = new CborBuilder();
-                            
-                            cborBuilder.add("Battery");
-                            cborBuilder.add(Integer.parseInt(json.get("time").toString()));
-                            cborBuilder.add(Integer.parseInt(json.get("Vbat").toString()));
-                            cborBuilder.add(Integer.parseInt(json.get("Vchar").toString()));
+                        System.out.println(response.getResponseText());
+                        if (!response.getResponseText().isEmpty()) {
+                            json = Parsers.parseMulleJSONData(response.getResponseText());
+                            //System.out.println(json);
 
-                            new CborEncoder(baos).encode(cborBuilder.build());
-                            
-                            core.getStatus().getExportData().save2File(baos.toByteArray());
-                            
-                        } catch (NumberFormatException | CborException ex) {
-                            System.out.println("Error "+ex);
+                            battery = Integer.parseInt(json.get("Vbat").toString());
+                            // adjust to percent (5000 mV)
+                            battery /= 50;
+                            System.out.println(battery);
+                            core.getStatus().setBatteryLevel(battery);
+
+                            // Save data to file
+                            try {
+                                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                                CborBuilder cborBuilder = new CborBuilder();
+
+                                cborBuilder.add("Battery");
+                                cborBuilder.add(Integer.parseInt(json.get("time").toString()));
+                                cborBuilder.add(Integer.parseInt(json.get("Vbat").toString()));
+                                cborBuilder.add(Integer.parseInt(json.get("Vchar").toString()));
+
+                                new CborEncoder(baos).encode(cborBuilder.build());
+
+                                core.getStatus().getExportData().save2File(baos.toByteArray());
+
+                            } catch (NumberFormatException | CborException ex) {
+                                System.out.println("Error "+ex);
+                            }
                         }
                     }
                 }

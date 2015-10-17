@@ -36,8 +36,8 @@ public class Constants {
     
     public static final String PROPERTY_DEFAULT_ADDRESS = "Defaultddress";
     public static final String PROPERTY_DEFAULT_PORT = "DefaultPort";
-    public static final String PROPERTY_LIGHTWEIGHTM2M_ADDRESS = "LwM2MAddress";
-    public static final String PROPERTY_LIGHTWEIGHTM2M_PORT = "LwM2MPort";
+    public static final String PROPERTY_LIGHTWEIGHTM2M_ADDRESS = "LWM2MAddress";
+    public static final String PROPERTY_LIGHTWEIGHTM2M_PORT = "LWM2MPort";
     public static final String PROPERTY_THING_ADDRESS = "ThingAddress";
     public static final String PROPERTY_THING_PORT = "ThingPort";
 }

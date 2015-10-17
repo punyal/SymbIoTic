@@ -88,19 +88,20 @@ public class Parsers {
         String data;
         
         json = new JSONObject();
-        tmp = (JSONObject) JSONValue.parse(s);
-        
-        // Save base time
-        json.put("time", tmp.get("bt"));
-        
-        JSONArray slideContent = (JSONArray)tmp.get("e");
-        Iterator i = slideContent.iterator();
-        
-        while (i.hasNext()) {
-            JSONObject slide = (JSONObject) i.next();
-            json.put(slide.get("n"), slide.get("v"));
-        }
-        
+        try {
+            tmp = (JSONObject) JSONValue.parse(s);
+
+            // Save base time
+            json.put("time", tmp.get("bt"));
+
+            JSONArray slideContent = (JSONArray)tmp.get("e");
+            Iterator i = slideContent.iterator();
+
+            while (i.hasNext()) {
+                JSONObject slide = (JSONObject) i.next();
+                json.put(slide.get("n"), slide.get("v"));
+            }
+        } catch (NullPointerException e) {}
         return json;
     }
     
