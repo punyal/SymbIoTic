@@ -83,7 +83,7 @@ public class BatteryThread extends Thread {
                     response = coapClient.get();
                     
                     if (response != null) {
-                        System.out.println(response.getResponseText());
+                        System.out.println("BatteryResponse:"+response.getResponseText());
                         if (!response.getResponseText().isEmpty()) {
                             json = Parsers.parseMulleJSONData(response.getResponseText());
                             //System.out.println(json);
@@ -91,7 +91,7 @@ public class BatteryThread extends Thread {
                             battery = Integer.parseInt(json.get("Vbat").toString());
                             // adjust to percent (5000 mV)
                             battery /= 50;
-                            System.out.println(battery);
+                            //System.out.println(battery);
                             core.getStatus().setBatteryLevel(battery);
 
                             // Save data to file

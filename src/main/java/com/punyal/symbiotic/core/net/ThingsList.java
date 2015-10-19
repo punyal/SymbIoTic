@@ -23,8 +23,10 @@
  */
 package com.punyal.symbiotic.core.net;
 
+import static com.punyal.symbiotic.constants.ConstantsGUI.*;
 import static com.punyal.symbiotic.constants.ConstantsJSON.*;
 import com.punyal.symbiotic.core.Core;
+import com.punyal.symbiotic.core.net.lwm2m.LWM2Mthread;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
@@ -53,6 +55,14 @@ public class ThingsList {
         return null;
     }
     
+    public Thing findThingByEndPoint(String endPoint) {
+        for (Thing thing : list) {
+            if (thing.getEndPoint().equals(endPoint))
+                return thing;
+        }
+        return null;
+    }
+    
     public int size() {
         return list.size();
     }
@@ -67,10 +77,10 @@ public class ThingsList {
         //node.getChildren().add(level1);
         
         
-        level1 = new TreeItem<>("IP: "+thing.getAddress());
+        level1 = new TreeItem<>(TREE_IP+thing.getAddress());
         node.getChildren().add(level1);
         
-        level1 = new TreeItem<>("Port: "+thing.getPort());
+        level1 = new TreeItem<>(TREE_PORT+thing.getPort());
         node.getChildren().add(level1);
         
         level1 = new TreeItem<>("Resources");
@@ -89,6 +99,8 @@ public class ThingsList {
         // Request directly the information to the Thing.
         //ThingThread thingThread = new ThingThread(core, thing);
         //thingThread.startThread();
+        LWM2Mthread lwThread = new LWM2Mthread(core, thing);
+        lwThread.startThread();
         
     }
     

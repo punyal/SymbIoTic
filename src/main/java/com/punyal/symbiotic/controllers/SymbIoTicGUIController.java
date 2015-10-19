@@ -40,18 +40,12 @@ import java.util.ResourceBundle;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
-import javafx.beans.property.ReadOnlyStringWrapper;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableArray;
-import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Side;
-import javafx.scene.AmbientLight;
 import javafx.scene.DepthTest;
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -70,14 +64,8 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TabPane;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
 import javafx.scene.control.ToggleButton;
-import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeTableColumn;
-import javafx.scene.control.TreeTableView;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -86,9 +74,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
 import javafx.scene.shape.Cylinder;
-import javafx.scene.shape.MeshView;
 import javafx.scene.shape.Sphere;
-import javafx.scene.shape.TriangleMesh;
 import javafx.scene.transform.Rotate;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -133,14 +119,35 @@ public class SymbIoTicGUIController implements Initializable {
     @FXML
     private Menu menuTitle;
     @FXML
-    private MenuItem menuAbout, menuClose, menuExportPNG;
+    private MenuItem menuAbout, menuClose;
+    
+    @FXML
+    private Button buttonClose, buttonAbout;
 
     /* Client Part */
     @FXML
     private ToggleButton toggleButtonClient;
 
     @FXML
+    private void handleMenuAbout(ActionEvent e) throws IOException {
+        System.out.println("ShowAbout Menu");
+        core.getConfiguration().getAboutStageInfo().getStage().show();
+    }
+    
+    @FXML
     private void handleMenuClose(ActionEvent e) throws IOException {
+        Platform.exit();
+        System.exit(0);
+    }
+
+    @FXML
+    private void handleButtonAbout(ActionEvent e) throws IOException {
+        System.out.println("ShowAbout Menu");
+        core.getConfiguration().getAboutStageInfo().getStage().show();
+    }
+    
+    @FXML
+    private void handleButtonClose(ActionEvent e) throws IOException {
         Platform.exit();
         System.exit(0);
     }
@@ -196,7 +203,7 @@ public class SymbIoTicGUIController implements Initializable {
     @FXML // Strain Gauge
     private SimpleMetroArcGauge metroGaugeStrain;
     @FXML
-    Label labelStrain;
+    Label labelStrain, labelManufacturer, labelModel, labelSerial, labelFirmware;
     private Strain strain;
     
     
@@ -241,6 +248,11 @@ public class SymbIoTicGUIController implements Initializable {
     }
     
     private void initFeatureIPSO() {
+        /* LWM2M Info */
+        labelManufacturer.setText("");
+        labelModel.setText("");
+        labelSerial.setText("");
+        labelFirmware.setText("");
         /* Battery Gauge */
         metroGaugeBattery.setMinValue(0);
         metroGaugeBattery.setMaxValue(100);
@@ -305,6 +317,12 @@ public class SymbIoTicGUIController implements Initializable {
         animatorIPSO.start();
     }
     
+    public void setLWM2MInfo(String manufacturer, String model, String serial, String firmware) {
+        labelManufacturer.setText(manufacturer);
+        labelModel.setText(model);
+        labelSerial.setText("SN: "+serial);
+        labelFirmware.setText(firmware);
+    }
     
     private void animateBattery() {
         core.getController().getBatteryGauge().setValue(core.getStatus().getBatteryLevel());
@@ -374,17 +392,6 @@ public class SymbIoTicGUIController implements Initializable {
         core.getStatus().setStrainLevel(0, false);
     }
     
-    @FXML
-    private void handleButtonExportPNG(ActionEvent e) throws IOException {
-        WritableImage image = lineChartIPSO.snapshot(new SnapshotParameters(), null);
-        
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Save as PNG");
-        File file = fileChooser.showSaveDialog(core.getConfiguration().getMainStageInfo().getStage());
-        System.out.println(file);
-        if (file != null) 
-            ImageIO.write(SwingFXUtils.fromFXImage(image, null), "png", file);
-    }
     
     
     
@@ -402,7 +409,14 @@ public class SymbIoTicGUIController implements Initializable {
     
     @FXML
     private void handleButtonSave2PNG(ActionEvent e) throws IOException {
+        WritableImage image = lineChartIPSO.snapshot(new SnapshotParameters(), null);
         
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save as PNG");
+        File file = fileChooser.showSaveDialog(core.getConfiguration().getMainStageInfo().getStage());
+        System.out.println(file);
+        if (file != null) 
+            ImageIO.write(SwingFXUtils.fromFXImage(image, null), "png", file);
     }
     
 

@@ -31,12 +31,17 @@ public class ConstantsGUI {
     public ConstantsGUI() {}
     
     // GUI Client window offsets
-    public static final int CLIENT_X_OFFSET = 40;
-    public static final int CLIENT_Y_OFFSET = 48;
+    public static final int CLIENT_X_OFFSET = 30;
+    public static final int CLIENT_Y_OFFSET = 20;
+    
+    // GUI About window sizes
+    public static final int ABOUT_WIDTH = 1200;
+    public static final int ABOUT_HEIGHT = 700;
     
     // GUI window names
     public static final String WINDOW_SYMBIOTIC = "symbiotic";
     public static final String WINDOW_CLIENT = "client";
+    public static final String WINDOW_ABOUT = "about";
     
     // ACC Chart
     public static final int MAX_DATA_POINTS = 2000;
@@ -49,8 +54,18 @@ public class ConstantsGUI {
     // Tree
     public static final String TREE_ROOT = "LWM2M Devices";
     public static final String TREE_IP = "IP: ";
+    public static final String TREE_PORT = "Port: ";
     
     // IPSO
     public static final String IPSO_RECORD_DATA = "Record Data";
     public static final String IPSO_RECORDING = "Recording...";
+    
+    // ABOUT
+    public static final String SYMBIOTIC_ABOUT = 
+            "SymbIoTic is a tool developed by:\n"+
+            "Pablo Puñal Pereira <pablo.punal@ltu.se>\n"+
+            "\nSymbIoTic is a GUI for Mulle IoT Technology\n"+
+            "Some projects like Rockvolt and Wheel-Loader are using\n"+
+            "it, but it is also usefull to bench performances of\n"+
+            "network, power consumption...";
 }

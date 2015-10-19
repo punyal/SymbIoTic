@@ -86,35 +86,36 @@ public class Thing {
         this.objectLinks = objectLinks;
     }
     
-    public void addDeviceInfo(JSONObject json) {
-        if (checked)
-            return;
-        checked = true;
-        try {
-            manufacturer = json.get(JSON_MANUFACTURER).toString();
-            modelNumber = json.get(JSON_MODEL_NUMBER).toString();
-            serialNumber = json.get(JSON_SERIAL_NUMBER).toString();
-            firmwareVersion = json.get(JSON_FIRMWARE_VERSION).toString();
-        } catch (NullPointerException ex) {}
-        
-    }
-    
     public String getManufacturer() {
         return manufacturer;
+    }
+    
+    public void setManufacturer(String manufacturer) {
+        this.manufacturer = manufacturer;
     }
     
     public String getModelNumber() {
         return modelNumber;
     }
     
+    public void setModelNumber(String modelNumber) {
+        this.modelNumber = modelNumber;
+    }
+    
     public String getSerialNumber() {
         return serialNumber;
+    }
+    
+    public void setSerialNumber(String serialNumber) {
+        this.serialNumber = serialNumber;
     }
     
     public String getFirmwareVersion() {
         return firmwareVersion;
     }
     
-    
+    public void setFirmwareVersion(String firmwareVersion) {
+        this.firmwareVersion = firmwareVersion;
+    }
     
 }

@@ -36,22 +36,14 @@ import org.eclipse.californium.core.CoapResponse;
  */
 public abstract class CoapObserver {
     private final Core core;
-    private final CoapClient coapClient;
+    private CoapClient coapClient;
     private final CoapHandler coapHandler;
     private CoapObserveRelation relation;
+    private final String path;
     
     public CoapObserver(Core core, String path) {
         this.core = core;
-        String uri;
-        // Check if it's an IPv4 or IPv6
-        if (core.getStatus().getSelectedThing().getInetAddress() instanceof Inet6Address)
-            uri = "coap://["+core.getStatus().getSelectedThing().getAddress()+"]:"+core.getStatus().getSelectedThing().getPort()+"/"+path;
-        else
-            uri = "coap://"+core.getStatus().getSelectedThing().getAddress()+":"+core.getStatus().getSelectedThing().getPort()+"/"+path;
-        
-        System.out.println(uri);
-        coapClient = new CoapClient(uri);
-        coapClient.setTimeout(60000);
+        this.path = path;
         coapHandler = new CoapHandler() {
             @Override
             public void onLoad(CoapResponse cr) {
@@ -66,7 +58,19 @@ public abstract class CoapObserver {
     }
     
     public void startObserve() {
+        
+        String uri;
+        // Check if it's an IPv4 or IPv6
+        if (core.getStatus().getSelectedThing().getInetAddress() instanceof Inet6Address)
+            uri = "coap://["+core.getStatus().getSelectedThing().getAddress()+"]:"+core.getStatus().getSelectedThing().getPort()+"/"+path;
+        else
+            uri = "coap://"+core.getStatus().getSelectedThing().getAddress()+":"+core.getStatus().getSelectedThing().getPort()+"/"+path;
+        
+        System.out.println(uri);
+        coapClient = new CoapClient(uri);
+        coapClient.setTimeout(60000);
         System.out.println("Observing: "+coapClient.getURI());
+        
         relation = coapClient.observe(coapHandler);
     }
     

@@ -86,7 +86,7 @@
             <TreeView fx:id="treeViewClients" prefHeight="526.0" prefWidth="300.0" />
             <Pane fx:id="paneBotton" prefHeight="30.0">
                <children>
-                  <Label fx:id="labelSelectedClient" alignment="CENTER" layoutX="50.0" layoutY="6.0" prefHeight="20.0" prefWidth="200.0" text="Selected Client Info" />
+                  <Label fx:id="labelSelectedClient" alignment="CENTER" layoutX="-4.0" layoutY="6.0" prefHeight="20.0" prefWidth="300.0" text="No device selected" />
                </children>
             </Pane>
          </children>

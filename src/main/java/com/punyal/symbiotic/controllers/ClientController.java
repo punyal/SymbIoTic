@@ -26,6 +26,7 @@ package com.punyal.symbiotic.controllers;
 import static com.punyal.symbiotic.constants.ConstantsGUI.*;
 import static com.punyal.symbiotic.constants.ConstantsNet.*;
 import com.punyal.symbiotic.core.Core;
+import com.punyal.symbiotic.core.net.Thing;
 import com.punyal.symbiotic.core.net.lwm2m.LWM2Mengine;
 import java.io.IOException;
 import java.net.URL;
@@ -146,17 +147,39 @@ public class ClientController implements Initializable {
                     if (temp == null || temp.getParent() == null) return;
                     while (!temp.getParent().getValue().equals(TREE_ROOT))
                         temp = temp.getParent();
+
+                    String ip = "", port = "";
                     
+                    System.out.println(temp.getValue());
+                    
+                    Thing thing = core.getStatus().getThingsList().findThingByEndPoint(temp.getValue());
+                    
+                    if (thing != null) {
+                        core.getStatus().getSelectedThing().setAddress(thing.getAddress());
+                        core.getStatus().getSelectedThing().setPort(thing.getPort());
+                        // update GUI
+                        labelSelectedClient.setText(thing.getAddress()+"@"+thing.getPort());
+                        core.getController().setLWM2MInfo(thing.getManufacturer(), thing.getModelNumber(), thing.getSerialNumber(), thing.getFirmwareVersion());
+                    } 
+                    
+                    /*
                     for (TreeItem<String> item : temp.getChildren()) {
-                        if (item.getValue().substring(0, TREE_IP.length()).equals(TREE_IP)) {
-                            String ip = item.getValue().substring(TREE_IP.length(), item.getValue().indexOf("@"));
-                            int port = Integer.parseInt(item.getValue().substring(item.getValue().indexOf("@")+1));
-                            core.getStatus().getSelectedThing().setAddress(ip);
-                            core.getStatus().getSelectedThing().setPort(port);
-                            // update GUI
-                            labelSelectedClient.setText(ip+":"+port);
-                        }
+                        if (item.getValue().substring(0, TREE_IP.length()).equals(TREE_IP))
+                            ip = item.getValue().substring(TREE_IP.length());
+                        if (item.getValue().substring(0, TREE_PORT.length()).equals(TREE_PORT))
+                            port = item.getValue().substring(TREE_PORT.length());
                     }
+                    
+                    if (!ip.isEmpty() && !port.isEmpty()) {
+                        //System.out.println(TREE_IP+ip+" "+TREE_PORT+port);
+                        core.getStatus().getSelectedThing().setAddress(ip);
+                        core.getStatus().getSelectedThing().setPort(Integer.parseInt(port));
+                        // update GUI
+                        labelSelectedClient.setText(ip+"@"+port);
+                    }*/
+                    
+                    
+                    
                 }
             }
         );

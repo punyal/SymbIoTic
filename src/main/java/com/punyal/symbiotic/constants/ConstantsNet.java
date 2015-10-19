@@ -38,12 +38,19 @@ public class ConstantsNet {
     public static final int LWM2M_CODE_MODEL_NUMBER = 1;
     public static final int LWM2M_CODE_SERIAL_NUMBER = 2;
     public static final int LWM2M_CODE_FIRMWARE_VERSION = 3;
+    public static final String LWM2M_RESOURCE_MANUFACTURER = "/3/0/0";
+    public static final String LWM2M_RESOURCE_MODEL_NUMBER = "/3/0/1";
+    public static final String LWM2M_RESOURCE_SERIAL_NUMBER = "/3/0/2";
+    public static final String LWM2M_RESOURCE_FIRMWARE_VERSION = "/3/0/3";
     
     // Resources names
+    public static final String RESOURCE_ACCELEROMETER = "acc";
     public static final String RESOURCE_ACCELEROMETER_FILTER = "acc/filter";
     public static final String RESOURCE_ACCELEROMETER_CONTROL = "acc/ctrl";
     public static final String RESOURCE_BATTERY = "power";
     public static final String RESOURCE_STRAIN = "strain";
     public static final String RESOURCE_ANGLE = "angle";
     public static final String RESOURCE_FILE_SYSTEM = "FileSystemPro";
+    
+    
 }

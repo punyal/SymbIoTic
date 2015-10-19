@@ -32,7 +32,6 @@ import static com.punyal.symbiotic.constants.ConstantsNet.RESOURCE_STRAIN;
 import com.punyal.symbiotic.core.Core;
 import com.punyal.symbiotic.core.net.CoapObserver;
 import java.io.ByteArrayOutputStream;
-import javafx.scene.paint.Color;
 import org.eclipse.californium.core.CoapResponse;
 import org.json.simple.JSONObject;
 

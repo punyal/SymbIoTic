@@ -13,32 +13,26 @@
 <?import javafx.scene.layout.*?>
 <?import jfxtras.scene.control.*?>
 
-<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="740.0" prefWidth="1200.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.punyal.symbiotic.controllers.SymbIoTicGUIController">
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1200.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.punyal.symbiotic.controllers.SymbIoTicGUIController">
     <stylesheets>
         <URL value="@/styles/symbioticgui.css" />
     </stylesheets>
    <children>
-      <Label fx:id="windowTitle" alignment="CENTER" layoutX="400.0" prefHeight="20.0" prefWidth="400.0" text="SymbIoTic" />
-      <VBox layoutX="347.0" layoutY="20.0" prefHeight="720.0" prefWidth="1200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="20.0">
+      <Label fx:id="windowTitle" alignment="CENTER" layoutX="200.0" prefHeight="20.0" prefWidth="800.0" text="SymbIoTic" />
+      <VBox layoutX="347.0" layoutY="20.0" prefHeight="700.0" prefWidth="1200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="20.0">
          <children>
             <MenuBar fx:id="menuBar" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="0.0">
               <menus>
                 <Menu fx:id="menuTitle" mnemonicParsing="false" text="SymbIoTic">
                   <items>
-                    <MenuItem fx:id="menuAbout" mnemonicParsing="false" text="About" />
-                        <SeparatorMenuItem mnemonicParsing="false" />
-                        <Menu mnemonicParsing="false" text="Export">
-                          <items>
-                            <MenuItem fx:id="menuExportPNG" mnemonicParsing="false" onAction="#handleButtonExportPNG" text="as PNG" />
-                          </items>
-                        </Menu>
+                    <MenuItem fx:id="menuAbout" mnemonicParsing="false" onAction="#handleMenuAbout" text="About" />
                         <SeparatorMenuItem mnemonicParsing="false" />
                     <MenuItem fx:id="menuClose" mnemonicParsing="false" onAction="#handleMenuClose" text="Close" />
                   </items>
                 </Menu>
               </menus>
             </MenuBar>
-            <Pane maxHeight="-Infinity" minHeight="-Infinity" prefHeight="704.0" prefWidth="1200.0">
+            <Pane maxHeight="-Infinity" minHeight="-Infinity" prefHeight="650.0" prefWidth="1200.0">
                <children>
                   <TabPane fx:id="tabPaneFeatures" layoutX="20.0" layoutY="20.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="658.0" prefWidth="1160.0" styleClass="floating" tabClosingPolicy="UNAVAILABLE">
                     <tabs>
@@ -54,7 +48,7 @@
                                         <NumberAxis fx:id="accYaxis" side="LEFT" />
                                       </yAxis>
                                     </LineChart>
-                                    <HBox alignment="CENTER" layoutX="80.0" layoutY="490.0" prefHeight="131.0" prefWidth="1000.0">
+                                    <HBox alignment="CENTER" layoutY="490.0" prefHeight="131.0" prefWidth="1160.0">
                                        <children>
                                           <VBox alignment="CENTER" prefHeight="200.0" prefWidth="140.0">
                                              <children>
@@ -70,15 +64,41 @@
                                                 <Label alignment="CENTER" prefHeight="16.0" prefWidth="93.0" text="Strain" />
                                              </children>
                                           </VBox>
-                                          <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="200.0">
-                                             
-                                          </VBox>
-                                          <VBox alignment="CENTER" prefHeight="200.0" prefWidth="200.0">
+                                          <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="600.0">
+                                             <children>
+                                                <HBox prefHeight="24.0" prefWidth="300.0">
+                                                   <children>
+                                                      <Label alignment="CENTER_RIGHT" prefHeight="24.0" prefWidth="300.0" text="Manufacturer: " />
+                                                      <Label fx:id="labelManufacturer" prefHeight="24.0" prefWidth="300.0" text="?" />
+                                                   </children>
+                                                   <VBox.margin>
+                                                      <Insets top="15.0" />
+                                                   </VBox.margin>
+                                                </HBox>
+                                                <HBox prefHeight="24.0" prefWidth="300.0">
+                                                   <children>
+                                                      <Label alignment="CENTER_RIGHT" prefHeight="24.0" prefWidth="300.0" text="Model Type: " />
+                                                      <Label fx:id="labelModel" prefHeight="24.0" prefWidth="300.0" text="?" />
+                                                   </children>
+                                                </HBox>
+                                                <HBox prefHeight="24.0" prefWidth="300.0">
+                                                   <children>
+                                                      <Label alignment="CENTER_RIGHT" prefHeight="24.0" prefWidth="300.0" text="Firmware Version: " />
+                                                      <Label fx:id="labelFirmware" prefHeight="24.0" prefWidth="300.0" text="?" />
+                                                   </children>
+                                                </HBox>
+                                                <HBox prefHeight="24.0" prefWidth="300.0">
+                                                   <children>
+                                                      <Label fx:id="labelSerial" alignment="CENTER" prefHeight="24.0" prefWidth="600.0" text="?" />
+                                                   </children>
+                                                </HBox>
+                                             </children></VBox>
+                                          <VBox alignment="CENTER" prefHeight="200.0" prefWidth="150.0">
                                              <children>
                                                 <ToggleButton fx:id="toggleButtonIPSO" mnemonicParsing="false" onAction="#handleButtonIPSO" prefHeight="60.0" prefWidth="100.0" text="Start" />
                                              </children>
                                           </VBox>
-                                          <VBox alignment="CENTER" prefHeight="200.0" prefWidth="200.0">
+                                          <VBox alignment="CENTER" prefHeight="200.0" prefWidth="150.0">
                                              <children>
                                                 <Button fx:id="buttonSave2PNG" mnemonicParsing="false" onAction="#handleButtonSave2PNG" prefHeight="40.0" prefWidth="100.0" text="save to PNG" />
                                                 <ToggleButton fx:id="toggleButtonRecordData" mnemonicParsing="false" onAction="#handleButtonRecordData" prefHeight="40.0" prefWidth="100.0" text="record Data">
@@ -122,12 +142,14 @@
                   </TabPane>
                </children>
             </Pane>
-            <Label fx:id="buildNumber" prefHeight="16.0" prefWidth="97.0" text="release">
+            <Label fx:id="buildNumber" alignment="CENTER_RIGHT" prefHeight="16.0" prefWidth="97.0" text="release">
                <VBox.margin>
-                  <Insets left="6.0" />
+                  <Insets left="1080.0" />
                </VBox.margin>
             </Label>
          </children></VBox>
       <ToggleButton fx:id="toggleButtonClient" layoutX="5.0" layoutY="3.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleButtonClient" prefHeight="20.0" prefWidth="20.0" />
+      <Button fx:id="buttonClose" layoutX="1176.0" layoutY="4.0" maxHeight="20.0" maxWidth="20.0" minHeight="20.0" minWidth="20.0" mnemonicParsing="false" onAction="#handleButtonClose" prefHeight="20.0" prefWidth="20.0" />
+      <Button fx:id="buttonAbout" layoutX="1150.0" layoutY="4.0" maxHeight="20.0" maxWidth="20.0" minHeight="20.0" minWidth="20.0" mnemonicParsing="false" onAction="#handleButtonAbout" prefHeight="20.0" prefWidth="20.0" />
    </children>
 </AnchorPane>

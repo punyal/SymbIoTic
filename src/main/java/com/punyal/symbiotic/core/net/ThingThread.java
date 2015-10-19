@@ -66,58 +66,24 @@ public class ThingThread extends Thread{
     @Override
     public void run() { // Load LWM2M params from mulle
         CoapResponse response;
-        String uri = "coap://"+thing.getAddress()+":"+thing.getPort()+"/3"; // <- TODO: Fix this
+        String uri = "coap://"+thing.getAddress()+":"+thing.getPort()+"/3/0/0"; // <- TODO: Fix this
         System.out.println(uri);
         coapClient.setURI(uri);
         response = coapClient.get();
         if (response != null) {
             System.out.println(response.getResponseText());
-            JSONObject json = LWM2Mutils.decodeM2MResponse(response.getResponseText());
-            synchronized (this){
-                thing.addDeviceInfo(json);
-            }
-            // Update tree...
-            core.getClientController().removeFromTree(thing.getID());
             
-            TreeItem<String> node, level1, level2;
-            node = new TreeItem<>(thing.getSerialNumber());
-            node.setExpanded(false);
-
-            level1 = new TreeItem<>("ID: "+thing.getID());
-            node.getChildren().add(level1);
-
-
-            level1 = new TreeItem<>("IP: "+thing.getAddress()+"@"+thing.getPort());
-            node.getChildren().add(level1);
-
-
-            level1 = new TreeItem<>("Manufacturer: "+thing.getManufacturer());
-            node.getChildren().add(level1);
-
-
-            level1 = new TreeItem<>("Model Number: "+thing.getModelNumber());
-            node.getChildren().add(level1);
+            //JSONObject json = LWM2Mutils.decodeM2MResponse(response.getResponseText());
+            //synchronized (this){
+            //    thing.addDeviceInfo(json);
+            //}
             
-
-            level1 = new TreeItem<>("Firmware Version: "+thing.getFirmwareVersion());
-            node.getChildren().add(level1);
-
-            level1 = new TreeItem<>("Resources");
-            level1.setExpanded(false);
-
-            for (String link : thing.getObjectLinks()) {
-                if(!link.equals("</>;rt=\"oma.lwm2m\"")) {
-                    level2 = new TreeItem<>(link);
-                    level1.getChildren().add(level2);
-                }
-            }
-
-            node.getChildren().add(level1);
-            core.getClientController().add2Tree(node);
             
         } else {
             System.out.println("No response from "+thing.getID());
         }
+        
+        System.out.println("Killing ThingThread...");
     }
     
 }

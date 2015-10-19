@@ -25,6 +25,7 @@ package com.punyal.symbiotic;
 
 import com.punyal.symbiotic.Utils.UtilsGUI;
 import static com.punyal.symbiotic.constants.ConstantsGUI.*;
+import com.punyal.symbiotic.controllers.AboutController;
 import com.punyal.symbiotic.controllers.ClientController;
 import com.punyal.symbiotic.controllers.SymbIoTicGUIController;
 import com.punyal.symbiotic.core.Core;
@@ -34,6 +35,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 /**
@@ -77,6 +79,21 @@ public class SymbIoTic extends Application {
         
         core.getConfiguration().setClientStage(clientStage);
         /*--------------------------------------------------------------------*/
+        /* ----------------------- Loading about window --------------------- */
+        Stage aboutStage = new Stage();
+        FXMLLoader aboutloader = new FXMLLoader(getClass().getResource("/fxml/AboutGUI.fxml"));
+        UtilsGUI.configStage(aboutStage, (Parent) aboutloader.load(), WINDOW_ABOUT);
+        aboutStage.initOwner(stage);
+        //aboutStage.initModality(Modality.APPLICATION_MODAL);
+        aboutStage.setX(stage.getX());
+        aboutStage.setY(stage.getY());
+        AboutController aboutController = aboutloader.<AboutController>getController();
+        aboutController.setCore(core);
+        aboutController.init();
+        core.getConfiguration().setAboutStage(aboutStage);
+        
+        
+        /*--------------------------------------------------------------------*/
         /* Functionality */
         root.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
@@ -93,9 +110,9 @@ public class SymbIoTic extends Application {
                         event.getScreenX() - core.getConfiguration().getMainStageInfo().coordinates.getX(),
                         event.getScreenY() - core.getConfiguration().getMainStageInfo().coordinates.getY());
                 // Move Client window
-                core.getConfiguration().getClientStageInfo().setStageXY(
-                        core.getConfiguration().getMainStageInfo().getStage().getX() + CLIENT_X_OFFSET, 
-                        core.getConfiguration().getMainStageInfo().getStage().getY() + CLIENT_Y_OFFSET);
+                //core.getConfiguration().getClientStageInfo().setStageXY(
+                //        core.getConfiguration().getMainStageInfo().getStage().getX() + CLIENT_X_OFFSET, 
+                //        core.getConfiguration().getMainStageInfo().getStage().getY() + CLIENT_Y_OFFSET);
             }
         });
     }

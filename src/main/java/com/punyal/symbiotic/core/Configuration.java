@@ -37,6 +37,7 @@ public class Configuration {
     private final AppParameters app;
     private StageInfo mainStage;
     private StageInfo clientStage;
+    private StageInfo aboutStage;
     
     public Configuration(){
         app = AppCheck.checkApp(this.getClass().getProtectionDomain().getCodeSource().getLocation().toString());
@@ -76,6 +77,22 @@ public class Configuration {
     
     public StageInfo getClientStageInfo() {
         return clientStage;
+    }
+    
+    public void setAboutStage(Stage stage) {
+        aboutStage = new StageInfo(stage);
+    }
+    
+    public void setAboutStage(Stage stage, Coordinates coordinates) {
+        aboutStage = new StageInfo(stage, coordinates);
+    }
+    
+    public void setAboutStage(Stage stage, double x, double y) {
+        aboutStage = new StageInfo(stage, x, y);
+    }
+    
+    public StageInfo getAboutStageInfo() {
+        return aboutStage;
     }
     
     
