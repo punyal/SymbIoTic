@@ -50,7 +50,7 @@ public class FileSystem {
         
         colName.setCellValueFactory(new PropertyValueFactory<FileEntry,String>("name"));
         colSize.setCellValueFactory(new PropertyValueFactory<FileEntry,Integer>("size"));
-        colStatus.setCellValueFactory(new PropertyValueFactory<FileEntry,Integer>("status"));
+        colStatus.setCellValueFactory(new PropertyValueFactory<FileEntry,String>("status"));
         
         table.getColumns().addAll(colName, colSize, colStatus);
         
@@ -62,7 +62,7 @@ public class FileSystem {
         table.setItems(data);
     }
     
-    public void add(String name, Integer Size, Integer Status) {
+    public void add(String name, Integer Size, String Status) {
         data.add(new FileEntry(name, Size, Status));
     }
     

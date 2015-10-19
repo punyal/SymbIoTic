@@ -33,13 +33,13 @@ import javafx.beans.property.SimpleStringProperty;
 public class FileEntry {
     public SimpleStringProperty fileName = new SimpleStringProperty("<FileName>");
     public SimpleIntegerProperty fileSize = new SimpleIntegerProperty(0);
-    public SimpleIntegerProperty fileStatus = new SimpleIntegerProperty(0);
+    public SimpleStringProperty fileStatus = new SimpleStringProperty("Open");
     
     public FileEntry() {
-        this("<FileName>", 0, 0);
+        this("<FileName>", 0, "Open");
     }
     
-    public FileEntry(String fileName, Integer fileSize, Integer fileStatus) {
+    public FileEntry(String fileName, Integer fileSize, String fileStatus) {
         this.fileName.set(fileName);
         this.fileSize.set(fileSize);
         this.fileStatus.set(fileStatus);
@@ -53,7 +53,7 @@ public class FileEntry {
         return fileSize.get();
     }
     
-    public Integer getStatus() {
+    public String getStatus() {
         return fileStatus.get();
     }
 }

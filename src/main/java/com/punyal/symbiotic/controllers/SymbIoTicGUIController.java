@@ -366,7 +366,6 @@ public class SymbIoTicGUIController implements Initializable {
     }
 
     
-    
     @FXML
     private void handleButtonIPSO(ActionEvent e) throws IOException {
         if (toggleButtonIPSO.selectedProperty().getValue()) {
@@ -862,12 +861,17 @@ public class SymbIoTicGUIController implements Initializable {
     @FXML
     private ToggleButton toggleButtonConnect;
     @FXML
-    private Button buttonFSget;
+    private Button buttonFSget, buttonFSsend, buttonFSdelete;
     
     private FSthread fsThread;
     
     private void initFeatureFileSystem() {
         core.getStatus().setFileSystem(new FileSystem(tableViewFS));
+        tableViewFS.setEditable(false);
+        tableViewFS.setDisable(true);
+        buttonFSget.setDisable(true);
+        buttonFSsend.setDisable(true);
+        buttonFSdelete.setDisable(true);
     }
     
     @FXML void handleToggleButtonConnect(ActionEvent e) {
@@ -876,10 +880,16 @@ public class SymbIoTicGUIController implements Initializable {
             fsThread = new FSthread(core);
             fsThread.startThread();
             buttonFSget.setDisable(false);
+            buttonFSsend.setDisable(false);
+            buttonFSdelete.setDisable(false);
+            tableViewFS.setDisable(false);
         } else {
             toggleButtonConnect.setText("connect");
             fsThread.stopThread();
             buttonFSget.setDisable(true);
+            buttonFSsend.setDisable(true);
+            buttonFSdelete.setDisable(true);
+            tableViewFS.setDisable(true);
         }
         core.getStatus().getFileSystem().init();
     }
@@ -890,11 +900,23 @@ public class SymbIoTicGUIController implements Initializable {
     
     @FXML void handleButtonFSget(ActionEvent e) {
         FileEntry selected = (FileEntry)tableViewFS.getSelectionModel().getSelectedItem();
-        if (selected == null) return;
+        if (selected == null || selected.getName() == null) return;
         
-        System.out.println(selected.getName());
+        //System.out.println(selected.getName());
+        fsThread.getFile(selected.getName());
         
     }
   
-    
+    @FXML void handleButtonFSsend(ActionEvent e) {
+        fsThread.sendFile();
+    }
+  
+    @FXML void handleButtonFSdelete(ActionEvent e) {
+        FileEntry selected = (FileEntry)tableViewFS.getSelectionModel().getSelectedItem();
+        if (selected == null || selected.getName() == null) return;
+        
+        //System.out.println(selected.getName());
+        fsThread.deleteFile(selected.getName());
+        
+    }
 }
