@@ -23,7 +23,7 @@
  */
 package com.punyal.symbiotic.core.feature.wheelloader;
 
-import static com.punyal.symbiotic.constants.ConstantsNet.RESOURCE_ANGLE;
+import static com.punyal.symbiotic.constants.ConstantsNet.RESOURCE_RPM;
 import com.punyal.symbiotic.core.Core;
 import com.punyal.symbiotic.core.net.CoapObserver;
 import org.eclipse.californium.core.CoapResponse;
@@ -34,59 +34,40 @@ import org.json.simple.JSONValue;
  *
  * @author Pablo Puñal Pereira <pablo.punal@ltu.se>
  */
-public class AngleThread extends Thread {
+public class RPM {
     private final Core core;
-    private boolean running;
     private final CoapObserver observer;
     
-    public AngleThread(final Core core) {
+    public RPM(final Core core) {
         this.core = core;
-        this.setDaemon(true);
-        observer = new CoapObserver(core, RESOURCE_ANGLE) {
+        observer = new CoapObserver(core, RESOURCE_RPM) {
             
             @Override
             public void incomingData(CoapResponse response) {
-                try {
-                    //System.out.println(response.getResponseText());
+                //System.out.println("RPM Response: "+response.getResponseText());
+                if (!response.getResponseText().isEmpty()) {
                     JSONObject json = (JSONObject) JSONValue.parse(response.getResponseText());
-                    //System.out.println(json.get("v"));
-                    core.getStatus().setWheelLoaderAngle(-1*(Double.parseDouble(json.get("v").toString())+14));
-                } catch( NullPointerException ex) {}
-                                
+                    core.getStatus().setWheelLoaderRPM(Integer.parseInt(json.get("rpm").toString()));
+                    core.getStatus().setWheelLoaderCwTurns(Integer.parseInt(json.get("cwTurns").toString()));
+                    core.getStatus().setWheelLoaderAcwTurns(Integer.parseInt(json.get("acwTurns").toString()));
+                    core.getStatus().setWheelLoaderTemp(Float.parseFloat(json.get("T").toString()));
+                    
+                }
             }
             
             @Override
             public void error() {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                // Resource not observable acction
+                System.out.println("Resource not able to observe");
             }
         };
     }
     
-    public void startThread() {
-        this.start();
+    public void startObserve() {
         observer.startObserve();
     }
     
-    public void stopThread() {
-        running = false;
+    public void stopObserver() {
         observer.stopObserve();
-    }
-    
-    @Override
-    public void run() {
-        try {
-            while (running) {
-                // process data here....
-                try {
-                    Thread.sleep(1000); // 1 s
-                } catch (InterruptedException ex) {
-                    Thread.currentThread().interrupt(); // This should kill it propertly
-                }
-            }
-            
-        }
-        finally {
-            System.out.println("Killing AngleThread");
-        }
     }
 }

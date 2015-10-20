@@ -41,6 +41,11 @@ public class Status {
     private final ThingsList thingsList;
     private final ExportData exportData;
     private double wheelLoaderAngle;
+    private int wheelLoaderRPM;
+    private int wheelLoaderCwTurns;
+    private int wheelLoaderAcwTurns;
+    private float wheelLoaderTemp;
+    
     private FileSystem fileSystem;
     
     public Status(Core core) {
@@ -106,5 +111,36 @@ public class Status {
     public void setFileSystem(FileSystem fileSystem) {
         this.fileSystem = fileSystem;
     }
+ 
+    public int getWheelLoaderRPM() {
+        return wheelLoaderRPM;
+    }
     
+    public void setWheelLoaderRPM(int rpm) {
+        wheelLoaderRPM = rpm;
+    }
+ 
+    public int getWheelLoaderCwTurns() {
+        return wheelLoaderCwTurns;
+    }
+    
+    public void setWheelLoaderCwTurns(int cwTurns) {
+        wheelLoaderCwTurns = cwTurns;
+    }
+ 
+    public int getWheelLoaderAcwTurns() {
+        return wheelLoaderAcwTurns;
+    }
+    
+    public void setWheelLoaderAcwTurns(int acwTurns) {
+        wheelLoaderAcwTurns = acwTurns;
+    }
+ 
+    public float getWheelLoaderTemp() {
+        return wheelLoaderTemp;
+    }
+    
+    public void setWheelLoaderTemp(float temp) {
+        wheelLoaderTemp = temp;
+    }
 }

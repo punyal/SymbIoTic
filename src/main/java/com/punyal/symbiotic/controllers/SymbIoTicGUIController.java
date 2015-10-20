@@ -32,6 +32,7 @@ import com.punyal.symbiotic.core.feature.ipso.AccThread;
 import com.punyal.symbiotic.core.feature.ipso.BatteryThread;
 import com.punyal.symbiotic.core.feature.ipso.Strain;
 import com.punyal.symbiotic.core.feature.wheelloader.AngleThread;
+import com.punyal.symbiotic.core.feature.wheelloader.RPM;
 import com.punyal.symbiotic.core.feature.wheelloader.Xform;
 import java.io.File;
 import java.io.IOException;
@@ -236,6 +237,12 @@ public class SymbIoTicGUIController implements Initializable {
                 
                 //moleculeGroup.setRotateY(angle);
                 wheelGroup.setRotateY(core.getStatus().getWheelLoaderAngle());
+                wlSetValues(
+                        core.getStatus().getWheelLoaderRPM(),
+                        core.getStatus().getWheelLoaderCwTurns(),
+                        core.getStatus().getWheelLoaderAcwTurns(),
+                        core.getStatus().getWheelLoaderTemp()
+                );
                 //System.out.println(angle);
             }
         };
@@ -467,6 +474,16 @@ public class SymbIoTicGUIController implements Initializable {
     double mouseDeltaX;
     double mouseDeltaY;
     
+    @FXML
+    private Label labelWLrpm, labelWLcw, labelWLacw, labelWLtemp, lRPM, lCW, lACW, lTEM;
+     
+    public void wlSetValues(Integer rpm, Integer cw, Integer acw, Float temp) {
+        labelWLrpm.setText(""+rpm);
+        labelWLcw.setText(""+cw);
+        labelWLacw.setText(""+acw);
+        labelWLtemp.setText(""+temp);
+    }
+    
     private void initFeatureWheelLoader() {
         System.out.println("Loading wheel...");
         root.getChildren().add(world);
@@ -488,6 +505,8 @@ public class SymbIoTicGUIController implements Initializable {
         handleMouse(subSceneWheelLoader, root);
         
         core.getStatus().setWheelLoaderAngle(0);
+        rpm = new RPM(core);
+        wlSetValues(0, 0, 0, Float.valueOf(0));
     }
   
     private void buildCamera() {
@@ -834,6 +853,7 @@ public class SymbIoTicGUIController implements Initializable {
     ToggleButton toggleButtonWheelLoader;
     
     private AngleThread angleThread;
+    private RPM rpm;
     
     @FXML
     private void handleButtonWheelLoader(ActionEvent e) throws IOException {
@@ -841,9 +861,11 @@ public class SymbIoTicGUIController implements Initializable {
             toggleButtonWheelLoader.setText("STOP");
             angleThread = new AngleThread(core);
             angleThread.startThread();
+            rpm.startObserve();
         } else {
             toggleButtonWheelLoader.setText("START");
             angleThread.stopThread();
+            rpm.stopObserver();
         }
         
     }
