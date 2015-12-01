@@ -24,6 +24,7 @@
 package com.punyal.symbiotic.core.net;
 
 import com.punyal.symbiotic.core.Core;
+import com.punyal.symbiotic.tentacle.Cryptonizer;
 import java.net.Inet6Address;
 import org.eclipse.californium.core.CoapClient;
 import org.eclipse.californium.core.CoapHandler;
@@ -71,7 +72,13 @@ public abstract class CoapObserver {
         coapClient.setTimeout(60000);
         System.out.println("Observing: "+coapClient.getURI());
         
-        relation = coapClient.observe(coapHandler);
+        try {
+            System.out.println("ticket:"+Cryptonizer.ByteArray2Hex(core.getTentacle().getMyTicket().getTicket()));
+            relation = coapClient.observe(core.getTentacle().getMyTicket().getTicket(), coapHandler);
+        } catch (NullPointerException ex){
+            System.out.println("no ticket!");
+            relation = coapClient.observe(coapHandler);
+        }
     }
     
     public void stopObserve() {

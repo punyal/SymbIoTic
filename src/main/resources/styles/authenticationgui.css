@@ -1,0 +1,57 @@
+
+.mainFxmlClass {
+    -fx-background-color: rgba(0, 0, 0, 0);
+}
+
+#labelTitle {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333333;
+    -fx-font-family: "Courier New", Courier, monospace;
+    -fx-effect: dropshadow( gaussian , rgba(255,255,255,0.5) , 0,0,0,1 );
+}
+
+
+#buttonClose {
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333333;
+    -fx-font-family: "Courier New", Courier, monospace;
+    -fx-effect: dropshadow( gaussian , rgba(255,255,255,0.5) , 0,0,0,1 );
+}
+
+#buttonClose:focused {
+    -fx-focus-color: rgba(100,100,100,1);
+    -fx-faint-focus-color: rgba(100,100,100,0.2);
+}
+
+
+#buttonRefresh {
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333333;
+    -fx-font-family: "Courier New", Courier, monospace;
+    -fx-effect: dropshadow( gaussian , rgba(255,255,255,0.5) , 0,0,0,1 );
+}
+
+#buttonRefresh:focused {
+    -fx-focus-color: rgba(100,100,100,1);
+    -fx-faint-focus-color: rgba(100,100,100,0.2);
+}
+
+#paneBotton {
+    -fx-background-color: rgba(220, 220, 220, 0);
+    -fx-background-radius: 10 10 10 10;
+    -fx-border-color: rgba(100, 100, 100, 1);
+    -fx-border-width: 1;
+    -fx-border-radius: 10 10 10 10;
+}
+
+#paneAuthentication {
+    -fx-background-color: rgba(100, 100, 100, 0.8);
+    -fx-background-radius: 10 10 10 10;
+    -fx-border-color: rgba(100, 100, 100, 1);
+    -fx-border-width: 1;
+    -fx-border-radius: 10 10 10 10;
+}
+

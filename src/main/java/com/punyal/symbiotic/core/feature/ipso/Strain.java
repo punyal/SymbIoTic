@@ -56,17 +56,19 @@ public class Strain {
                     JSONObject json = Parsers.parseMulleJSONData(response.getResponseText());
                     //System.out.println(json);
                     int strain = Integer.parseInt(json.get("strain").toString());
+                    System.out.println("Input strain:"+strain);
                     boolean alarm = Integer.parseInt(json.get("alarm").toString()) == 1;
 
-                    // to percent max 10000
+                    // to percent max 1000
 
-                    strain /= 100;
+                    strain /= 10;
 
                     if (core.getController().isAnimated()) {                  
                         if (alarm) {
                             // DO SOMETHING....
                         }
                         core.getStatus().setStrainLevel(strain, alarm);
+                        System.out.println("Strainlevel:"+strain);
 
                     }
 

@@ -120,14 +120,20 @@ public class SymbIoTicGUIController implements Initializable {
     @FXML
     private Menu menuTitle;
     @FXML
-    private MenuItem menuAbout, menuClose;
+    private MenuItem menuAuthentication, menuAbout, menuClose;
     
     @FXML
-    private Button buttonClose, buttonAbout;
+    private Button buttonClose, buttonAuth, buttonAbout;
 
     /* Client Part */
     @FXML
     private ToggleButton toggleButtonClient;
+    
+    @FXML
+    private void handleMenuAuthentication(ActionEvent e) throws IOException {
+        System.out.println("ShowAuthentication Menu");
+        core.getConfiguration().getAuthenticationStageInfo().getStage().show();
+    }
 
     @FXML
     private void handleMenuAbout(ActionEvent e) throws IOException {
@@ -141,6 +147,13 @@ public class SymbIoTicGUIController implements Initializable {
         System.exit(0);
     }
 
+    @FXML
+    private void handleButtonAuthentication(ActionEvent e) throws IOException {
+        System.out.println("ShowAuthentication Menu");
+        core.getConfiguration().getAuthenticationStageInfo().getStage().show();
+    }
+    
+    
     @FXML
     private void handleButtonAbout(ActionEvent e) throws IOException {
         System.out.println("ShowAbout Menu");

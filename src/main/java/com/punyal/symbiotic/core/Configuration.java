@@ -38,6 +38,7 @@ public class Configuration {
     private StageInfo mainStage;
     private StageInfo clientStage;
     private StageInfo aboutStage;
+    private StageInfo authenticationStage;
     
     public Configuration(){
         app = AppCheck.checkApp(this.getClass().getProtectionDomain().getCodeSource().getLocation().toString());
@@ -93,6 +94,22 @@ public class Configuration {
     
     public StageInfo getAboutStageInfo() {
         return aboutStage;
+    }
+    
+    public void setAuthenticationStage(Stage stage) {
+        authenticationStage = new StageInfo(stage);
+    }
+    
+    public void setAuthenticationStage(Stage stage, Coordinates coordinates) {
+        authenticationStage = new StageInfo(stage, coordinates);
+    }
+    
+    public void setAuthenticationStage(Stage stage, double x, double y) {
+        authenticationStage = new StageInfo(stage, x, y);
+    }
+    
+    public StageInfo getAuthenticationStageInfo() {
+        return authenticationStage;
     }
     
     

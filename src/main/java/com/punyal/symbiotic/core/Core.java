@@ -23,8 +23,10 @@
  */
 package com.punyal.symbiotic.core;
 
+import com.punyal.symbiotic.controllers.AuthenticationController;
 import com.punyal.symbiotic.controllers.ClientController;
 import com.punyal.symbiotic.controllers.SymbIoTicGUIController;
+import com.punyal.symbiotic.tentacle.Tentacle;
 
 /**
  *
@@ -35,15 +37,26 @@ public class Core {
     private final Status status;
     private final SymbIoTicGUIController controller;
     private final ClientController clientController;
+    private final AuthenticationController authenticationController;
     private final Settings settings;
+    private Tentacle tentacle;
     
-    public Core(SymbIoTicGUIController controller, ClientController clientController) {
+    public Core(SymbIoTicGUIController controller, ClientController clientController, AuthenticationController authenticationController) {
         settings = new Settings(this);
         configuration = new Configuration();
         status = new Status(this);
         this.controller = controller;
         this.clientController = clientController;
+        this.authenticationController = authenticationController;
         settings.load(); // Load all previous saved data
+    }
+    
+    public Tentacle getTentacle() {
+        return tentacle;
+    }
+    
+    public void setTentacle(Tentacle tentacle) {
+        this.tentacle = tentacle;
     }
     
     
@@ -65,5 +78,9 @@ public class Core {
     
     public ClientController getClientController() {
         return clientController;
+    }
+    
+    public AuthenticationController getAuthenticationController() {
+        return authenticationController;
     }
 }

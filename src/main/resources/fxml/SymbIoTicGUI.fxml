@@ -25,6 +25,7 @@
               <menus>
                 <Menu fx:id="menuTitle" mnemonicParsing="false" text="SymbIoTic">
                   <items>
+                        <MenuItem fx:id="menuAuthentication" mnemonicParsing="false" onAction="#handleMenuAuthentication" text="Authentication" />
                     <MenuItem fx:id="menuAbout" mnemonicParsing="false" onAction="#handleMenuAbout" text="About" />
                         <SeparatorMenuItem mnemonicParsing="false" />
                     <MenuItem fx:id="menuClose" mnemonicParsing="false" onAction="#handleMenuClose" text="Close" />
@@ -181,5 +182,6 @@
       <ToggleButton fx:id="toggleButtonClient" layoutX="5.0" layoutY="3.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleButtonClient" prefHeight="20.0" prefWidth="20.0" />
       <Button fx:id="buttonClose" layoutX="1176.0" layoutY="4.0" maxHeight="20.0" maxWidth="20.0" minHeight="20.0" minWidth="20.0" mnemonicParsing="false" onAction="#handleButtonClose" prefHeight="20.0" prefWidth="20.0" />
       <Button fx:id="buttonAbout" layoutX="1150.0" layoutY="4.0" maxHeight="20.0" maxWidth="20.0" minHeight="20.0" minWidth="20.0" mnemonicParsing="false" onAction="#handleButtonAbout" prefHeight="20.0" prefWidth="20.0" />
+      <Button fx:id="buttonAuth" layoutX="1124.0" layoutY="4.0" maxHeight="20.0" maxWidth="20.0" minHeight="20.0" minWidth="20.0" mnemonicParsing="false" onAction="#handleButtonAuthentication" prefHeight="20.0" prefWidth="20.0" />
    </children>
 </AnchorPane>

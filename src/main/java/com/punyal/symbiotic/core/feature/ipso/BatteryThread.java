@@ -80,7 +80,7 @@ public class BatteryThread extends Thread {
                     //core.getStatus().setBatteryLevel(100);
                     coapClient.setURI(uri);
                     System.out.println(uri);
-                    response = coapClient.get();
+                    response = coapClient.get(core.getTentacle().getMyTicket().getTicket());
                     
                     if (response != null) {
                         System.out.println("BatteryResponse:"+response.getResponseText());

@@ -42,6 +42,7 @@ public class ConstantsGUI {
     public static final String WINDOW_SYMBIOTIC = "symbiotic";
     public static final String WINDOW_CLIENT = "client";
     public static final String WINDOW_ABOUT = "about";
+    public static final String WINDOW_AUTHENTICATION = "authentication";
     
     // ACC Chart
     public static final int MAX_DATA_POINTS = 2000;

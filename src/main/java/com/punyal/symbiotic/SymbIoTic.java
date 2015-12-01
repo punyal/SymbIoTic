@@ -26,6 +26,7 @@ package com.punyal.symbiotic;
 import com.punyal.symbiotic.Utils.UtilsGUI;
 import static com.punyal.symbiotic.constants.ConstantsGUI.*;
 import com.punyal.symbiotic.controllers.AboutController;
+import com.punyal.symbiotic.controllers.AuthenticationController;
 import com.punyal.symbiotic.controllers.ClientController;
 import com.punyal.symbiotic.controllers.SymbIoTicGUIController;
 import com.punyal.symbiotic.core.Core;
@@ -68,7 +69,18 @@ public class SymbIoTic extends Application {
         clientStage.setY(stage.getY()+CLIENT_Y_OFFSET);
         
         ClientController clientController = clientloader.<ClientController>getController();
-        core = new Core(mainController, clientController);
+        
+        
+        Stage authenticationStage = new Stage();
+        FXMLLoader authenticationloader = new FXMLLoader(getClass().getResource("/fxml/AuthenticationGUI.fxml"));
+        UtilsGUI.configStage(authenticationStage, (Parent) authenticationloader.load(), WINDOW_AUTHENTICATION);
+        authenticationStage.initOwner(stage);
+        authenticationStage.setX(stage.getX());
+        authenticationStage.setY(stage.getY());
+        AuthenticationController authenticationController = authenticationloader.<AuthenticationController>getController();
+
+        
+        core = new Core(mainController, clientController, authenticationController);
         mainController.setCore(core);
         mainController.init();
         
@@ -91,9 +103,12 @@ public class SymbIoTic extends Application {
         aboutController.setCore(core);
         aboutController.init();
         core.getConfiguration().setAboutStage(aboutStage);
-        
-        
         /*--------------------------------------------------------------------*/
+        /* ----------------------- Loading about window --------------------- */
+        
+        authenticationController.setCore(core);
+        authenticationController.init();
+        core.getConfiguration().setAuthenticationStage(authenticationStage);
         /* Functionality */
         root.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override

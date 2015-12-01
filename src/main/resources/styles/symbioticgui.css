@@ -81,6 +81,18 @@
     -fx-faint-focus-color: rgba(100,100,100,0.2);
 }
 
+#buttonAuth {
+    -fx-background-radius: 10em;
+    -fx-graphic: url("/images/auth.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
+#buttonAuth:focused {
+    -fx-focus-color: rgba(100,100,100,1);
+    -fx-faint-focus-color: rgba(100,100,100,0.2);
+}
+
+
 #buttonAbout {
     -fx-background-radius: 10em;
     -fx-graphic: url("/images/about.png");
@@ -91,7 +103,6 @@
     -fx-focus-color: rgba(100,100,100,1);
     -fx-faint-focus-color: rgba(100,100,100,0.2);
 }
-
 
 /* Features */
 #tabPaneFeatures > .tab-header-area > .headers-region > .tab {

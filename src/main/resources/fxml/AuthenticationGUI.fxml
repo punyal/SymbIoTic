@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.shape.*?>
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="700.0" prefWidth="1200.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.punyal.symbiotic.controllers.AuthenticationController">
+    <stylesheets>
+        <URL value="@/styles/aboutgui.css" />
+    </stylesheets>
+   <children>
+      <Pane fx:id="paneAuthentication" prefHeight="700.0" prefWidth="1200.0" />
+      <Pane fx:id="paneBotton" layoutX="350.0" layoutY="200.0" prefHeight="300.0" prefWidth="500.0">
+         <children>
+            <Label fx:id="labelTitle" alignment="CENTER" prefHeight="30.0" prefWidth="500.0" text="Authentication" />
+            <VBox layoutX="27.0" layoutY="50.0" prefHeight="200.0" prefWidth="432.0">
+               <children>
+                  <HBox alignment="CENTER" prefHeight="60.0" prefWidth="200.0">
+                     <children>
+                        <Label text="Name:">
+                           <HBox.margin>
+                              <Insets right="2.0" />
+                           </HBox.margin>
+                        </Label>
+                        <TextField fx:id="labelName" prefHeight="26.0" prefWidth="110.0" />
+                        <Label text="Pass:">
+                           <HBox.margin>
+                              <Insets left="6.0" right="2.0" />
+                           </HBox.margin>
+                        </Label>
+                        <PasswordField fx:id="labelPass" prefWidth="110.0" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="60.0" prefWidth="200.0">
+                     <children>
+                        <Label text="Secret:">
+                           <HBox.margin>
+                              <Insets right="2.0" />
+                           </HBox.margin>
+                        </Label>
+                        <PasswordField fx:id="labelSecret" prefWidth="110.0" />
+                        <Label text="Server:">
+                           <HBox.margin>
+                              <Insets left="6.0" right="2.0" />
+                           </HBox.margin>
+                        </Label>
+                        <TextField fx:id="labelServer" prefHeight="26.0" prefWidth="200.0" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="60.0" prefWidth="200.0">
+                     <children>
+                        <Label text="Ticket:">
+                           <HBox.margin>
+                              <Insets right="2.0" />
+                           </HBox.margin>
+                        </Label>
+                        <TextField fx:id="labelTicket" editable="false" focusTraversable="false" prefHeight="26.0" prefWidth="200.0" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="60.0" prefWidth="200.0">
+                     <children>
+                        <Label text="ExpireTime:">
+                           <HBox.margin>
+                              <Insets left="6.0" right="2.0" />
+                           </HBox.margin>
+                        </Label>
+                        <TextField fx:id="labelExpire" editable="false" focusTraversable="false" prefHeight="26.0" prefWidth="260.0" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="46.0" prefWidth="432.0">
+                     <children>
+                        <Button fx:id="buttonRefresh" mnemonicParsing="false" onAction="#handleButtonRefresh" prefHeight="26.0" prefWidth="67.0" text="Refresh">
+                           <HBox.margin>
+                              <Insets right="10.0" />
+                           </HBox.margin>
+                        </Button>
+                        <Button fx:id="buttonClose" mnemonicParsing="false" onAction="#handleButtonClose" prefHeight="26.0" prefWidth="67.0" text="Close" />
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>
